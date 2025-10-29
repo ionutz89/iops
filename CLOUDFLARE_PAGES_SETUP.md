@@ -50,7 +50,7 @@ compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
 
 [assets]
 directory = ".open-next/assets"
-
+update
 [build]
 command = "npm run build"
 cwd = "."
