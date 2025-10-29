@@ -36,7 +36,9 @@
     "name": "iops-website",
     "private": true,
     "scripts": {
-        "build": "npx @opennextjs/cloudflare build",
+        "build": "next build && npx @opennextjs/cloudflare build --skipBuild",
+        "build:next": "next build",
+        "build:worker": "npx @opennextjs/cloudflare build --skipBuild",
         "deploy": "wrangler deploy",
         "dev": "next dev",
         "lint": "eslint",
