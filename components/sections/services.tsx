@@ -60,7 +60,7 @@ export function Services() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section id="services" className="py-24 md:py-32 relative scroll-mt-24">
+    <section id="services" className="py-24 md:py-32 relative scroll-mt-24 px-6 md:px-12">
       <div className="container px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

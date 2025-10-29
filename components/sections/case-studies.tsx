@@ -61,7 +61,7 @@ const caseStudies = [
 
 export function CaseStudies() {
   return (
-    <section id="case-studies" className="py-24 md:py-32 bg-muted/50 scroll-mt-24">
+    <section id="case-studies" className="py-24 md:py-32 bg-muted/50 scroll-mt-24 px-6 md:px-12">
       <div className="container px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -82,12 +82,12 @@ export function CaseStudies() {
           {caseStudies.map((study, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.7 }}
             >
-              <Card className="overflow-hidden">
+              <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div className={`h-2 bg-gradient-to-r ${study.gradient}`} />
                 <CardHeader>
                   <div className="flex items-start justify-between gap-4 flex-wrap">

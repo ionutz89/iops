@@ -77,11 +77,11 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4"
+            className="flex flex-col gap-4 w-full sm:w-auto sm:flex-row"
           >
             <Button
               size="lg"
-              className="rounded-xl bg-blue-600 text-white px-6 py-3 hover:bg-blue-700 transition text-lg"
+              className="rounded-xl bg-blue-600 text-white px-6 py-3 hover:bg-blue-700 transition text-lg w-full sm:w-auto"
               onClick={() => {
                 trackCTAClick('Get Free Assessment', 'hero');
                 scrollToSection("contact");
@@ -94,7 +94,7 @@ export function Hero() {
             <Button
               size="lg"
               variant="outline"
-              className="text-lg px-8 py-6"
+              className="text-lg px-8 py-6 w-full sm:w-auto"
               onClick={() => {
                 trackCTAClick('Calculate ROI', 'hero');
                 scrollToSection("roi-calculator");

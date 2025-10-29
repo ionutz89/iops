@@ -70,7 +70,7 @@ export function Pricing() {
   };
 
   return (
-    <section id="pricing" className="py-24 md:py-32 bg-muted/50 scroll-mt-24">
+    <section id="pricing" className="py-24 md:py-32 bg-muted/50 scroll-mt-24 px-6 md:px-12">
       <div className="container px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -91,17 +91,18 @@ export function Pricing() {
           {pricingTiers.map((tier, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.8, delay: index * 0.1 }}
+              whileHover={{ scale: 1.03 }}
               className={tier.popular ? "md:-mt-4" : ""}
             >
               <Card
-                className={`h-full flex flex-col relative ${
+                className={`h-full flex flex-col relative transition-shadow duration-300 ${
                   tier.popular
                     ? "border-primary shadow-xl scale-105"
-                    : ""
+                    : "hover:shadow-lg"
                 }`}
               >
                 {tier.popular && (

@@ -39,7 +39,7 @@
         "build": "next build && npx @opennextjs/cloudflare build --skipBuild",
         "build:next": "next build",
         "build:worker": "npx @opennextjs/cloudflare build --skipBuild",
-        "deploy": "wrangler deploy",
+        "deploy": "npm run build && wrangler deploy",
         "dev": "next dev",
         "lint": "eslint",
         "preview": "wrangler dev",
