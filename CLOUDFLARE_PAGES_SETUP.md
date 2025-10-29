@@ -20,7 +20,7 @@ Configure Cloudflare Pages with the correct build settings.
 1. Go to your Cloudflare Dashboard
 2. Navigate to **Workers & Pages** → Your project (`iops-pro`)
 3. Click **Settings** → **Builds & deployments**
-4. Configure as follows:
+4. Configure as followss:
 
 ```
 Build configuration:
