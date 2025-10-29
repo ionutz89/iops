@@ -12,14 +12,14 @@ export function SocialProof() {
   ];
 
   return (
-    <section className="py-12 bg-gray-50 dark:bg-gray-900/50">
+    <section className="py-16 bg-gray-50 dark:bg-gray-900">
       <div className="container px-4 md:px-6">
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300 mb-6"
+          className="text-center text-xl font-semibold text-gray-700 dark:text-gray-200 mb-8"
         >
           Trusted by leading tech teams
         </motion.h3>
@@ -28,7 +28,7 @@ export function SocialProof() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-80"
+          className="flex flex-wrap justify-center items-center gap-10 opacity-80"
         >
           {logos.map((logo, index) => (
             <motion.div
@@ -37,15 +37,14 @@ export function SocialProof() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05 }}
-              className="grayscale hover:grayscale-0 transition-all duration-300"
+              className="hover:opacity-100 transition-opacity duration-300"
             >
               <Image
                 src={logo.src}
                 alt={logo.name}
-                width={64}
+                width={100}
                 height={32}
-                className="object-contain"
+                className="h-8 w-auto"
               />
             </motion.div>
           ))}
@@ -54,4 +53,3 @@ export function SocialProof() {
     </section>
   );
 }
-

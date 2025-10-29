@@ -29,7 +29,7 @@ export function ContactForm() {
 
   if (state.succeeded) {
     return (
-      <section id="contact" className="py-24 md:py-32">
+      <section id="contact" className="py-24 md:py-32 scroll-mt-24">
         <div className="container px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -68,7 +68,7 @@ export function ContactForm() {
   }
 
   return (
-    <section id="contact" className="py-24 md:py-32">
+    <section id="contact" className="py-24 md:py-32 scroll-mt-24">
       <div className="container px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -229,4 +229,3 @@ export function ContactForm() {
     </section>
   );
 }
-

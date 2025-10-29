@@ -163,4 +163,3 @@ This document summarizes all improvements made to the IOPS Pro landing page to e
 - Tailwind CSS conventions maintained throughout
 - No breaking changes to existing functionality
 - All linter checks pass successfully
-

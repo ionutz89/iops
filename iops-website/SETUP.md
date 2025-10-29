@@ -71,4 +71,3 @@ This creates a static export in the `out/` directory ready for Cloudflare Pages.
 4. Deploy to Cloudflare Pages (see DEPLOYMENT.md)
 
 For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md)
-

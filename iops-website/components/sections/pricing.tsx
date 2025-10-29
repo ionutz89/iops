@@ -70,7 +70,7 @@ export function Pricing() {
   };
 
   return (
-    <section id="pricing" className="py-24 md:py-32 bg-muted/50">
+    <section id="pricing" className="py-24 md:py-32 bg-muted/50 scroll-mt-24">
       <div className="container px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -155,12 +155,25 @@ export function Pricing() {
           ))}
         </div>
 
+        {/* Trust Badges */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-16 text-center"
+          className="flex justify-center gap-6 mt-12 opacity-80"
+        >
+          <img src="/badges/iso27001.svg" alt="ISO 27001 Certified" className="h-10" />
+          <img src="/badges/soc2.svg" alt="SOC 2 Compliant" className="h-10" />
+          <img src="/badges/gdpr.svg" alt="GDPR Ready" className="h-10" />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-12 text-center"
         >
           <Card className="max-w-3xl mx-auto bg-primary/5 border-primary/20">
             <CardContent className="pt-6">
@@ -189,4 +202,3 @@ export function Pricing() {
     </section>
   );
 }
-

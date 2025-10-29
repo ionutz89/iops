@@ -27,7 +27,7 @@ export function ROICalculator() {
   };
 
   return (
-    <section id="roi-calculator" className="py-24 md:py-32 bg-muted/50">
+    <section id="roi-calculator" className="py-24 md:py-32 bg-muted/50 scroll-mt-24">
       <div className="container px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -108,14 +108,16 @@ export function ROICalculator() {
                   />
                 </div>
 
-                <div className="pt-4 text-xs text-muted-foreground border-t">
-                  <p className="mb-2">Calculation methodology:</p>
-                  <ul className="space-y-1 list-disc list-inside">
-                    <li>Average DevOps hourly rate: $70/hr</li>
-                    <li>Average incident cost: $5,000</li>
-                    <li>Time saved: 70% of manual hours</li>
-                    <li>Incident reduction: 90%</li>
-                  </ul>
+                <div className="pt-4 border-t">
+                  <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl text-sm text-gray-700 dark:text-gray-300 shadow-sm">
+                    <p className="font-semibold mb-2">Calculation methodology:</p>
+                    <ul className="space-y-1 list-disc list-inside">
+                      <li>Average DevOps hourly rate: $70/hr</li>
+                      <li>Average incident cost: $5,000</li>
+                      <li>Time saved: 70% of manual hours</li>
+                      <li>Incident reduction: 90%</li>
+                    </ul>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -223,4 +225,3 @@ export function ROICalculator() {
     </section>
   );
 }
-
