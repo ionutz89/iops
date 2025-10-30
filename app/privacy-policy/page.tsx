@@ -77,13 +77,11 @@ export default function PrivacyPolicy() {
               2. Data Controller
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              The Data Controller is IOPS SRL, registered in Romania. Address: [insert full company address]. Contact:{" "}
-              <a
-                href="mailto:privacy@iops.pro"
-                className="text-primary hover:underline"
-              >
-                privacy@iops.pro
-              </a>
+              The Data Controller is IOPS. Contact:{" "}
+              <EmailReveal email="privacy@iops.pro" />
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              We operate globally and process limited personal data only for communication, analytics, and security purposes.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               <strong className="text-foreground">Personally Identifiable Information (PII):</strong>{" "}
@@ -361,14 +359,14 @@ export default function PrivacyPolicy() {
             <h2 className="text-2xl font-semibold mb-4 text-foreground">
               11. International Data Transfers
             </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Your personal data may be transferred to and processed in countries
-              outside the European Economic Area (EEA). We ensure that such transfers
-              comply with GDPR requirements through appropriate safeguards, such as
-              Standard Contractual Clauses (SCCs) or adequacy decisions.
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              We may process personal data on servers located outside the European Economic Area (EEA).
             </p>
-            <p className="text-muted-foreground leading-relaxed mt-4">
-              We have appointed an EU representative for GDPR compliance. Contact: [representative name and email].
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              We use trusted third-party providers that maintain strong privacy and security protections.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              We only transfer data where appropriate safeguards are in place, such as Standard Contractual Clauses (SCCs) approved by the European Commission.
             </p>
           </section>
 
