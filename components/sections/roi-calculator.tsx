@@ -211,7 +211,7 @@ export function ROICalculator() {
                   <p className="text-xs text-muted-foreground">Range: $20 - $150</p>
                 </div>
 
-                {/* Average Incident Cost */}
+                {/* Average Problem Cost */}
                 <div className="space-y-3">
                   <Label className="text-base font-medium">Average Cost per Problem</Label>
                   <Input
@@ -279,10 +279,10 @@ export function ROICalculator() {
                   />
                 </div>
 
-                {/* Incident Reduction */}
+                {/* Problem Reduction */}
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <Label className="text-base font-medium">Incident Reduction (%)</Label>
+                    <Label className="text-base font-medium">Problem Reduction (%)</Label>
                     <span className="text-sm font-semibold text-foreground">{inputs.incidentReduction}%</span>
                   </div>
                   <Slider
@@ -344,6 +344,20 @@ export function ROICalculator() {
                 }}
                 className="space-y-6 w-full"
               >
+              {/* ROI Context Line */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.25 }}
+                className="text-center"
+              >
+                <p className="text-sm text-muted-foreground italic">
+                  Typical automation ROI ranges 150–400% annually based on client results.
+                </p>
+              </motion.div>
+
+              {/* Results Grid */}
+              <div className="grid grid-cols-1 gap-6">
               {/* Manual Work Savings */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -363,7 +377,7 @@ export function ROICalculator() {
               </Card>
             </motion.div>
 
-            {/* Incident Cost Savings */}
+            {/* Problem Cost Savings */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -372,7 +386,7 @@ export function ROICalculator() {
               <Card className="rounded-lg border border-slate-300 dark:border-slate-700 shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300 bg-card">
                 <CardContent className="p-6">
                   <Label className="text-sm font-medium text-muted-foreground mb-2 block">
-                    Incident Cost Savings ($/yr)
+                    Problem Cost Savings ($/yr)
                   </Label>
                   <AnimatedCurrencyValue
                     value={results.incidentCostSavings}
@@ -439,58 +453,15 @@ export function ROICalculator() {
               </Card>
             </motion.div>
 
-            {/* Assumptions and Breakdown */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-            >
-              <Card className="rounded-lg border border-slate-300 dark:border-slate-700 shadow-sm bg-card">
-                <CardContent className="p-6 space-y-4">
-                  <h3 className="text-lg font-semibold text-foreground mb-3">Calculation Breakdown</h3>
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                    <div className="flex justify-between">
-                      <span>Annual Manual Hours:</span>
-                      <span className="font-medium text-foreground">
-                        {formatNumber(inputs.teamSize * inputs.manualHoursPerWeek * 52)} hours
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Manual Savings:</span>
-                      <span className="font-medium text-foreground">
-                        {formatCurrency(results.manualWorkSavings)}/year
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Incident Savings:</span>
-                      <span className="font-medium text-foreground">
-                        {formatCurrency(results.incidentCostSavings)}/year
-                      </span>
-                    </div>
-                    <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
-                      <div className="flex justify-between text-base">
-                        <span className="font-semibold">Total Annual Savings:</span>
-                        <span className="font-bold text-foreground">
-                          {formatCurrency(results.totalAnnualSavings)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
-                    <p className="text-xs text-muted-foreground">
-                      <strong>Assumptions:</strong> 52 working weeks per year. Calculations use actual input values without rounding until final display.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+              </div>
+
               </motion.div>
             )}
           </AnimatePresence>
           </div>
         </div>
 
-        {/* ROI vs Team Size Chart - Only render when showResults is true */}
+        {/* Calculation Breakdown and Chart - Only show after calculate, appear below */}
         <AnimatePresence>
           {showResults && (
             <motion.div
@@ -499,11 +470,68 @@ export function ROICalculator() {
               exit={{ opacity: 0, y: 20 }}
               transition={{
                 duration: 0.5,
-                delay: 0.6,
+                delay: 0.5,
                 ease: [0.4, 0, 0.2, 1],
               }}
-              className="mt-12"
+              className="mt-12 space-y-6"
             >
+              {/* Calculation Breakdown */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+              >
+                <Card className="rounded-lg border border-slate-300 dark:border-slate-700 shadow-sm bg-card">
+                  <CardContent className="p-6 space-y-4">
+                    <h3 className="text-lg font-semibold text-foreground mb-3">Calculation Breakdown</h3>
+                    <div className="space-y-2 text-sm text-muted-foreground">
+                      <div className="flex justify-between">
+                        <span>Annual Manual Hours:</span>
+                        <span className="font-medium text-foreground">
+                          {formatNumber(inputs.teamSize * inputs.manualHoursPerWeek * 52)} hours
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Manual Savings:</span>
+                        <span className="font-medium text-foreground">
+                          {formatCurrency(results.manualWorkSavings)}/year
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Problem Savings:</span>
+                        <span className="font-medium text-foreground">
+                          {formatCurrency(results.incidentCostSavings)}/year
+                        </span>
+                      </div>
+                      <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+                        <div className="flex justify-between text-base">
+                          <span className="font-semibold">Total Annual Savings:</span>
+                          <span className="font-bold text-foreground">
+                            {formatCurrency(results.totalAnnualSavings)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
+                      <p className="text-xs text-muted-foreground">
+                        <strong>Assumptions:</strong> 52 working weeks per year. Calculations use actual input values without rounding until final display.
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* ROI vs Team Size Chart */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.6,
+                  ease: [0.4, 0, 0.2, 1],
+                }}
+              >
           <Card className="rounded-xl bg-white dark:bg-card shadow-md p-4 mt-6 border border-slate-300 dark:border-slate-700">
             <h3 className="text-xl font-bold mb-4 text-foreground">ROI vs Team Size</h3>
             <ResponsiveContainer width="100%" height={300}>
@@ -567,6 +595,7 @@ export function ROICalculator() {
               Typical automation ROI: 150%–400% annually depending on process complexity.
             </p>
           </Card>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>

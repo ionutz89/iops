@@ -106,7 +106,7 @@ export function TechEcosystemSection() {
               </div>
 
               {/* Description */}
-              <p className="text-sm text-muted-foreground text-center max-w-[160px]">
+              <p className="text-sm text-muted-foreground text-center max-w-[160px] opacity-0 translate-y-[-10px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
                 {logo.detailedTooltip || logo.tooltip}
               </p>
             </motion.div>

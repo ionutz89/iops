@@ -259,6 +259,15 @@ export default function Home() {
               delay={0.2}
             />
           </div>
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="text-center text-muted-foreground mt-8 text-base"
+          >
+            Trusted by businesses worldwide to automate their operations and scale efficiently.
+          </motion.p>
         </div>
       </section>
 
@@ -271,6 +280,9 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
+            <p className="text-lg text-muted-foreground mb-4">
+              Proven results across SaaS, logistics, and service companies.
+            </p>
             <h2 className="text-4xl font-bold mb-4 text-foreground">
               Why Businesses Choose IOPS
             </h2>
