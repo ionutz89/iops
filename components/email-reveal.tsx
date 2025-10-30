@@ -18,7 +18,7 @@ declare global {
   }
 }
 
-export function EmailReveal({ email, className, variant = "link" }: EmailRevealProps) {
+export function EmailReveal({ email, className }: EmailRevealProps) {
   const [isRevealed, setIsRevealed] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
 
