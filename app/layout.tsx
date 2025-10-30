@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Script from "next/script";
+import { GdprConsent } from "@/components/GdprConsent";
+import { AnalyticsLoader } from "@/components/analytics-loader";
 import "./globals.css";
 
 const inter = Inter({
@@ -168,6 +170,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <GdprConsent />
+          <AnalyticsLoader />
         </ThemeProvider>
       </body>
     </html>

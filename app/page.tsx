@@ -374,6 +374,14 @@ export default function Home() {
                     Get in Touch
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    href="/privacy-policy"
+                    className="text-foreground hover:text-primary transition-colors"
+                  >
+                    Privacy Policy
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
