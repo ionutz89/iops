@@ -2,9 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Script from "next/script";
-import { Suspense } from "react";
 import "./globals.css";
-import { AnalyticsProvider } from "@/components/analytics-provider";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -163,34 +161,13 @@ export default function RootLayout({
             strategy="lazyOnload"
           />
         )}
-        {/* Google Analytics - Replace G-XXXXXXXXXX with your actual GA4 ID */}
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
-                  page_path: window.location.pathname,
-                });
-              `}
-            </Script>
-          </>
-        )}
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
-          <Suspense fallback={null}>
-            <AnalyticsProvider>{children}</AnalyticsProvider>
-          </Suspense>
+          {children}
         </ThemeProvider>
       </body>
     </html>

@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useState, useEffect, useMemo } from "react";
 import { calculateROI, formatCurrency, formatNumber, type ROIInputs } from "@/lib/roi-calculations";
 import {
@@ -19,18 +20,26 @@ import {
 } from "recharts";
 
 export function ROICalculator() {
-  const [inputs, setInputs] = useState<ROIInputs>({
+  const defaults = {
     teamSize: 10,
     incidentsPerWeek: 5,
     manualHoursPerWeek: 80,
     hourlyRate: 50,
     incidentCost: 1500,
-    setupCost: 25000,
+    setupCost: 100000,
     automationEfficiency: 70,
     incidentReduction: 80,
-  });
+  };
+
+  const [inputs, setInputs] = useState<ROIInputs>(defaults);
+  const [hasCalculated, setHasCalculated] = useState(false);
 
   const results = useMemo(() => calculateROI(inputs), [inputs]);
+
+  const handleCalculate = () => {
+    calculateROI(inputs);
+    setHasCalculated(true);
+  };
 
   // Generate chart data for ROI vs Team Size based on actual calculations
   const chartData = useMemo(() => {
@@ -269,19 +278,36 @@ export function ROICalculator() {
                   />
                 </div>
 
+                {/* Calculate ROI Button */}
+                <div className="pt-4">
+                  <Button
+                    onClick={handleCalculate}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-6 text-lg"
+                    size="lg"
+                  >
+                    Calculate ROI
+                  </Button>
+                  {!hasCalculated && (
+                    <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 text-center">
+                      Enter your details and press Calculate ROI to view your results.
+                    </p>
+                  )}
+                </div>
+
               </CardContent>
             </Card>
           </motion.div>
 
           {/* Right Column - Outputs */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="space-y-6"
-          >
-            {/* Manual Work Savings */}
+          {hasCalculated && (
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="space-y-6"
+            >
+              {/* Manual Work Savings */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -421,10 +447,12 @@ export function ROICalculator() {
                 </CardContent>
               </Card>
             </motion.div>
-          </motion.div>
+            </motion.div>
+          )}
         </div>
 
         {/* ROI vs Team Size Chart */}
+        {hasCalculated && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -496,6 +524,7 @@ export function ROICalculator() {
             </p>
           </Card>
         </motion.div>
+        )}
       </div>
     </section>
   );

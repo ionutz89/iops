@@ -11,7 +11,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Layers, Brain, Shield, CheckCircle2, ArrowRight } from "lucide-react";
 import { useState } from "react";
-import { trackCTAClick } from "@/lib/analytics";
 
 const services = [
   {
@@ -138,10 +137,6 @@ export function Services() {
                     variant="outline"
                     className="w-full"
                     onClick={() => {
-                      trackCTAClick(
-                        `Book Free Assessment - ${service.title}`,
-                        "services"
-                      );
                       scrollToContact();
                     }}
                   >

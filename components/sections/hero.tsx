@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { FloatingCodeElements } from "@/components/floating-code-elements";
 import { ArrowRight, Play } from "lucide-react";
-import { trackCTAClick } from "@/lib/analytics";
 import Image from "next/image";
 
 export function Hero() {
@@ -65,7 +64,6 @@ export function Hero() {
               size="lg"
               className="rounded-xl bg-[#007AFF] text-white px-6 py-3 hover:bg-[#0056CC] transition text-lg w-full sm:w-auto"
               onClick={() => {
-                trackCTAClick("Get Free Assessment", "hero");
                 scrollToSection("contact");
               }}
               aria-label="Get free DevOps assessment"
@@ -78,7 +76,6 @@ export function Hero() {
               variant="outline"
               className="text-lg px-8 py-6 w-full sm:w-auto"
               onClick={() => {
-                trackCTAClick("Watch 2-Minute Demo", "hero");
                 // Add demo video link here
               }}
               aria-label="Watch 2-minute demo"

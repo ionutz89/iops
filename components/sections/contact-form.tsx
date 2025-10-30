@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "@formspree/react";
 import { CheckCircle2, Send } from "lucide-react";
 import { useState } from "react";
-import { trackCTAClick, trackFormSubmit } from "@/lib/analytics";
 
 declare global {
   interface Window {
@@ -248,10 +247,6 @@ export function ContactForm() {
                   size="lg"
                   className="rounded-xl bg-[#007AFF] text-white px-6 py-3 hover:bg-[#0056CC] transition w-full disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={state.submitting || isSubmitting}
-                  onClick={() => {
-                    trackCTAClick('Book 15-Minute Demo', 'contact_form');
-                    trackFormSubmit('contact', true);
-                  }}
                   aria-label="Book a 15-minute demo"
                 >
                   {state.submitting || isSubmitting ? (

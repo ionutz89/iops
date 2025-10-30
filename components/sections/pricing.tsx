@@ -11,7 +11,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, Star } from "lucide-react";
-import { trackCTAClick } from "@/lib/analytics";
 
 const pricingTiers = [
   {
@@ -150,10 +149,6 @@ export function Pricing() {
                     variant={tier.popular ? "default" : "outline"}
                     size="lg"
                     onClick={() => {
-                      trackCTAClick(
-                        tier.cta,
-                        `pricing_${tier.name.toLowerCase()}`
-                      );
                       scrollToContact();
                     }}
                     aria-label={`Select ${tier.name} pricing plan`}
@@ -198,7 +193,6 @@ export function Pricing() {
                 variant="outline"
                 size="lg"
                 onClick={() => {
-                  trackCTAClick("Schedule Free Consultation", "pricing_footer");
                   scrollToContact();
                 }}
                 aria-label="Schedule a free consultation"
