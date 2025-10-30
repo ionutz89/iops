@@ -2,58 +2,60 @@ export interface ROIInputs {
   teamSize: number;
   incidentsPerWeek: number;
   manualHoursPerWeek: number;
+  hourlyRate: number;
+  incidentCost: number;
+  setupCost: number;
+  automationEfficiency: number; // Percentage (40-80)
+  incidentReduction: number; // Percentage (50-90)
 }
 
 export interface ROIResults {
-  annualSavings: number;
-  setupCost: number;
+  manualWorkSavings: number;
+  incidentCostSavings: number;
+  totalAnnualSavings: number;
   roi: number;
   paybackMonths: number;
-  timeSavedHours: number;
-  incidentReduction: number;
 }
 
-// Industry benchmarks and constants
-const AVG_DEVOPS_HOURLY_RATE = 70; // $140K annual salary / 2000 hours
-const AVG_INCIDENT_COST = 5000; // Average cost per incident
-const TIME_SAVED_PERCENTAGE = 0.7; // 70% time savings claim
-const INCIDENT_REDUCTION_PERCENTAGE = 0.9; // 90% incident reduction
-const WEEKS_PER_YEAR = 52;
-const BASE_SETUP_COST = 30000;
-
 export function calculateROI(inputs: ROIInputs): ROIResults {
-  const { teamSize, incidentsPerWeek, manualHoursPerWeek } = inputs;
+  const {
+    teamSize,
+    incidentsPerWeek,
+    manualHoursPerWeek,
+    hourlyRate,
+    incidentCost,
+    setupCost,
+    automationEfficiency,
+    incidentReduction,
+  } = inputs;
 
-  // Calculate time savings
-  const annualManualHours = manualHoursPerWeek * WEEKS_PER_YEAR;
-  const hoursSaved = annualManualHours * TIME_SAVED_PERCENTAGE;
-  const timeSavingsDollars = hoursSaved * AVG_DEVOPS_HOURLY_RATE;
+  // Convert percentages to decimals
+  const timeSaved = automationEfficiency / 100;
+  const incidentReductionRate = incidentReduction / 100;
 
-  // Calculate incident reduction savings
-  const annualIncidents = incidentsPerWeek * WEEKS_PER_YEAR;
-  const incidentsReduced = annualIncidents * INCIDENT_REDUCTION_PERCENTAGE;
-  const incidentSavings = incidentsReduced * AVG_INCIDENT_COST;
+  // Calculate manual work savings
+  // Formula: teamSize * hoursWeek * 52 * hourlyRate * timeSaved
+  const manualSavings = teamSize * manualHoursPerWeek * 52 * hourlyRate * timeSaved;
+
+  // Calculate incident cost savings
+  // Formula: incidentsWeek * 52 * incidentCost * incidentReduction
+  const incidentSavings = incidentsPerWeek * 52 * incidentCost * incidentReductionRate;
 
   // Total annual savings
-  const annualSavings = timeSavingsDollars + incidentSavings;
+  const totalSavings = manualSavings + incidentSavings;
 
-  // Setup cost scales with team size (complexity)
-  const setupCost = BASE_SETUP_COST + (teamSize > 10 ? (teamSize - 10) * 2000 : 0);
+  // ROI calculation: ((totalSavings - setupCost) / setupCost) * 100
+  const roi = totalSavings > 0 ? ((totalSavings - setupCost) / setupCost) * 100 : 0;
 
-  // ROI calculation
-  const roi = ((annualSavings - setupCost) / setupCost) * 100;
-
-  // Payback period in months
-  const monthlySavings = annualSavings / 12;
-  const paybackMonths = setupCost / monthlySavings;
+  // Payback period in months: setupCost / (totalSavings / 12)
+  const payback = totalSavings > 0 ? setupCost / (totalSavings / 12) : Infinity;
 
   return {
-    annualSavings: Math.round(annualSavings),
-    setupCost: Math.round(setupCost),
-    roi: Math.round(roi),
-    paybackMonths: Math.round(paybackMonths * 10) / 10,
-    timeSavedHours: Math.round(hoursSaved),
-    incidentReduction: Math.round(incidentsReduced),
+    manualWorkSavings: Math.round(manualSavings / 1000) * 1000, // Round to nearest $1,000
+    incidentCostSavings: Math.round(incidentSavings / 1000) * 1000, // Round to nearest $1,000
+    totalAnnualSavings: Math.round(totalSavings / 1000) * 1000, // Round to nearest $1,000
+    roi: Math.min(Math.round(roi * 10) / 10, 999), // Round to one decimal, cap at 999%
+    paybackMonths: payback === Infinity ? Infinity : Math.round(payback * 10) / 10, // Round to one decimal
   };
 }
 

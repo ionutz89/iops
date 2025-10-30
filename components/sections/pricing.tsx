@@ -1,7 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, Star } from "lucide-react";
@@ -10,8 +16,8 @@ import { trackCTAClick } from "@/lib/analytics";
 const pricingTiers = [
   {
     name: "Starter",
-    price: "$15,000",
-    description: "Perfect for teams ready to automate their first critical workflow",
+    price: "From $XX,XXX+",
+    description: "Automate first critical workflow",
     popular: false,
     features: [
       "Single workflow automation",
@@ -21,12 +27,12 @@ const pricingTiers = [
       "Documentation & training",
       "1 month support",
     ],
-    cta: "Get Started",
+    cta: "Get Custom Quote",
   },
   {
     name: "Scale",
-    price: "$50,000",
-    description: "Complete AI agent deployment for growing operations",
+    price: "From $XX,XXX+",
+    description: "Full AI DevOps deployment",
     popular: true,
     features: [
       "Full multi-agent system",
@@ -39,12 +45,12 @@ const pricingTiers = [
       "3 months premium support",
       "Quarterly optimization reviews",
     ],
-    cta: "Most Popular",
+    cta: "Get Custom Quote",
   },
   {
     name: "Enterprise",
-    price: "Custom",
-    description: "Complete operational transformation at scale",
+    price: "Custom quote after assessment",
+    description: "Custom solutions for large teams",
     popular: false,
     features: [
       "Everything in Scale, plus:",
@@ -70,7 +76,10 @@ export function Pricing() {
   };
 
   return (
-    <section id="pricing" className="py-24 md:py-32 bg-muted/50 scroll-mt-24 px-6 md:px-12">
+    <section
+      id="pricing"
+      className="py-24 md:py-32 bg-muted/50 scroll-mt-24 px-6 md:px-12"
+    >
       <div className="container px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -80,10 +89,11 @@ export function Pricing() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Transparent Pricing
+            Pricing
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Fixed-price engagements with clear deliverables and guaranteed results
+            Fixed-price engagements with clear deliverables and guaranteed
+            results
           </p>
         </motion.div>
 
@@ -101,7 +111,7 @@ export function Pricing() {
               <Card
                 className={`h-full flex flex-col relative transition-shadow duration-300 ${
                   tier.popular
-                    ? "border-primary shadow-xl scale-105"
+                    ? "border-[#007AFF] shadow-xl scale-105"
                     : "hover:shadow-lg"
                 }`}
               >
@@ -117,9 +127,6 @@ export function Pricing() {
                   <CardTitle className="text-2xl">{tier.name}</CardTitle>
                   <div className="mt-4">
                     <span className="text-4xl font-bold">{tier.price}</span>
-                    {tier.price !== "Custom" && (
-                      <span className="text-muted-foreground ml-2">one-time</span>
-                    )}
                   </div>
                   <CardDescription className="mt-4">
                     {tier.description}
@@ -137,13 +144,16 @@ export function Pricing() {
                   <Button
                     className={`w-full ${
                       tier.popular
-                        ? "rounded-xl bg-blue-600 text-white px-6 py-3 hover:bg-blue-700 transition"
+                        ? "rounded-xl bg-[#007AFF] text-white px-6 py-3 hover:bg-[#0056CC] transition"
                         : ""
                     }`}
                     variant={tier.popular ? "default" : "outline"}
                     size="lg"
                     onClick={() => {
-                      trackCTAClick(tier.cta, `pricing_${tier.name.toLowerCase()}`);
+                      trackCTAClick(
+                        tier.cta,
+                        `pricing_${tier.name.toLowerCase()}`
+                      );
                       scrollToContact();
                     }}
                     aria-label={`Select ${tier.name} pricing plan`}
@@ -156,17 +166,16 @@ export function Pricing() {
           ))}
         </div>
 
-        {/* Trust Badges */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex justify-center gap-6 mt-12 opacity-80"
+          className="mt-12 text-center"
         >
-          <img src="/badges/iso27001.svg" alt="ISO 27001 Certified" className="h-10" />
-          <img src="/badges/soc2.svg" alt="SOC 2 Compliant" className="h-10" />
-          <img src="/badges/gdpr.svg" alt="GDPR Ready" className="h-10" />
+          <p className="text-lg font-semibold text-[#007AFF]">
+            ROI achieved in under 4 months
+          </p>
         </motion.div>
 
         <motion.div
@@ -182,19 +191,19 @@ export function Pricing() {
                 Not sure which plan is right for you?
               </h3>
               <p className="text-muted-foreground mb-6">
-                Book a free 30-minute consultation to discuss your specific needs
-                and get a custom recommendation.
+                Book a free assessment to discuss your specific needs and get a
+                custom recommendation.
               </p>
               <Button
                 variant="outline"
                 size="lg"
                 onClick={() => {
-                  trackCTAClick('Schedule Free Consultation', 'pricing_footer');
+                  trackCTAClick("Schedule Free Consultation", "pricing_footer");
                   scrollToContact();
                 }}
                 aria-label="Schedule a free consultation"
               >
-                Schedule Free Consultation
+                Book Free Assessment
               </Button>
             </CardContent>
           </Card>

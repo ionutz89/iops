@@ -1,56 +1,52 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Layers, Network, Shield, CheckCircle2 } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Layers, Brain, Shield, CheckCircle2, ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { trackCTAClick } from "@/lib/analytics";
 
 const services = [
   {
-    icon: Brain,
-    title: "AI Workflow Architecture",
-    description: "Custom n8n and Dify pipelines tailored to your operations",
+    icon: Layers,
+    title: "DevOps Automation",
+    description: "Cut deployment time from hours to minutes",
     details: [
-      "Multi-agent orchestration with Claude MCP",
-      "Memory-optimized AI systems",
-      "Event-driven automation pipelines",
-      "Intelligent decision workflows",
+      "Automated CI/CD pipelines",
+      "Infrastructure as Code",
+      "Self-healing deployments",
+      "Zero-downtime updates",
     ],
     gradient: "from-blue-500 to-cyan-500",
   },
   {
-    icon: Layers,
-    title: "Intelligent DevOps",
-    description: "Next-generation infrastructure automation and management",
+    icon: Brain,
+    title: "AI Agents for Operations",
+    description: "Prevent incidents before they happen",
     details: [
-      "Claude MCP integration for autonomous ops",
-      "Kubernetes automation & self-healing",
-      "ArgoCD GitOps workflows",
-      "Infrastructure as Code with AI insights",
+      "Predictive monitoring",
+      "Automated incident response",
+      "Intelligent scaling decisions",
+      "Proactive health checks",
     ],
     gradient: "from-purple-500 to-pink-500",
   },
   {
-    icon: Network,
-    title: "Multi-Agent Systems",
-    description: "Deploy autonomous agents that work together seamlessly",
-    details: [
-      "Autonomous infrastructure management",
-      "Self-healing deployment systems",
-      "Predictive scaling with ML",
-      "Coordinated incident response",
-    ],
-    gradient: "from-orange-500 to-red-500",
-  },
-  {
     icon: Shield,
-    title: "SRE Consultancy",
-    description: "Transform from reactive firefighting to proactive operations",
+    title: "SRE Consulting",
+    description: "Gain observability and predictive insights",
     details: [
-      "AI-powered observability & insights",
-      "Incident prevention systems",
-      "Automated remediation workflows",
-      "Reliability engineering best practices",
+      "Comprehensive monitoring setup",
+      "Performance optimization",
+      "Reliability engineering",
+      "SLI/SLO definitions",
     ],
     gradient: "from-green-500 to-emerald-500",
   },
@@ -59,8 +55,18 @@ const services = [
 export function Services() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+  const scrollToContact = () => {
+    const element = document.getElementById("contact");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <section id="services" className="py-24 md:py-32 relative scroll-mt-24 px-6 md:px-12">
+    <section
+      id="services"
+      className="py-24 md:py-32 relative scroll-mt-24 px-6 md:px-12"
+    >
       <div className="container px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -70,14 +76,14 @@ export function Services() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            AI-Powered DevOps Services
+            Services
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            End-to-end automation solutions that scale with your infrastructure
+            DevOps Automation, AI Agents, SRE Consulting
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           {services.map((service, index) => (
             <motion.div
               key={index}
@@ -89,7 +95,7 @@ export function Services() {
               onMouseLeave={() => setHoveredIndex(null)}
             >
               <Card
-                className={`h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${
+                className={`h-full flex flex-col transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${
                   hoveredIndex === index ? "glow-effect" : ""
                 }`}
               >
@@ -110,8 +116,8 @@ export function Services() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
+                <CardContent className="flex-1 flex flex-col">
+                  <ul className="space-y-2 mb-6 flex-1">
                     {service.details.map((detail, detailIndex) => (
                       <motion.li
                         key={detailIndex}
@@ -123,11 +129,25 @@ export function Services() {
                         transition={{ delay: detailIndex * 0.05 }}
                         className="flex items-start gap-2 text-sm"
                       >
-                        <CheckCircle2 className="text-primary mt-0.5 h-4 w-4 shrink-0" />
+                        <CheckCircle2 className="text-[#007AFF] mt-0.5 h-4 w-4 shrink-0" />
                         <span>{detail}</span>
                       </motion.li>
                     ))}
                   </ul>
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => {
+                      trackCTAClick(
+                        `Book Free Assessment - ${service.title}`,
+                        "services"
+                      );
+                      scrollToContact();
+                    }}
+                  >
+                    Book Free Assessment
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
                 </CardContent>
               </Card>
             </motion.div>

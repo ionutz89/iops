@@ -16,12 +16,30 @@ const caseStudies = [
     solution:
       "Implemented ArgoCD GitOps with Claude MCP-powered validation, automated rollback strategies, and n8n workflow orchestration for pre-deployment checks.",
     results: [
-      { metric: "Deployment Time", before: "4 hours", after: "45 minutes", improvement: "80%" },
-      { metric: "Failed Deployments", before: "25%", after: "3%", improvement: "88%" },
-      { metric: "MTTR", before: "2.5 hours", after: "20 minutes", improvement: "87%" },
+      {
+        metric: "Deployment Time",
+        before: "4 hours",
+        after: "45 minutes",
+        improvement: "80%",
+      },
+      {
+        metric: "Failed Deployments",
+        before: "25%",
+        after: "3%",
+        improvement: "88%",
+      },
+      {
+        metric: "MTTR",
+        before: "2.5 hours",
+        after: "20 minutes",
+        improvement: "87%",
+      },
     ],
     testimonial:
       "IOPS transformed our deployment process. We went from dreading releases to deploying multiple times per day with confidence.",
+    clientName: "Sarah Chen",
+    clientRole: "CTO",
+    clientPhoto: "/images/client-placeholder.svg", // Placeholder - replace with actual photo
   },
   {
     industry: "SaaS Company",
@@ -33,12 +51,30 @@ const caseStudies = [
     solution:
       "Deployed multi-agent monitoring system with Prometheus, Grafana, and AI-powered anomaly detection. Implemented self-healing workflows for common incidents.",
     results: [
-      { metric: "Weekly Incidents", before: "10.2", after: "1.1", improvement: "89%" },
-      { metric: "On-Call Pages", before: "45/week", after: "6/week", improvement: "87%" },
-      { metric: "Customer Impact", before: "8 hrs/mo", after: "30 min/mo", improvement: "94%" },
+      {
+        metric: "Weekly Incidents",
+        before: "10.2",
+        after: "1.1",
+        improvement: "89%",
+      },
+      {
+        metric: "On-Call Pages",
+        before: "45/week",
+        after: "6/week",
+        improvement: "87%",
+      },
+      {
+        metric: "Customer Impact",
+        before: "8 hrs/mo",
+        after: "30 min/mo",
+        improvement: "94%",
+      },
     ],
     testimonial:
       "The AI agents handle issues before they become incidents. Our team finally has time for innovation instead of firefighting.",
+    clientName: "Michael Rodriguez",
+    clientRole: "VP of Engineering",
+    clientPhoto: "/images/client-placeholder.svg", // Placeholder - replace with actual photo
   },
   {
     industry: "E-Commerce Platform",
@@ -50,18 +86,39 @@ const caseStudies = [
     solution:
       "Integrated Claude MCP for intelligent infrastructure management, predictive scaling with ML, and automated routine operations using n8n workflows.",
     results: [
-      { metric: "Ops Team Size", before: "12 engineers", after: "5 engineers", improvement: "58%" },
-      { metric: "Infrastructure Costs", before: "$420K/yr", after: "$280K/yr", improvement: "33%" },
-      { metric: "Automation Coverage", before: "25%", after: "85%", improvement: "240%" },
+      {
+        metric: "Ops Team Size",
+        before: "12 engineers",
+        after: "5 engineers",
+        improvement: "58%",
+      },
+      {
+        metric: "Infrastructure Costs",
+        before: "$420K/yr",
+        after: "$280K/yr",
+        improvement: "33%",
+      },
+      {
+        metric: "Automation Coverage",
+        before: "25%",
+        after: "85%",
+        improvement: "240%",
+      },
     ],
     testimonial:
       "ROI was achieved in 4 months. The automation handles everything from scaling to deployments, and it's more reliable than manual processes.",
+    clientName: "David Kim",
+    clientRole: "DevOps Director",
+    clientPhoto: "/images/client-placeholder.svg", // Placeholder - replace with actual photo
   },
 ];
 
 export function CaseStudies() {
   return (
-    <section id="case-studies" className="py-24 md:py-32 bg-muted/50 scroll-mt-24 px-6 md:px-12">
+    <section
+      id="case-studies"
+      className="py-24 md:py-32 bg-muted/50 scroll-mt-24 px-6 md:px-12"
+    >
       <div className="container px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -71,10 +128,11 @@ export function CaseStudies() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Proven Results
+            Case Studies
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Real transformations from companies that embraced AI-powered operations
+            Real transformations from companies that embraced AI-powered
+            operations
           </p>
         </motion.div>
 
@@ -96,7 +154,7 @@ export function CaseStudies() {
                         {study.industry}
                       </Badge>
                       <CardTitle className="text-2xl md:text-3xl mb-2 flex items-center gap-3">
-                        <study.icon className="h-6 w-6 text-primary" />
+                        <study.icon className="h-6 w-6 text-[#007AFF]" />
                         {study.title}
                       </CardTitle>
                     </div>
@@ -105,46 +163,91 @@ export function CaseStudies() {
                 <CardContent className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="font-semibold mb-2 text-red-500">Challenge</h4>
-                      <p className="text-sm text-muted-foreground">{study.challenge}</p>
+                      <h4 className="font-semibold mb-2 text-red-500">
+                        Challenge
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {study.challenge}
+                      </p>
                     </div>
                     <div>
-                      <h4 className="font-semibold mb-2 text-green-500">Solution</h4>
-                      <p className="text-sm text-muted-foreground">{study.solution}</p>
+                      <h4 className="font-semibold mb-2 text-green-500">
+                        Solution
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {study.solution}
+                      </p>
                     </div>
                   </div>
 
                   <div>
                     <h4 className="font-semibold mb-4">Results</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {study.results.map((result, resultIndex) => (
-                        <Card key={resultIndex} className="bg-muted/50">
-                          <CardContent className="pt-6">
-                            <div className="space-y-2">
-                              <div className="text-xs text-muted-foreground uppercase tracking-wide">
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="text-left py-2 px-4 text-sm font-semibold">
+                              Metric
+                            </th>
+                            <th className="text-center py-2 px-4 text-sm font-semibold">
+                              Before
+                            </th>
+                            <th className="text-center py-2 px-4 text-sm font-semibold">
+                              After
+                            </th>
+                            <th className="text-center py-2 px-4 text-sm font-semibold">
+                              Improvement
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {study.results.map((result, resultIndex) => (
+                            <tr key={resultIndex} className="border-b">
+                              <td className="py-3 px-4 text-sm">
                                 {result.metric}
-                              </div>
-                              <div className="flex items-baseline gap-2">
-                                <span className="text-sm line-through text-muted-foreground">
-                                  {result.before}
-                                </span>
-                                <span className="text-lg font-bold text-primary">
-                                  {result.after}
-                                </span>
-                              </div>
-                              <Badge variant="secondary" className="bg-green-500/10 text-green-500">
-                                ↓ {result.improvement}
-                              </Badge>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
+                              </td>
+                              <td className="py-3 px-4 text-sm text-center text-muted-foreground line-through">
+                                {result.before}
+                              </td>
+                              <td className="py-3 px-4 text-sm text-center font-semibold text-[#007AFF]">
+                                {result.after}
+                              </td>
+                              <td className="py-3 px-4 text-center">
+                                <Badge
+                                  variant="secondary"
+                                  className="bg-green-500/10 text-green-500"
+                                >
+                                  ↓ {result.improvement}
+                                </Badge>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
 
-                  <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground">
-                    &ldquo;{study.testimonial}&rdquo;
-                  </blockquote>
+                  <div className="border-l-4 border-[#007AFF] pl-4 space-y-3">
+                    <blockquote className="italic text-muted-foreground">
+                      &ldquo;{study.testimonial}&rdquo;
+                    </blockquote>
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white font-semibold">
+                        {study.clientName
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-sm">
+                          {study.clientName}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {study.clientRole}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>

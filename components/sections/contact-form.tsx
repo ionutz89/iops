@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useForm } from "@formspree/react";
 import { CheckCircle2, Send } from "lucide-react";
 import { useState } from "react";
@@ -19,8 +18,7 @@ export function ContactForm() {
     name: "",
     email: "",
     company: "",
-    challenge: "",
-    budget: "",
+    message: "",
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -81,7 +79,7 @@ export function ContactForm() {
             Start Your Transformation
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Book a 15-Minute AI Ops Demo to see how AI automation can transform your operations
+            Book a 15-Minute Demo to see how AI automation can transform your operations
           </p>
         </motion.div>
 
@@ -95,36 +93,35 @@ export function ContactForm() {
           <Card>
             <CardHeader>
               <CardTitle>Get Your Free Assessment</CardTitle>
-                <CardDescription>
-                  Tell us about your challenges and we&apos;ll show you how AI can help
-                </CardDescription>
+              <CardDescription>
+                Tell us about your challenges and we&apos;ll show you how AI can help
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Name *</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      placeholder="John Doe"
-                      required
-                      value={formData.name}
-                      onChange={(e) => handleInputChange("name", e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email *</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="john@company.com"
-                      required
-                      value={formData.email}
-                      onChange={(e) => handleInputChange("email", e.target.value)}
-                    />
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="name">Name *</Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    placeholder="John Doe"
+                    required
+                    value={formData.name}
+                    onChange={(e) => handleInputChange("name", e.target.value)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email *</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="john@company.com"
+                    required
+                    value={formData.email}
+                    onChange={(e) => handleInputChange("email", e.target.value)}
+                  />
                 </div>
 
                 <div className="space-y-2">
@@ -140,78 +137,35 @@ export function ContactForm() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="challenge">Current Challenge *</Label>
-                  <Select
-                    name="challenge"
-                    required
-                    value={formData.challenge}
-                    onValueChange={(value) => handleInputChange("challenge", value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select your main challenge" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="too-many-incidents">
-                        Too many production incidents
-                      </SelectItem>
-                      <SelectItem value="slow-deployments">
-                        Slow deployment process
-                      </SelectItem>
-                      <SelectItem value="manual-tasks">
-                        Too many manual tasks
-                      </SelectItem>
-                      <SelectItem value="scaling-issues">
-                        Scaling and infrastructure issues
-                      </SelectItem>
-                      <SelectItem value="team-burnout">
-                        Team burnout from operations
-                      </SelectItem>
-                      <SelectItem value="other">
-                        Other / Multiple challenges
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <input type="hidden" name="challenge" value={formData.challenge} />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="budget">Budget Range</Label>
-                  <Select
-                    name="budget"
-                    value={formData.budget}
-                    onValueChange={(value) => handleInputChange("budget", value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select budget range (optional)" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="under-25k">Under $25K</SelectItem>
-                      <SelectItem value="25k-50k">$25K - $50K</SelectItem>
-                      <SelectItem value="50k-100k">$50K - $100K</SelectItem>
-                      <SelectItem value="100k-plus">$100K+</SelectItem>
-                      <SelectItem value="not-sure">Not sure yet</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <input type="hidden" name="budget" value={formData.budget} />
+                  <Label htmlFor="message">Message</Label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={4}
+                    className="w-full px-3 py-2 border border-input bg-background rounded-md text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder="Tell us about your DevOps challenges..."
+                    value={formData.message}
+                    onChange={(e) => handleInputChange("message", e.target.value)}
+                  />
                 </div>
 
                 <Button
                   type="submit"
                   size="lg"
-                  className="rounded-xl bg-blue-600 text-white px-6 py-3 hover:bg-blue-700 transition w-full"
+                  className="rounded-xl bg-[#007AFF] text-white px-6 py-3 hover:bg-[#0056CC] transition w-full"
                   disabled={state.submitting}
                   onClick={() => {
-                    trackCTAClick('Book a 15-Minute AI Ops Demo', 'contact_form');
+                    trackCTAClick('Book 15-Minute Demo', 'contact_form');
                     trackFormSubmit('contact', true);
                   }}
-                  aria-label="Book a 15-minute AI Ops demo"
+                  aria-label="Book a 15-minute demo"
                 >
                   {state.submitting ? (
                     "Sending..."
                   ) : (
                     <>
                       <Send className="mr-2 h-5 w-5" />
-                      Book a 15-Minute AI Ops Demo
+                      Book 15-Minute Demo
                     </>
                   )}
                 </Button>
@@ -224,6 +178,18 @@ export function ContactForm() {
               </form>
             </CardContent>
           </Card>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-8 text-center"
+        >
+          <p className="text-sm text-muted-foreground">
+            Privacy-first automation solutions for modern DevOps teams.
+          </p>
         </motion.div>
       </div>
     </section>

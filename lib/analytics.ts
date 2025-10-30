@@ -65,3 +65,27 @@ export function trackSectionView(sectionName: string): void {
   });
 }
 
+/**
+ * Track page views for analytics
+ * @param url - The page URL to track
+ */
+export function trackPageView(url: string): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const windowWithGtag = window as Window & { gtag?: (...args: unknown[]) => void };
+
+  // Google Analytics 4 page view tracking
+  if (windowWithGtag.gtag) {
+    windowWithGtag.gtag('config', process.env.NEXT_PUBLIC_GA_ID || '', {
+      page_path: url,
+    });
+  }
+
+  // Log in development
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[Analytics] Page View:', url);
+  }
+}
+

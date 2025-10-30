@@ -18,11 +18,11 @@
 
   <!-- Content -->
   <text x="600" y="240" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle">
-    IOPS Pro
+    IOPS
   </text>
 
   <text x="600" y="310" font-family="Arial, sans-serif" font-size="36" fill="rgba(255,255,255,0.9)" text-anchor="middle">
-    AI-Powered DevOps Automation
+    Intelligent Operations with AI
   </text>
 
   <text x="600" y="380" font-family="Arial, sans-serif" font-size="28" fill="rgba(255,255,255,0.8)" text-anchor="middle">
