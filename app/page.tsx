@@ -364,7 +364,6 @@ export default function Home() {
                   <EmailReveal
                     email="contact@iops.pro"
                     className="text-foreground hover:text-primary transition-colors"
-                    variant="link"
                   />
                 </li>
                 <li>

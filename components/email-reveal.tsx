@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 interface EmailRevealProps {
   email: string;
   className?: string;
-  variant?: "link" | "text";
 }
 
 declare global {
