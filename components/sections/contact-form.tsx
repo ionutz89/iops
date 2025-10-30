@@ -10,6 +10,15 @@ import { CheckCircle2, Send } from "lucide-react";
 import { useState } from "react";
 import { trackCTAClick, trackFormSubmit } from "@/lib/analytics";
 
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (callback: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
+
 export function ContactForm() {
   const [state, handleSubmit] = useForm(
     process.env.NEXT_PUBLIC_FORMSPREE_ID || "placeholder"
@@ -20,9 +29,94 @@ export function ContactForm() {
     company: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const executeRecaptcha = async (): Promise<string | null> => {
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+    if (!siteKey) {
+      console.error("reCAPTCHA site key not configured");
+      return null;
+    }
+
+    try {
+      // Wait for grecaptcha to be available
+      await new Promise<void>((resolve) => {
+        if (window.grecaptcha) {
+          window.grecaptcha.ready(() => resolve());
+        } else {
+          const checkInterval = setInterval(() => {
+            if (window.grecaptcha) {
+              window.grecaptcha.ready(() => {
+                clearInterval(checkInterval);
+                resolve();
+              });
+            }
+          }, 100);
+
+          setTimeout(() => {
+            clearInterval(checkInterval);
+            resolve();
+          }, 5000);
+        }
+      });
+
+      // Execute reCAPTCHA v3
+      const token = await window.grecaptcha.execute(siteKey, {
+        action: "submit_contact_form",
+      });
+
+      return token;
+    } catch (error) {
+      console.error("Error executing reCAPTCHA:", error);
+      return null;
+    }
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setIsSubmitting(true);
+
+    try {
+      // Execute reCAPTCHA v3
+      const token = await executeRecaptcha();
+
+      if (!token) {
+        alert("Security verification failed. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Verify token server-side
+      const verifyResponse = await fetch("/api/verify-recaptcha", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      const verifyData = await verifyResponse.json();
+
+      if (!verifyData.success) {
+        alert(
+          verifyData.error || "Security verification failed. Please try again."
+        );
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Submit the form
+      await handleSubmit(e);
+    } catch (error) {
+      console.error("Form submission error:", error);
+      alert("An error occurred. Please try again.");
+      setIsSubmitting(false);
+    }
   };
 
   if (state.succeeded) {
@@ -98,7 +192,7 @@ export function ContactForm() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleFormSubmit} className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="name">Name *</Label>
                   <Input
@@ -152,15 +246,15 @@ export function ContactForm() {
                 <Button
                   type="submit"
                   size="lg"
-                  className="rounded-xl bg-[#007AFF] text-white px-6 py-3 hover:bg-[#0056CC] transition w-full"
-                  disabled={state.submitting}
+                  className="rounded-xl bg-[#007AFF] text-white px-6 py-3 hover:bg-[#0056CC] transition w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={state.submitting || isSubmitting}
                   onClick={() => {
                     trackCTAClick('Book 15-Minute Demo', 'contact_form');
                     trackFormSubmit('contact', true);
                   }}
                   aria-label="Book a 15-minute demo"
                 >
-                  {state.submitting ? (
+                  {state.submitting || isSubmitting ? (
                     "Sending..."
                   ) : (
                     <>

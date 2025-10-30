@@ -12,6 +12,15 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Send } from "lucide-react";
 
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (callback: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -19,11 +28,91 @@ export default function Contact() {
     company: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const executeRecaptcha = async (): Promise<string | null> => {
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+    if (!siteKey) {
+      console.error("reCAPTCHA site key not configured");
+      return null;
+    }
+
+    try {
+      // Wait for grecaptcha to be available
+      await new Promise<void>((resolve) => {
+        if (window.grecaptcha) {
+          window.grecaptcha.ready(() => resolve());
+        } else {
+          const checkInterval = setInterval(() => {
+            if (window.grecaptcha) {
+              window.grecaptcha.ready(() => {
+                clearInterval(checkInterval);
+                resolve();
+              });
+            }
+          }, 100);
+
+          setTimeout(() => {
+            clearInterval(checkInterval);
+            resolve();
+          }, 5000);
+        }
+      });
+
+      // Execute reCAPTCHA v3
+      const token = await window.grecaptcha.execute(siteKey, {
+        action: "submit_contact_form",
+      });
+
+      return token;
+    } catch (error) {
+      console.error("Error executing reCAPTCHA:", error);
+      return null;
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted:", formData);
+
+    setIsSubmitting(true);
+
+    try {
+      // Execute reCAPTCHA v3
+      const token = await executeRecaptcha();
+
+      if (!token) {
+        alert("Security verification failed. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Verify token server-side
+      const verifyResponse = await fetch("/api/verify-recaptcha", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      const verifyData = await verifyResponse.json();
+
+      if (!verifyData.success) {
+        alert(
+          verifyData.error || "Security verification failed. Please try again."
+        );
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Handle form submission here
+      console.log("Form submitted:", formData);
+    } catch (error) {
+      console.error("Form submission error:", error);
+      alert("An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -226,10 +315,15 @@ export default function Contact() {
                     <Button
                       type="submit"
                       size="lg"
-                      className="w-full rounded-2xl bg-[#007AFF] text-white hover:bg-[#0056CC] hover:shadow-lg hover:shadow-[#007AFF]/30 transition-all text-lg glow-effect"
+                      className="w-full rounded-2xl bg-[#007AFF] text-white hover:bg-[#0056CC] hover:shadow-lg hover:shadow-[#007AFF]/30 transition-all text-lg glow-effect disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={isSubmitting}
                     >
-                      Book 15-Minute Demo
-                      <Send className="ml-2 h-5 w-5" />
+                      {isSubmitting ? "Sending..." : (
+                        <>
+                          Book 15-Minute Demo
+                          <Send className="ml-2 h-5 w-5" />
+                        </>
+                      )}
                     </Button>
                   </form>
                 </CardContent>

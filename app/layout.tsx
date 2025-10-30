@@ -156,6 +156,13 @@ export default function RootLayout({
             __html: JSON.stringify(websiteSchema),
           }}
         />
+        {/* Google reCAPTCHA v3 */}
+        {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
+          <Script
+            src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+            strategy="lazyOnload"
+          />
+        )}
         {/* Google Analytics - Replace G-XXXXXXXXXX with your actual GA4 ID */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>

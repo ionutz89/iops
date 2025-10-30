@@ -7,6 +7,7 @@ import { Navigation } from "@/components/navigation";
 import { AnimatedWorkflow } from "@/components/animated-workflow";
 import { TechEcosystemSection } from "@/components/sections/tech-ecosystem-section";
 import { ROICalculator } from "@/components/sections/roi-calculator";
+import { EmailReveal } from "@/components/email-reveal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -360,12 +361,11 @@ export default function Home() {
               <h4 className="font-semibold mb-4 text-foreground">Connect</h4>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link
-                    href="mailto:contact@iops.pro"
+                  <EmailReveal
+                    email="contact@iops.pro"
                     className="text-foreground hover:text-primary transition-colors"
-                  >
-                    contact@iops.pro
-                  </Link>
+                    variant="link"
+                  />
                 </li>
                 <li>
                   <Link
