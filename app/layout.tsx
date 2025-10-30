@@ -18,8 +18,11 @@ const organizationSchema = {
   name: "IOPS",
   alternateName: "Intelligent Operations",
   url: "https://iops.pro",
-  logo: "https://iops.pro/og-image.svg",
-  sameAs: ["https://linkedin.com/company/iopspro"],
+  logo: "https://iops.pro/og-image.png",
+  sameAs: [
+    "https://linkedin.com/company/iopspro",
+    // Add Twitter handle when available: "https://twitter.com/iopspro"
+  ],
   description:
     "IOPS builds intelligent AI systems that automate, monitor and scale business operations for modern companies.",
   contactPoint: {
@@ -88,12 +91,21 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://iops.pro",
     siteName: "IOPS",
+    locale: "en_US",
     images: [
       {
-        url: "/og-image.svg",
+        url: "https://iops.pro/og-image.png",
         width: 1200,
         height: 630,
         alt: "IOPS | Intelligent Operations",
+        type: "image/png",
+      },
+      {
+        url: "https://iops.pro/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "IOPS | Intelligent Operations",
+        type: "image/jpeg",
       },
     ],
   },
@@ -102,7 +114,9 @@ export const metadata: Metadata = {
     title: "IOPS | Intelligent Operations with AI",
     description:
       "We build intelligent AI systems that automate, monitor, and scale business operations.",
-    images: ["/og-image.svg"],
+    images: ["https://iops.pro/og-image.png"],
+    creator: "@iopspro", // Update with your actual Twitter handle
+    site: "@iopspro", // Update with your actual Twitter handle
   },
   verification: {
     // Add verification codes when available

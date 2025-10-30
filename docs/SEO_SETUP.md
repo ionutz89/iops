@@ -57,13 +57,21 @@ The favicon is already configured at `/app/favicon.ico` and referenced in:
 - `metadata.icons` in layout.tsx
 - `manifest.json` for PWA support
 
-### Icon Files Needed (Optional but Recommended)
+### PWA Icons
 
-For complete PWA support, create these icon files in `/public/icons/`:
-- `icon-192x192.png` (192x192 pixels)
-- `icon-512x512.png` (512x512 pixels)
+PWA icons have been generated and are available in `/public/icons/`:
+- `icon-192x192.png` (192x192 pixels) ✓ Created
+- `icon-512x512.png` (512x512 pixels) ✓ Created
 
-If these don't exist, the manifest will still work with the favicon.
+**To regenerate icons**, run:
+```bash
+npm run generate:icons
+```
+
+The script automatically:
+- Uses your favicon.ico or og-image.svg as a source (if available)
+- Falls back to a branded "IOPS" gradient icon if sources aren't compatible
+- Generates both required sizes for PWA support
 
 ## Verification Checklist
 
@@ -141,8 +149,8 @@ trackFormSubmit('contact_form', true);
 
 ## Next Steps
 
-1. Generate PWA icons (192x192 and 512x512) if desired
-2. Create an OG image (`/public/og-image.jpg` or `.png`) at 1200x630 pixels
+1. ✓ PWA icons generated and ready
+2. Create an OG image (`/public/og-image.jpg` or `.png`) at 1200x630 pixels (currently using `.svg`)
 3. Add verification codes to `metadata.verification` when available
 4. Monitor analytics after deployment
 5. Submit for indexing in search engines
