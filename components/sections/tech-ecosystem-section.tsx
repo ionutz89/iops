@@ -7,26 +7,26 @@ const logos = [
   {
     name: "AWS",
     src: "/logos/aws.svg",
-    tooltip: "Infrastructure backbone",
-    detailedTooltip: "The reliable foundation for global infrastructure",
+    tooltip: "Reliable cloud foundation for enterprise-grade performance.",
+    detailedTooltip: "Reliable cloud foundation for enterprise-grade performance.",
   },
   {
     name: "Google Cloud",
     src: "/logos/google.svg",
-    tooltip: "Reliable cloud and AI services",
-    detailedTooltip: "Cloud and AI platform powering scalable automation",
+    tooltip: "Scalable infrastructure and AI tools.",
+    detailedTooltip: "Scalable infrastructure and AI tools.",
   },
   {
     name: "n8n",
     src: "/logos/n8n.svg",
-    tooltip: "Workflow automation engine",
-    detailedTooltip: "Flexible automation engine connecting your workflows",
+    tooltip: "Connects all your workflows and systems.",
+    detailedTooltip: "Connects all your workflows and systems.",
   },
   {
     name: "Claude MCP",
     src: "/logos/claude.svg",
-    tooltip: "AI orchestration and reasoning system",
-    detailedTooltip: "Connects AI models with tools and data for intelligent operations",
+    tooltip: "Brings intelligent decision-making to your automation.",
+    detailedTooltip: "Brings intelligent decision-making to your automation.",
   },
 ];
 
@@ -47,10 +47,13 @@ export function TechEcosystemSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{
+            duration: 0.5,
+            ease: [0.4, 0, 0.2, 1],
+          }}
           className="text-center text-3xl md:text-4xl font-bold text-foreground mb-4"
         >
-          Powered by Proven AI & Cloud Platforms
+          Trusted Platforms We Build On
         </motion.h2>
 
         {/* Subtitle */}
@@ -69,7 +72,11 @@ export function TechEcosystemSection() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{
+            duration: 0.5,
+            ease: [0.4, 0, 0.2, 1],
+            delay: 0.2,
+          }}
           className="grid grid-cols-2 sm:grid-cols-4 gap-8 md:gap-12 pb-8"
         >
           {logos.map((logo, index) => (
@@ -78,12 +85,16 @@ export function TechEcosystemSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+              transition={{
+                duration: 0.5,
+                ease: [0.4, 0, 0.2, 1],
+                delay: 0.3 + index * 0.1,
+              }}
               whileHover={{ scale: 1.05 }}
               className="flex flex-col items-center justify-center group relative tech-logo-group transition-transform duration-300"
             >
               {/* Logo Container */}
-              <div className="relative mb-2">
+              <div className="relative mb-3">
                 <Image
                   src={logo.src}
                   alt={logo.name}
@@ -94,13 +105,10 @@ export function TechEcosystemSection() {
                 />
               </div>
 
-              {/* Tooltip */}
-              <div className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
-                <div className="relative bg-gray-900 dark:bg-gray-800 text-white text-xs px-3 py-1.5 rounded-md whitespace-nowrap shadow-lg">
-                  {logo.detailedTooltip || logo.tooltip}
-                  <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-800 rotate-45"></div>
-                </div>
-              </div>
+              {/* Description */}
+              <p className="text-sm text-muted-foreground text-center max-w-[160px]">
+                {logo.detailedTooltip || logo.tooltip}
+              </p>
             </motion.div>
           ))}
         </motion.div>

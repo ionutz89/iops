@@ -140,7 +140,7 @@ export function ROICalculator() {
                 {/* Team Size */}
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <Label className="text-base font-medium">Team Size</Label>
+                    <Label className="text-base font-medium">Your Team Size</Label>
                     <span className="text-sm font-semibold text-foreground">{inputs.teamSize}</span>
                   </div>
                   <Slider
@@ -156,7 +156,7 @@ export function ROICalculator() {
                 {/* Incidents per Week */}
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <Label className="text-base font-medium">Incidents per Week</Label>
+                    <Label className="text-base font-medium">Problems per Week</Label>
                     <span className="text-sm font-semibold text-foreground">{inputs.incidentsPerWeek}</span>
                   </div>
                   <Slider
@@ -172,7 +172,7 @@ export function ROICalculator() {
                 {/* Manual Task Hours per Week */}
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <Label className="text-base font-medium">Manual Task Hours per Week (per team)</Label>
+                    <Label className="text-base font-medium">Hours Spent on Repetitive Tasks</Label>
                     <span className="text-sm font-semibold text-foreground">{inputs.manualHoursPerWeek}</span>
                   </div>
                   <Slider
@@ -187,7 +187,7 @@ export function ROICalculator() {
 
                 {/* Hourly Rate */}
                 <div className="space-y-3">
-                  <Label className="text-base font-medium">Hourly Rate ($)</Label>
+                  <Label className="text-base font-medium">Average Hourly Wage</Label>
                   <Input
                     type="number"
                     value={inputs.hourlyRate}
@@ -213,7 +213,7 @@ export function ROICalculator() {
 
                 {/* Average Incident Cost */}
                 <div className="space-y-3">
-                  <Label className="text-base font-medium">Average Incident Cost ($)</Label>
+                  <Label className="text-base font-medium">Average Cost per Problem</Label>
                   <Input
                     type="number"
                     value={inputs.incidentCost}
@@ -239,7 +239,7 @@ export function ROICalculator() {
 
                 {/* Setup Cost */}
                 <div className="space-y-3">
-                  <Label className="text-base font-medium">Setup Cost ($)</Label>
+                  <Label className="text-base font-medium">Initial Setup Investment</Label>
                   <Input
                     type="number"
                     value={inputs.setupCost}
@@ -297,6 +297,9 @@ export function ROICalculator() {
 
                 {/* Calculate ROI Button */}
                 <div className="pt-4">
+                  <p className="text-sm text-muted-foreground mb-4 text-center">
+                    Get a realistic estimate of your time and cost savings with AI automation.
+                  </p>
                   <Button
                     onClick={handleCalculate}
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-6 text-lg"
