@@ -321,6 +321,41 @@ export default function Home() {
         </div>
       </section>
 
+      {/* What Clients Say */}
+      <section className="py-16 bg-muted">
+        <div className="container px-4 md:px-6 max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <h3 className="text-2xl font-semibold mb-6 text-foreground">
+              What Clients Say
+            </h3>
+            <motion.blockquote
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-lg md:text-xl text-foreground italic max-w-3xl mx-auto mb-4"
+            >
+              "IOPS helped us cut 70% of manual reporting and achieve 24/7 uptime in under two weeks."
+            </motion.blockquote>
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="text-sm text-muted-foreground"
+            >
+              – SaaS Operations Director
+            </motion.p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Use Case Section */}
       <section className="py-16 bg-background">
         <div className="container px-4 md:px-6 max-w-6xl mx-auto">

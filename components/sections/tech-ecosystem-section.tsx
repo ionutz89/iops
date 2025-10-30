@@ -77,7 +77,7 @@ export function TechEcosystemSection() {
             ease: [0.4, 0, 0.2, 1],
             delay: 0.2,
           }}
-          className="grid grid-cols-2 sm:grid-cols-4 gap-8 md:gap-12 pb-8"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-8 lg:gap-12 pb-8"
         >
           {logos.map((logo, index) => (
             <motion.div
@@ -91,7 +91,11 @@ export function TechEcosystemSection() {
                 delay: 0.3 + index * 0.1,
               }}
               whileHover={{ scale: 1.05 }}
-              className="flex flex-col items-center justify-center group relative tech-logo-group transition-transform duration-300"
+              className={`flex flex-col items-center justify-center group relative tech-logo-group transition-transform duration-300 ${
+                index > 0 && index % 2 === 0 ? 'sm:border-l sm:border-slate-200 dark:sm:border-slate-700 sm:pl-6' : ''
+              } ${
+                index > 0 && index % 4 === 0 ? 'md:border-l md:border-slate-200 dark:md:border-slate-700 md:pl-6' : ''
+              }`}
             >
               {/* Logo Container */}
               <div className="relative mb-3">
@@ -105,8 +109,8 @@ export function TechEcosystemSection() {
                 />
               </div>
 
-              {/* Description */}
-              <p className="text-sm text-muted-foreground text-center max-w-[160px] opacity-0 translate-y-[-10px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+              {/* Description - Hidden until hover */}
+              <p className="text-sm text-muted-foreground text-center max-w-[160px] absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 translate-y-[-10px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 whitespace-nowrap pointer-events-none">
                 {logo.detailedTooltip || logo.tooltip}
               </p>
             </motion.div>

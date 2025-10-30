@@ -110,6 +110,9 @@ export function ROICalculator() {
           <h2 className="text-4xl font-bold mb-4 text-foreground">
             Calculate Your ROI
           </h2>
+          <p className="text-sm text-muted-foreground mb-4 max-w-2xl mx-auto">
+            Estimates based on typical mid-size business data.
+          </p>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             See how much time and money your business could save with automation.
           </p>
@@ -203,12 +206,13 @@ export function ROICalculator() {
                         updateInput("hourlyRate", clampedValue);
                       }
                     }}
+                    placeholder="$50"
                     className="rounded-lg border-slate-300 dark:border-slate-700 focus:ring-blue-500 focus:ring-2"
                     min={20}
                     max={150}
                     step={1}
                   />
-                  <p className="text-xs text-muted-foreground">Range: $20 - $150</p>
+                  <p className="text-xs text-muted-foreground">Typical range: $20 - $150</p>
                 </div>
 
                 {/* Average Problem Cost */}
@@ -229,12 +233,13 @@ export function ROICalculator() {
                         updateInput("incidentCost", clampedValue);
                       }
                     }}
+                    placeholder="$2000"
                     className="rounded-lg border-slate-300 dark:border-slate-700 focus:ring-blue-500 focus:ring-2"
                     min={500}
                     max={5000}
                     step={100}
                   />
-                  <p className="text-xs text-muted-foreground">Range: $500 - $5,000</p>
+                  <p className="text-xs text-muted-foreground">Typical range: $500 - $5,000</p>
                 </div>
 
                 {/* Setup Cost */}
@@ -255,12 +260,13 @@ export function ROICalculator() {
                         updateInput("setupCost", clampedValue);
                       }
                     }}
+                    placeholder="$5000"
                     className="rounded-lg border-slate-300 dark:border-slate-700 focus:ring-blue-500 focus:ring-2"
                     min={1000}
                     max={100000}
                     step={1000}
                   />
-                  <p className="text-xs text-muted-foreground">Range: $1,000 - $100,000</p>
+                  <p className="text-xs text-muted-foreground">Typical range: $1,000 - $100,000</p>
                 </div>
 
                 {/* Automation Efficiency */}
@@ -309,7 +315,7 @@ export function ROICalculator() {
                   </Button>
                   {!hasCalculated && (
                     <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 text-center">
-                      Enter your details and press Calculate ROI to view your results.
+                      Press Calculate to view your estimated savings.
                     </p>
                   )}
                 </div>
@@ -332,12 +338,12 @@ export function ROICalculator() {
                     ease: [0.4, 0, 0.2, 1],
                   },
                   opacity: {
-                    duration: 0.5,
+                    duration: 0.35,
                     delay: 0.3,
                     ease: [0.4, 0, 0.2, 1],
                   },
                   x: {
-                    duration: 0.5,
+                    duration: 0.35,
                     delay: 0.3,
                     ease: [0.4, 0, 0.2, 1],
                   },
