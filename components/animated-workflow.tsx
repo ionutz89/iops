@@ -14,10 +14,10 @@ interface Node {
 const nodes: Node[] = [
   { id: "website", label: "Website", x: 20, y: 30, connections: ["ai-agent"] },
   { id: "database", label: "Database", x: 20, y: 70, connections: ["ai-agent"] },
-  { id: "ai-agent", label: "AI Agent", x: 50, y: 50, connections: ["monitoring", "scaling"] },
-  { id: "monitoring", label: "Monitoring", x: 80, y: 30, connections: ["notification"] },
-  { id: "scaling", label: "Scaling", x: 80, y: 70, connections: ["notification"] },
-  { id: "notification", label: "Notification", x: 65, y: 15, connections: [] },
+  { id: "ai-agent", label: "AI Assistant for Operations", x: 50, y: 50, connections: ["monitoring", "scaling"] },
+  { id: "monitoring", label: "Automatic System Monitoring", x: 80, y: 30, connections: ["notification"] },
+  { id: "scaling", label: "Smart Resource Scaling", x: 80, y: 70, connections: ["notification"] },
+  { id: "notification", label: "Instant Team Alerts", x: 65, y: 15, connections: [] },
 ];
 
 const getNodePosition = (node: Node, containerWidth: number, containerHeight: number) => {

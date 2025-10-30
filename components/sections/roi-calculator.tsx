@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
@@ -33,12 +33,18 @@ export function ROICalculator() {
 
   const [inputs, setInputs] = useState<ROIInputs>(defaults);
   const [hasCalculated, setHasCalculated] = useState(false);
+  const [showResults, setShowResults] = useState(false);
 
   const results = useMemo(() => calculateROI(inputs), [inputs]);
 
   const handleCalculate = () => {
     calculateROI(inputs);
     setHasCalculated(true);
+
+    // Add delay before showing results for natural feel
+    setTimeout(() => {
+      setShowResults(true);
+    }, 300);
   };
 
   // Generate chart data for ROI vs Team Size based on actual calculations
@@ -105,19 +111,30 @@ export function ROICalculator() {
             Calculate Your ROI
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            See how much time and money your business could save with AI-powered operations.
+            See how much time and money your business could save with automation.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {/* Left Column - Inputs */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="space-y-6"
-          >
+        <div className="relative max-w-6xl mx-auto min-h-[600px]">
+          <div className={`relative ${hasCalculated ? 'lg:grid lg:grid-cols-2' : 'flex justify-center'} gap-8 transition-all duration-[600ms] ease-in-out`}>
+            {/* Calculator Panel - Centered initially, slides left after calculation */}
+            <motion.div
+              layout
+              initial={{ opacity: 0, y: 20 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                layout: {
+                  duration: 0.6,
+                  ease: [0.4, 0, 0.2, 1],
+                },
+                opacity: { duration: 0.5 },
+                y: { duration: 0.5 },
+              }}
+              className={`space-y-6 ${hasCalculated ? 'w-full' : 'w-full max-w-2xl mx-auto'}`}
+            >
             <Card className="rounded-lg border border-slate-300 dark:border-slate-700 shadow-sm bg-card">
               <CardContent className="p-6 space-y-6">
                 {/* Team Size */}
@@ -298,15 +315,32 @@ export function ROICalculator() {
             </Card>
           </motion.div>
 
-          {/* Right Column - Outputs */}
-          {hasCalculated && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="space-y-6"
-            >
+          {/* Right Column - Outputs - Only render when showResults is true */}
+          <AnimatePresence>
+            {showResults && (
+              <motion.div
+                layout
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 40 }}
+                transition={{
+                  layout: {
+                    duration: 0.6,
+                    ease: [0.4, 0, 0.2, 1],
+                  },
+                  opacity: {
+                    duration: 0.5,
+                    delay: 0.3,
+                    ease: [0.4, 0, 0.2, 1],
+                  },
+                  x: {
+                    duration: 0.5,
+                    delay: 0.3,
+                    ease: [0.4, 0, 0.2, 1],
+                  },
+                }}
+                className="space-y-6 w-full"
+              >
               {/* Manual Work Savings */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -447,19 +481,26 @@ export function ROICalculator() {
                 </CardContent>
               </Card>
             </motion.div>
-            </motion.div>
-          )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+          </div>
         </div>
 
-        {/* ROI vs Team Size Chart */}
-        {hasCalculated && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mt-12"
-        >
+        {/* ROI vs Team Size Chart - Only render when showResults is true */}
+        <AnimatePresence>
+          {showResults && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{
+                duration: 0.5,
+                delay: 0.6,
+                ease: [0.4, 0, 0.2, 1],
+              }}
+              className="mt-12"
+            >
           <Card className="rounded-xl bg-white dark:bg-card shadow-md p-4 mt-6 border border-slate-300 dark:border-slate-700">
             <h3 className="text-xl font-bold mb-4 text-foreground">ROI vs Team Size</h3>
             <ResponsiveContainer width="100%" height={300}>
@@ -523,8 +564,9 @@ export function ROICalculator() {
               Typical automation ROI: 150%–400% annually depending on process complexity.
             </p>
           </Card>
-        </motion.div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

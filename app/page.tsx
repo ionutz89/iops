@@ -172,6 +172,16 @@ export default function Home() {
               <span className="gradient-text">with AI</span>
             </motion.h1>
 
+            {/* Summary Line */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-base sm:text-lg font-medium text-foreground max-w-2xl mx-auto"
+            >
+              We help businesses automate repetitive work, monitor systems, and reduce downtime using AI.
+            </motion.p>
+
             {/* Subtext */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -179,8 +189,7 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-lg text-muted-foreground max-w-2xl mx-auto"
             >
-              We build intelligent systems that handle operations, save time,
-              and prevent downtime — so your business runs 24/7.
+              We build automation systems that cut manual work, prevent issues, and keep your operations running 24/7.
             </motion.p>
 
             {/* CTAs */}
@@ -229,24 +238,24 @@ export default function Home() {
               icon={Clock}
               value={70}
               suffix="%"
-              title="Less Manual Work"
-              description="Automation handles repetitive tasks"
+              title="Time Saved"
+              description="Less manual work means more time for growth"
               delay={0}
             />
             <MetricCard
               icon={Shield}
               value={90}
               suffix="%"
-              title="Fewer Incidents"
-              description="AI prevents issues before they happen"
+              title="Fewer Issues"
+              description="Prevent problems before they cost you money"
               delay={0.1}
             />
             <MetricCard
               icon={InfinityIcon}
               value={24}
               suffix="/7"
-              title="Self-Running Systems"
-              description="Your operations never sleep"
+              title="Always Running"
+              description="Your operations work around the clock"
               delay={0.2}
             />
           </div>
@@ -266,7 +275,7 @@ export default function Home() {
               Why Businesses Choose IOPS
             </h2>
             <p className="text-lg text-muted-foreground">
-              Smarter operations. Fewer incidents. More time for growth.
+              Businesses choose IOPS because it makes operations faster, cheaper, and more reliable.
             </p>
           </motion.div>
           <div className="flex flex-wrap justify-center gap-6">
@@ -300,6 +309,26 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Use Case Section */}
+      <section className="py-16 bg-background">
+        <div className="container px-4 md:px-6 max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center"
+          >
+            <h2 className="text-3xl font-bold mb-4 text-foreground">
+              Real Example
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              A SaaS company saved 80 hours per month by automating reports and system checks with IOPS.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ROI Calculator Section */}
       <ROICalculator />
 
@@ -316,10 +345,10 @@ export default function Home() {
           className="container relative z-10 px-4 md:px-6 max-w-6xl mx-auto text-center"
         >
           <h2 className="text-2xl md:text-4xl font-semibold text-white mb-6">
-            Start Automating Today
+            Book 30-Minute Call
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Transform your operations with intelligent automation systems
+            We'll review your current operations and show how automation can reduce your workload.
           </p>
           <Button
             size="lg"
@@ -346,7 +375,7 @@ export default function Home() {
                 </span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Privacy-first automation for modern businesses.
+                AI-powered automation systems for modern operations teams.
               </p>
             </div>
             <div>
