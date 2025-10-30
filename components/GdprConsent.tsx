@@ -17,6 +17,12 @@ export function GdprConsent() {
   useEffect(() => {
     // Check if user has already made a choice
     const consentStatus = getConsentStatus();
+
+    // Debug: Log consent status (only in development)
+    if (process.env.NODE_ENV === "development") {
+      console.log("GDPR Consent Status:", consentStatus || "no consent stored");
+    }
+
     if (!consentStatus) {
       // Small delay to prevent flash on page load
       const timer = setTimeout(() => {

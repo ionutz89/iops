@@ -196,7 +196,7 @@ Configuration:
 ## ✨ Key Features
 
 ### Design
-- **Modern Tech Aesthetic**: Vercel/Linear-inspired design
+- **Modern Tech Aesthetic**: Clean, professional design with gradient accents
 - **Color Palette**: Slate with blue/cyan accents
 - **Typography**: Inter (body) + JetBrains Mono (code)
 - **Dark Mode Default**: With light mode toggle

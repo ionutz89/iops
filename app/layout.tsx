@@ -156,13 +156,7 @@ export default function RootLayout({
             __html: JSON.stringify(websiteSchema),
           }}
         />
-        {/* Google reCAPTCHA v3 */}
-        {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
-          <Script
-            src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-            strategy="lazyOnload"
-          />
-        )}
+        {/* Cloudflare Turnstile is loaded dynamically only when needed (contact forms) */}
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

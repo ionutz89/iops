@@ -9,15 +9,6 @@ interface EmailRevealProps {
   className?: string;
 }
 
-declare global {
-  interface Window {
-    grecaptcha: {
-      ready: (callback: () => void) => void;
-      execute: (siteKey: string, options: { action: string }) => Promise<string>;
-    };
-  }
-}
-
 export function EmailReveal({ email, className }: EmailRevealProps) {
   const [isRevealed, setIsRevealed] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
@@ -26,61 +17,16 @@ export function EmailReveal({ email, className }: EmailRevealProps) {
     e.preventDefault();
     if (isRevealed) return;
 
-    // Check if we're on localhost - reveal immediately without reCAPTCHA
-    const isLocalhost = typeof window !== 'undefined' &&
-      (window.location.hostname === 'localhost' ||
-       window.location.hostname === '127.0.0.1' ||
-       window.location.hostname.includes('192.168.'));
-
-    if (isLocalhost) {
-      setIsRevealed(true);
-      return;
-    }
-
     setIsVerifying(true);
 
     try {
-      const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-      if (!siteKey) {
-        // Fallback: reveal anyway if not configured (e.g., in development)
-        setIsRevealed(true);
-        setIsVerifying(false);
-        return;
-      }
+      // Simple delay for UX (email reveal doesn't need heavy verification)
+      // Email is already partially protected by being server-rendered
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // Wait for grecaptcha to be available (shorter timeout)
-      await new Promise<void>((resolve) => {
-        if (window.grecaptcha) {
-          window.grecaptcha.ready(() => resolve());
-        } else {
-          // Wait for script to load
-          const checkInterval = setInterval(() => {
-            if (window.grecaptcha) {
-              window.grecaptcha.ready(() => {
-                clearInterval(checkInterval);
-                resolve();
-              });
-            }
-          }, 100);
-
-          // Timeout after 3 seconds (reduced from 5)
-          setTimeout(() => {
-            clearInterval(checkInterval);
-            resolve();
-          }, 3000);
-        }
-      });
-
-      // Execute reCAPTCHA v3
-      const token = await window.grecaptcha.execute(siteKey, {
-        action: "reveal_email",
-      }).catch(() => null); // Catch any errors and return null
-
-      // Always reveal email (graceful degradation)
       setIsRevealed(true);
     } catch (error) {
-      console.error("Error verifying reCAPTCHA:", error);
-      // Fallback: reveal email on error (graceful degradation)
+      // Silent error handling - don't expose errors to client
       setIsRevealed(true);
     } finally {
       setIsVerifying(false);

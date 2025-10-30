@@ -47,6 +47,7 @@
     "build:worker": "npx @opennextjs/cloudflare build --skipBuild",
     "deploy": "npm run build && wrangler deploy",
     "dev": "next dev",
+    "generate:favicon": "node scripts/generate-favicon.js",
     "generate:icons": "node scripts/generate-icons.js",
     "generate:og-image": "node scripts/generate-og-image.js",
     "lint": "eslint",

@@ -234,10 +234,10 @@ export default function PrivacyPolicy() {
                 </Link>
               </li>
               <li>
-                <strong className="text-foreground">Google reCAPTCHA:</strong> For
-                spam protection and security.{" "}
+                <strong className="text-foreground">Cloudflare Turnstile:</strong> For
+                spam protection and security. Turnstile is privacy-friendly and does not require cookies.{" "}
                 <Link
-                  href="https://policies.google.com/privacy"
+                  href="https://developers.cloudflare.com/turnstile/privacy/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:underline"

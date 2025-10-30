@@ -11,9 +11,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+    const secretKey = process.env.TURNSTILE_SECRET_KEY;
     if (!secretKey) {
-      console.error("reCAPTCHA secret key not configured");
+      // Log server-side only, don't expose to client
+      console.error("Turnstile secret key not configured");
       return NextResponse.json(
         { success: false, error: "Server configuration error" },
         { status: 500 }
@@ -27,14 +28,14 @@ export async function POST(request: NextRequest) {
       request.headers.get("x-real-ip") ||
       "unknown";
 
-    // Verify token with Google
-    const verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
+    // Verify token with Cloudflare Turnstile
+    const verifyUrl = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
     const response = await fetch(verifyUrl, {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
       },
-      body: new URLSearchParams({
+      body: JSON.stringify({
         secret: secretKey,
         response: token,
         remoteip: clientIp,
@@ -44,28 +45,11 @@ export async function POST(request: NextRequest) {
     const data = await response.json();
 
     if (!data.success) {
+      // Don't expose error codes to client - security risk
       return NextResponse.json(
         {
           success: false,
-          error: "reCAPTCHA verification failed",
-          "error-codes": data["error-codes"],
-        },
-        { status: 400 }
-      );
-    }
-
-    // Check score (v3 returns a score from 0.0 to 1.0)
-    // 1.0 = very likely a human, 0.0 = very likely a bot
-    // Typically, scores above 0.5 are considered legitimate
-    const score = data.score || 0;
-    const threshold = 0.5;
-
-    if (score < threshold) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Low reCAPTCHA score",
-          score: score,
+          error: "Turnstile verification failed",
         },
         { status: 400 }
       );
@@ -73,11 +57,12 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      score: score,
-      action: data.action,
+      challenge_ts: data["challenge_ts"],
+      hostname: data.hostname,
     });
   } catch (error) {
-    console.error("Error verifying reCAPTCHA:", error);
+    // Log server-side only, don't expose error details to client
+    console.error("Error verifying Turnstile:", error);
     return NextResponse.json(
       { success: false, error: "Internal server error" },
       { status: 500 }
