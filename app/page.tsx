@@ -458,16 +458,6 @@ export default function Home() {
                     Privacy Policy
                   </Link>
                 </li>
-                <li>
-                  <button
-                    onClick={() => {
-                      window.dispatchEvent(new Event("openCookiePreferences"));
-                    }}
-                    className="text-foreground hover:text-primary transition-colors"
-                  >
-                    Manage Cookies
-                  </button>
-                </li>
               </ul>
             </div>
           </div>
