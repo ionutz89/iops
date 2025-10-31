@@ -25,11 +25,11 @@ const scaleIn = {
 };
 
 const stagger = {
-  visible: { 
-    transition: { 
+  visible: {
+    transition: {
       staggerChildren: 0.1,
       delayChildren: 0.1,
-    } 
+    },
   },
 };
 
@@ -48,25 +48,55 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
+      const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
+
+      // Check if Formspree ID is configured
+      if (!formspreeId || formspreeId === "your_form_id") {
+        console.error(
+          "Formspree ID is not configured. Please set NEXT_PUBLIC_FORMSPREE_ID in your environment variables."
+        );
+        alert("Form configuration error. Please contact support.");
+        setIsSubmitting(false);
+        return;
+      }
+
       const formspreeResponse = await fetch(
-        `https://formspree.io/f/${process.env.NEXT_PUBLIC_FORMSPREE_ID || "your_form_id"}`,
+        `https://formspree.io/f/${formspreeId}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Accept: "application/json",
           },
           body: JSON.stringify(formData),
         }
       );
 
-      if (formspreeResponse.ok) {
+      // Parse the response body to check for errors
+      const responseData = await formspreeResponse.json();
+
+      if (formspreeResponse.ok && !responseData.error) {
         setSubmitSuccess(true);
         setFormData({ name: "", email: "", company: "", message: "" });
       } else {
-        alert("Failed to submit form. Please try again.");
+        // Log the error for debugging
+        console.error("Formspree submission error:", {
+          status: formspreeResponse.status,
+          statusText: formspreeResponse.statusText,
+          response: responseData,
+        });
+
+        // Show a more helpful error message
+        const errorMessage =
+          responseData.error ||
+          responseData.message ||
+          "Failed to submit form. Please try again.";
+        alert(`Failed to submit form: ${errorMessage}`);
       }
     } catch (error) {
-      alert("An error occurred. Please try again.");
+      // Log the error for debugging
+      console.error("Form submission error:", error);
+      alert("An error occurred. Please check your connection and try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -171,14 +201,16 @@ export default function Contact() {
                 variants={fadeUp}
                 className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-2xl mx-auto"
               >
-                We help growing teams automate workflows, cut costs, and deliver results faster.
+                We help growing teams automate workflows, cut costs, and deliver
+                results faster.
               </motion.p>
 
               <motion.p
                 variants={fadeUp}
                 className="text-base md:text-lg text-blue-600 dark:text-blue-400 font-medium max-w-xl mx-auto"
               >
-                Example: A logistics firm cut manual reporting by 45% using IOPS automation.
+                Example: A logistics firm cut manual reporting by 45% using IOPS
+                automation.
               </motion.p>
             </motion.div>
           </div>
@@ -198,7 +230,8 @@ export default function Contact() {
                 className="mb-12 text-center md:text-left"
               >
                 <p className="text-muted-foreground text-xl md:text-2xl">
-                  Tell us what slows your business down. We&apos;ll show you how automation pays for itself.
+                  Tell us what slows your business down. We&apos;ll show you how
+                  automation pays for itself.
                 </p>
               </motion.div>
 
@@ -216,7 +249,11 @@ export default function Contact() {
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        transition={{ type: "spring", duration: 0.5, delay: 0.2 }}
+                        transition={{
+                          type: "spring",
+                          duration: 0.5,
+                          delay: 0.2,
+                        }}
                         className="flex justify-center mb-6"
                       >
                         <div className="h-20 w-20 rounded-full bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/50">
@@ -227,8 +264,8 @@ export default function Contact() {
                         Thank You!
                       </h3>
                       <p className="text-muted-foreground mb-6">
-                        We&apos;ve received your message and will get back to you
-                        within 24 hours.
+                        We&apos;ve received your message and will get back to
+                        you within 24 hours.
                       </p>
                       <Button
                         variant="outline"
@@ -245,7 +282,9 @@ export default function Contact() {
                   <CardContent className="p-6 md:p-8 lg:p-10">
                     <form
                       onSubmit={handleSubmit}
-                      action={`https://formspree.io/f/${process.env.NEXT_PUBLIC_FORMSPREE_ID || "your_form_id"}`}
+                      action={`https://formspree.io/f/${
+                        process.env.NEXT_PUBLIC_FORMSPREE_ID || "your_form_id"
+                      }`}
                       method="POST"
                       className="space-y-6"
                     >
@@ -255,7 +294,10 @@ export default function Contact() {
                         whileInView="visible"
                         viewport={{ once: true }}
                       >
-                        <Label htmlFor="name" className="text-foreground font-medium">
+                        <Label
+                          htmlFor="name"
+                          className="text-foreground font-medium"
+                        >
                           Name *
                         </Label>
                         <Input
@@ -276,7 +318,10 @@ export default function Contact() {
                         whileInView="visible"
                         viewport={{ once: true }}
                       >
-                        <Label htmlFor="email" className="text-foreground font-medium">
+                        <Label
+                          htmlFor="email"
+                          className="text-foreground font-medium"
+                        >
                           Email *
                         </Label>
                         <Input
@@ -297,8 +342,14 @@ export default function Contact() {
                         whileInView="visible"
                         viewport={{ once: true }}
                       >
-                        <Label htmlFor="company" className="text-foreground font-medium">
-                          Company <span className="text-muted-foreground text-sm font-normal">(optional)</span>
+                        <Label
+                          htmlFor="company"
+                          className="text-foreground font-medium"
+                        >
+                          Company{" "}
+                          <span className="text-muted-foreground text-sm font-normal">
+                            (optional)
+                          </span>
                         </Label>
                         <Input
                           id="company"
@@ -317,7 +368,10 @@ export default function Contact() {
                         whileInView="visible"
                         viewport={{ once: true }}
                       >
-                        <Label htmlFor="message" className="text-foreground font-medium">
+                        <Label
+                          htmlFor="message"
+                          className="text-foreground font-medium"
+                        >
                           Message *
                         </Label>
                         <textarea
@@ -350,7 +404,11 @@ export default function Contact() {
                               <>
                                 <motion.div
                                   animate={{ rotate: 360 }}
-                                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                  transition={{
+                                    duration: 1,
+                                    repeat: Infinity,
+                                    ease: "linear",
+                                  }}
                                   className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
                                 />
                                 Sending...
@@ -396,9 +454,7 @@ export default function Contact() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <span className="relative z-10">
-                  Book a free strategy call
-                </span>
+                <span className="relative z-10">Book a free strategy call</span>
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   initial={false}
@@ -422,10 +478,12 @@ export default function Contact() {
                 <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               </div>
               <p className="text-foreground text-sm md:text-base">
-                Privacy-first automation for modern businesses • Enterprise-grade security.
+                Privacy-first automation for modern businesses •
+                Enterprise-grade security.
               </p>
               <p className="text-muted-foreground text-sm md:text-base">
-                Trusted by business owners in finance, logistics, and SaaS to streamline operations with AI.
+                Trusted by business owners in finance, logistics, and SaaS to
+                streamline operations with AI.
               </p>
             </motion.div>
           </div>
