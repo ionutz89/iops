@@ -97,14 +97,16 @@ export default function Contact() {
         }}
       />
 
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-white dark:from-slate-900 dark:via-indigo-900 dark:to-black animate-gradient relative overflow-hidden">
+      <main className="min-h-screen bg-background relative overflow-hidden">
         <Navigation />
 
-        {/* Animated Background Elements */}
+        {/* Animated Gradient Background - matching homepage */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-background to-purple-50 dark:from-blue-950/20 dark:via-background dark:to-purple-950/20" />
+
+        {/* Floating gradient orbs - matching homepage style */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          {/* Breathing light gradient orbs */}
           <motion.div
-            className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl"
+            className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl"
             animate={{
               scale: [1, 1.2, 1],
               opacity: [0.3, 0.5, 0.3],
@@ -116,7 +118,7 @@ export default function Contact() {
             }}
           />
           <motion.div
-            className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 dark:bg-purple-500/20 rounded-full blur-3xl"
+            className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-purple-400/20 to-blue-400/20 rounded-full blur-3xl"
             animate={{
               scale: [1, 1.3, 1],
               opacity: [0.3, 0.5, 0.3],
@@ -129,6 +131,19 @@ export default function Contact() {
             }}
           />
         </div>
+
+        {/* Subtle gradient overlay - matching homepage */}
+        <motion.div
+          className="absolute inset-0 opacity-40"
+          animate={{
+            background: [
+              "radial-gradient(circle at 20% 50%, rgba(0, 122, 255, 0.1) 0%, transparent 50%)",
+              "radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%)",
+              "radial-gradient(circle at 20% 50%, rgba(0, 122, 255, 0.1) 0%, transparent 50%)",
+            ],
+          }}
+          transition={{ duration: 10, repeat: Infinity }}
+        />
 
         {/* Hero Section */}
         <section className="relative pt-32 pb-16 overflow-hidden">
@@ -155,7 +170,7 @@ export default function Contact() {
 
               <motion.p
                 variants={fadeUp}
-                className="text-base md:text-lg text-indigo-600 dark:text-indigo-300 font-medium max-w-xl mx-auto"
+                className="text-base md:text-lg text-blue-600 dark:text-blue-400 font-medium max-w-xl mx-auto"
               >
                 Example: A logistics firm cut manual reporting by 45% using IOPS automation.
               </motion.p>
@@ -244,7 +259,7 @@ export default function Contact() {
                           required
                           value={formData.name}
                           onChange={handleChange}
-                          className="mt-2 rounded-xl bg-background/50 border-input text-foreground placeholder:text-muted-foreground focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-300"
+                          className="mt-2 rounded-xl bg-background/50 border-input text-foreground placeholder:text-muted-foreground focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300"
                           placeholder="John Doe"
                         />
                       </motion.div>
@@ -265,7 +280,7 @@ export default function Contact() {
                           required
                           value={formData.email}
                           onChange={handleChange}
-                          className="mt-2 rounded-xl bg-background/50 border-input text-foreground placeholder:text-muted-foreground focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-300"
+                          className="mt-2 rounded-xl bg-background/50 border-input text-foreground placeholder:text-muted-foreground focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300"
                           placeholder="john@company.com"
                         />
                       </motion.div>
@@ -285,7 +300,7 @@ export default function Contact() {
                           type="text"
                           value={formData.company}
                           onChange={handleChange}
-                          className="mt-2 rounded-xl bg-background/50 border-input text-foreground placeholder:text-muted-foreground focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-300"
+                          className="mt-2 rounded-xl bg-background/50 border-input text-foreground placeholder:text-muted-foreground focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300"
                           placeholder="Acme Inc."
                         />
                       </motion.div>
@@ -306,7 +321,7 @@ export default function Contact() {
                           value={formData.message}
                           onChange={handleChange}
                           rows={5}
-                          className="mt-2 w-full rounded-xl border border-input bg-background/50 px-3 py-2 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-300"
+                          className="mt-2 w-full rounded-xl border border-input bg-background/50 px-3 py-2 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-300"
                           placeholder="What challenges are slowing your business down?"
                         />
                       </motion.div>
@@ -321,7 +336,7 @@ export default function Contact() {
                         <Button
                           type="submit"
                           size="lg"
-                          className="group w-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:opacity-90 transition-all duration-300 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden shadow-lg shadow-indigo-500/50"
+                          className="group w-full rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:opacity-90 transition-all duration-300 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden shadow-lg shadow-blue-500/50 hover:shadow-xl hover:shadow-blue-500/50 hover:scale-105 hover:from-blue-600 hover:to-purple-700"
                           disabled={isSubmitting}
                         >
                           <span className="relative z-10 flex items-center justify-center gap-2">
@@ -371,7 +386,7 @@ export default function Contact() {
                 href="https://calendly.com/iops-ai/assessment"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block w-full px-8 py-4 text-lg font-semibold rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:opacity-90 transition-all duration-300 shadow-lg shadow-indigo-500/50 hover:shadow-xl hover:shadow-indigo-500/70 relative overflow-hidden text-center"
+                className="group block w-full px-8 py-4 text-lg font-semibold rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:opacity-90 transition-all duration-300 shadow-lg shadow-blue-500/50 hover:shadow-xl hover:shadow-blue-500/50 hover:scale-105 hover:from-blue-600 hover:to-purple-700 relative overflow-hidden text-center"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -398,7 +413,7 @@ export default function Contact() {
               className="text-center space-y-4"
             >
               <div className="flex items-center justify-center gap-3 mb-4">
-                <Shield className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
+                <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               </div>
               <p className="text-foreground text-sm md:text-base">
                 Privacy-first automation for modern businesses • Enterprise-grade security.
