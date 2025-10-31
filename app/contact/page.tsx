@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle2, Send, Shield } from "lucide-react";
 import Script from "next/script";
+import { executeTurnstile } from "@/lib/turnstile-loader";
 
 // Animation variants
 const fadeUp = {
@@ -60,6 +61,36 @@ export default function Contact() {
         return;
       }
 
+      // Execute Turnstile (invisible mode) - REQUIRED for spam protection
+      const turnstileToken = await executeTurnstile().catch(() => {
+        // Silent error handling - don't expose details
+        return null;
+      });
+
+      if (!turnstileToken) {
+        alert("Security verification failed. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Verify token server-side - REQUIRED
+      const verifyResponse = await fetch("/api/verify-turnstile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: turnstileToken }),
+      });
+
+      const verifyData = await verifyResponse.json();
+
+      if (!verifyData.success) {
+        alert("Security verification failed. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Submit the form to Formspree with Turnstile token
       const formspreeResponse = await fetch(
         `https://formspree.io/f/${formspreeId}`,
         {
@@ -68,7 +99,10 @@ export default function Contact() {
             "Content-Type": "application/json",
             Accept: "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            ...formData,
+            _turnstile: turnstileToken, // Include Turnstile token for Formspree
+          }),
         }
       );
 
