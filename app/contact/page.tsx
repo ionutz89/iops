@@ -512,7 +512,7 @@ export default function Contact() {
               viewport={{ once: true }}
             >
               <motion.a
-                href="https://calendly.com/iops-ai/assessment"
+                href="https://calendly.com/me-ionut/30min"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group block w-full px-8 py-4 text-lg font-semibold rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:opacity-90 transition-all duration-300 shadow-lg shadow-blue-500/50 hover:shadow-xl hover:shadow-blue-500/50 hover:scale-105 hover:from-blue-600 hover:to-purple-700 relative overflow-hidden text-center"

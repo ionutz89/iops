@@ -226,7 +226,7 @@ export default function About() {
               bottlenecks and show you exactly how to automate them.
             </p>
             <a
-              href="https://calendly.com/ionut-iops/30min"
+              href="https://calendly.com/me-ionut/30min"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-white text-[#007AFF] px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg"
