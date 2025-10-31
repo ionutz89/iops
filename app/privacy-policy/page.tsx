@@ -301,10 +301,6 @@ export default function PrivacyPolicy() {
                 <strong className="text-foreground">Important:</strong> Only essential cookies are enabled by default.
                 Functional and preference cookies load only after you provide consent through our cookie banner.
               </p>
-              <p className="text-muted-foreground leading-relaxed">
-                You can manage your cookie preferences at any time using the "Manage Cookies" link in the footer.
-                Disabling functional cookies will prevent services like Calendly from loading.
-              </p>
             </div>
           </section>
 
