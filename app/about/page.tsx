@@ -40,7 +40,7 @@ export default function About() {
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-foreground mb-2">A Note from Ionut</h3>
-                <p className="text-sm text-muted-foreground">Founder, IOPS</p>
+                <p className="text-sm text-muted-foreground">Founder at IOPS</p>
               </div>
             </div>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
@@ -202,8 +202,8 @@ export default function About() {
               the repetitive work so your team can focus on what actually moves the needle.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Every automation we deploy runs 24/7, catches issues before they become fires, and scales
-              seamlessly without adding headcount. That's not a promise—it's how we work.
+              Our automations run 24/7, catch issues early, and scale without extra headcount.
+              That's not a promise—it's how we work.
             </p>
           </motion.div>
         </div>
