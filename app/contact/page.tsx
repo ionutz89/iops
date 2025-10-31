@@ -62,35 +62,69 @@ export default function Contact() {
       }
 
       // Execute Turnstile (invisible mode) - REQUIRED for spam protection
-      const turnstileToken = await executeTurnstile().catch(() => {
-        // Silent error handling - don't expose details
-        return null;
-      });
+      const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+      let turnstileToken: string | null = null;
 
-      if (!turnstileToken) {
-        alert("Security verification failed. Please try again.");
-        setIsSubmitting(false);
-        return;
+      if (turnstileSiteKey) {
+        try {
+          turnstileToken = await executeTurnstile();
+
+          if (!turnstileToken) {
+            console.error("Turnstile execution returned no token");
+            alert(
+              "Security verification failed. Please check the browser console for details."
+            );
+            setIsSubmitting(false);
+            return;
+          }
+
+          // Verify token server-side - REQUIRED
+          const verifyResponse = await fetch("/api/verify-turnstile", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ token: turnstileToken }),
+          });
+
+          const verifyData = await verifyResponse.json();
+
+          if (!verifyData.success) {
+            console.error(
+              "Turnstile server-side verification failed:",
+              verifyData
+            );
+            alert(
+              `Security verification failed: ${
+                verifyData.error || "Unknown error"
+              }. Please check the browser console.`
+            );
+            setIsSubmitting(false);
+            return;
+          }
+        } catch (error) {
+          console.error("Turnstile error:", error);
+          alert(
+            `Security verification error: ${
+              error instanceof Error ? error.message : "Unknown error"
+            }. Please check the browser console.`
+          );
+          setIsSubmitting(false);
+          return;
+        }
+      } else {
+        console.warn(
+          "Turnstile site key not configured. Skipping Turnstile verification. For production, set NEXT_PUBLIC_TURNSTILE_SITE_KEY."
+        );
+        // Continue without Turnstile for local development
       }
 
-      // Verify token server-side - REQUIRED
-      const verifyResponse = await fetch("/api/verify-turnstile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token: turnstileToken }),
-      });
-
-      const verifyData = await verifyResponse.json();
-
-      if (!verifyData.success) {
-        alert("Security verification failed. Please try again.");
-        setIsSubmitting(false);
-        return;
+      // Submit the form to Formspree (with Turnstile token if available)
+      const formspreeBody: any = { ...formData };
+      if (turnstileToken) {
+        formspreeBody._turnstile = turnstileToken;
       }
 
-      // Submit the form to Formspree with Turnstile token
       const formspreeResponse = await fetch(
         `https://formspree.io/f/${formspreeId}`,
         {
@@ -99,10 +133,7 @@ export default function Contact() {
             "Content-Type": "application/json",
             Accept: "application/json",
           },
-          body: JSON.stringify({
-            ...formData,
-            _turnstile: turnstileToken, // Include Turnstile token for Formspree
-          }),
+          body: JSON.stringify(formspreeBody),
         }
       );
 

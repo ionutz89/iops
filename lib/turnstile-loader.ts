@@ -11,7 +11,9 @@ const TURNSTILE_LOAD_TIMEOUT = 5000;
  */
 export function isTurnstileLoaded(): boolean {
   if (typeof window === "undefined") return false;
-  return !!(document.getElementById(TURNSTILE_SCRIPT_ID) && (window as any).turnstile);
+  return !!(
+    document.getElementById(TURNSTILE_SCRIPT_ID) && (window as any).turnstile
+  );
 }
 
 /**
@@ -32,7 +34,9 @@ export function loadTurnstileScript(): Promise<void> {
     }
 
     // Check if script tag already exists
-    let script = document.getElementById(TURNSTILE_SCRIPT_ID) as HTMLScriptElement;
+    let script = document.getElementById(
+      TURNSTILE_SCRIPT_ID
+    ) as HTMLScriptElement;
 
     if (!script) {
       // Create and inject script tag
@@ -151,24 +155,46 @@ export async function executeTurnstile(): Promise<string | null> {
       tempContainer.style.display = "none";
       document.body.appendChild(tempContainer);
 
-      const widgetId = (window as any).turnstile.render(`#${tempContainer.id}`, {
-        sitekey: siteKey,
-        callback: (token: string) => {
-          // Clean up temporary container
-          document.body.removeChild(tempContainer);
-          resolve(token);
-        },
-        "error-callback": (error: string) => {
-          console.error("Turnstile error:", error);
-          document.body.removeChild(tempContainer);
-          reject(new Error(error));
-        },
-        theme: "auto",
-        size: "invisible", // Invisible mode
-      });
+      // For non-interactive/invisible mode: render with normal size, then execute immediately
+      // The mode setting (non-interactive/invisible) in Cloudflare dashboard configures the behavior
+      // In code, we use "normal" size and call execute() immediately for automatic verification
+      const widgetId = (window as any).turnstile.render(
+        `#${tempContainer.id}`,
+        {
+          sitekey: siteKey,
+          callback: (token: string) => {
+            // Clean up temporary container
+            if (document.body.contains(tempContainer)) {
+              document.body.removeChild(tempContainer);
+            }
+            resolve(token);
+          },
+          "error-callback": (error: string) => {
+            console.error("Turnstile error:", error);
+            if (document.body.contains(tempContainer)) {
+              document.body.removeChild(tempContainer);
+            }
+            reject(new Error(error));
+          },
+          theme: "auto",
+          size: "normal", // Valid values: "normal", "compact", or "flexible" (NOT "invisible")
+          // For non-interactive/invisible mode, execute() is called immediately after render
+        }
+      );
 
-      // Execute immediately (invisible mode)
-      (window as any).turnstile.execute(`#${tempContainer.id}`);
+      // Execute immediately for non-interactive/invisible mode
+      // The widget needs a moment to fully initialize before executing
+      setTimeout(() => {
+        try {
+          (window as any).turnstile.execute(`#${tempContainer.id}`);
+        } catch (executeError) {
+          console.error("Turnstile execute error:", executeError);
+          if (document.body.contains(tempContainer)) {
+            document.body.removeChild(tempContainer);
+          }
+          reject(new Error("Failed to execute Turnstile"));
+        }
+      }, 200);
     } catch (error) {
       console.error("Error executing Turnstile:", error);
       reject(error);
@@ -203,4 +229,3 @@ export function removeTurnstile(containerId: string): void {
     console.error("Error removing Turnstile:", error);
   }
 }
-
