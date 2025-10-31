@@ -10,8 +10,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Send } from "lucide-react";
-import { executeTurnstile } from "@/lib/turnstile-loader";
+import { CheckCircle2, Send, Shield } from "lucide-react";
+
+// Animation variants
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.95, y: 10 },
+  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", delay: 0.3 } },
+};
+
+const stagger = {
+  visible: { transition: { staggerChildren: 0.15 } },
+};
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -21,46 +35,31 @@ export default function Contact() {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setIsSubmitting(true);
 
     try {
-      // Execute Turnstile (invisible mode) - REQUIRED for security
-      const token = await executeTurnstile().catch(() => {
-        // Silent error handling - don't expose details
-        return null;
-      });
+      const formspreeResponse = await fetch(
+        `https://formspree.io/f/${process.env.NEXT_PUBLIC_FORMSPREE_ID || "your_form_id"}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
-      if (!token) {
-        alert("Security verification failed. Please try again.");
-        setIsSubmitting(false);
-        return;
+      if (formspreeResponse.ok) {
+        setSubmitSuccess(true);
+        setFormData({ name: "", email: "", company: "", message: "" });
+      } else {
+        alert("Failed to submit form. Please try again.");
       }
-
-      // Verify token server-side - REQUIRED
-      const verifyResponse = await fetch("/api/verify-turnstile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token }),
-      });
-
-      const verifyData = await verifyResponse.json();
-
-      if (!verifyData.success) {
-        alert("Security verification failed. Please try again.");
-        setIsSubmitting(false);
-        return;
-      }
-
-      // Handle form submission here
-      // Note: Form data is submitted securely via Formspree or your backend
     } catch (error) {
-      // Silent error handling - don't expose error details
       alert("An error occurred. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -77,137 +76,174 @@ export default function Contact() {
   };
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-black animate-gradient relative overflow-hidden">
       <Navigation />
 
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "IOPS",
+            applicationCategory: "BusinessApplication",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "USD",
+              description: "Free strategy call to automate your business operations",
+            },
+            provider: {
+              "@type": "Organization",
+              name: "IOPS",
+              url: "https://iops.pro",
+            },
+          }),
+        }}
+      />
+
+      {/* Animated Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        {/* Breathing light gradient orbs */}
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 0.5,
+          }}
+        />
+        {/* Slow gradient flow */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-indigo-900/30 via-purple-900/20 to-black"
+          animate={{
+            backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+          style={{
+            backgroundSize: "200% 200%",
+          }}
+        />
+      </div>
+
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-blue-50 via-background to-purple-50 dark:from-blue-950/20 dark:via-background dark:to-purple-950/20">
-        <div className="container px-4 md:px-6 max-w-6xl mx-auto">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-bold text-center mb-6 text-foreground"
+      <section className="relative pt-32 pb-24 overflow-hidden">
+        <div className="container px-4 md:px-6 max-w-4xl mx-auto relative z-10">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={stagger}
+            className="space-y-8 text-center md:text-left"
           >
-            Start Your <span className="gradient-text">Transformation</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-center text-lg text-muted-foreground max-w-2xl mx-auto"
-          >
-            Tell us about your challenges and we'll show you how intelligent automation can help.
-          </motion.p>
+            <motion.h1
+              variants={fadeUp}
+              className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
+            >
+              Make Your Operations Run Themselves.
+            </motion.h1>
+
+            <motion.p
+              variants={fadeUp}
+              className="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-2xl mx-auto md:mx-0"
+            >
+              We help growing teams automate workflows, cut costs, and deliver results faster.
+            </motion.p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Contact Form Section */}
-      <section className="py-24 bg-background relative overflow-hidden">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 opacity-5">
-          {[...Array(6)].map((_, i) => (
+      {/* Form Section */}
+      <section id="contact-form" className="py-32 relative z-10">
+        <div className="container px-4 md:px-6 max-w-4xl mx-auto">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={stagger}
+          >
             <motion.div
-              key={i}
-              className="absolute w-32 h-32 rounded-full bg-[#007AFF] blur-3xl"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                x: [0, 30, 0],
-                y: [0, 30, 0],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{
-                duration: 5 + Math.random() * 5,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="container px-4 md:px-6 max-w-6xl mx-auto relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-            {/* Left: AI Assistant Illustration */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="hidden md:block"
+              variants={fadeUp}
+              className="mb-12 text-center md:text-left"
             >
-              <div className="relative h-full min-h-[500px] flex items-center justify-center">
-                {/* Animated AI Nodes */}
-                {[
-                  { x: 20, y: 20, delay: 0 },
-                  { x: 80, y: 30, delay: 0.2 },
-                  { x: 50, y: 60, delay: 0.4 },
-                  { x: 30, y: 80, delay: 0.6 },
-                  { x: 70, y: 70, delay: 0.8 },
-                ].map((node, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-[#007AFF] to-[#6366F1] flex items-center justify-center text-white text-xs font-bold shadow-lg"
-                    style={{
-                      left: `${node.x}%`,
-                      top: `${node.y}%`,
-                    }}
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      opacity: [0.7, 1, 0.7],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: node.delay,
-                      ease: "easeInOut",
-                    }}
-                  >
-                    AI
-                  </motion.div>
-                ))}
-                {/* Connecting Lines */}
-                <svg className="absolute inset-0 w-full h-full">
-                  <motion.line
-                    x1="20%"
-                    y1="20%"
-                    x2="50%"
-                    y2="60%"
-                    stroke="#007AFF"
-                    strokeWidth="2"
-                    strokeOpacity="0.3"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
-                  />
-                  <motion.line
-                    x1="50%"
-                    y1="60%"
-                    x2="80%"
-                    y2="30%"
-                    stroke="#6366F1"
-                    strokeWidth="2"
-                    strokeOpacity="0.3"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 2, delay: 0.5, repeat: Infinity, repeatType: "reverse" }}
-                  />
-                </svg>
-              </div>
+              <p className="text-gray-300 text-xl md:text-2xl mb-8">
+                Tell us what slows your business down. We&apos;ll show you how automation pays for itself.
+              </p>
             </motion.div>
 
-            {/* Right: Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <Card className="rounded-2xl border border-border shadow-lg bg-background">
+            {submitSuccess ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Card className="rounded-2xl border-2 border-green-500/30 bg-gradient-to-br from-green-500/10 to-emerald-500/10 backdrop-blur-sm">
+                  <CardContent className="p-8 text-center">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", duration: 0.5, delay: 0.2 }}
+                      className="flex justify-center mb-6"
+                    >
+                      <div className="h-20 w-20 rounded-full bg-green-500 flex items-center justify-center shadow-lg shadow-green-500/50">
+                        <CheckCircle2 className="h-10 w-10 text-white" />
+                      </div>
+                    </motion.div>
+                    <h3 className="text-2xl font-bold mb-4 text-white">
+                      Thank You!
+                    </h3>
+                    <p className="text-gray-300 mb-6">
+                      We&apos;ve received your message and will get back to you
+                      within 24 hours.
+                    </p>
+                    <Button
+                      variant="outline"
+                      onClick={() => setSubmitSuccess(false)}
+                      className="rounded-xl border-green-500/30 text-green-400 hover:bg-green-500/10 transition-all duration-300"
+                    >
+                      Submit Another Request
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ) : (
+              <Card className="rounded-2xl border border-gray-700/50 shadow-2xl bg-slate-800/50 backdrop-blur-sm">
                 <CardContent className="p-8">
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                      <Label htmlFor="name" className="text-foreground font-medium">
-                        Name
+                  <form
+                    onSubmit={handleSubmit}
+                    action={`https://formspree.io/f/${process.env.NEXT_PUBLIC_FORMSPREE_ID || "your_form_id"}`}
+                    method="POST"
+                    className="space-y-6"
+                  >
+                    <motion.div
+                      variants={fadeUp}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
+                    >
+                      <Label htmlFor="name" className="text-gray-200 font-medium">
+                        Name *
                       </Label>
                       <Input
                         id="name"
@@ -216,13 +252,19 @@ export default function Contact() {
                         required
                         value={formData.name}
                         onChange={handleChange}
-                        className="mt-2 rounded-xl border-gray-300"
-                        placeholder="Your name"
+                        className="mt-2 rounded-xl bg-transparent border-gray-600 text-white placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300"
+                        placeholder="John Doe"
                       />
-                    </div>
-                    <div>
-                      <Label htmlFor="email" className="text-foreground font-medium">
-                        Email
+                    </motion.div>
+
+                    <motion.div
+                      variants={fadeUp}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
+                    >
+                      <Label htmlFor="email" className="text-gray-200 font-medium">
+                        Email *
                       </Label>
                       <Input
                         id="email"
@@ -231,12 +273,18 @@ export default function Contact() {
                         required
                         value={formData.email}
                         onChange={handleChange}
-                        className="mt-2 rounded-xl border-gray-300"
-                        placeholder="your@email.com"
+                        className="mt-2 rounded-xl bg-transparent border-gray-600 text-white placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300"
+                        placeholder="john@company.com"
                       />
-                    </div>
-                    <div>
-                      <Label htmlFor="company" className="text-foreground font-medium">
+                    </motion.div>
+
+                    <motion.div
+                      variants={fadeUp}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
+                    >
+                      <Label htmlFor="company" className="text-gray-200 font-medium">
                         Company
                       </Label>
                       <Input
@@ -245,13 +293,19 @@ export default function Contact() {
                         type="text"
                         value={formData.company}
                         onChange={handleChange}
-                        className="mt-2 rounded-xl border-gray-300"
-                        placeholder="Your company name"
+                        className="mt-2 rounded-xl bg-transparent border-gray-600 text-white placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300"
+                        placeholder="Acme Inc."
                       />
-                    </div>
-                    <div>
-                      <Label htmlFor="message" className="text-foreground font-medium">
-                        Message
+                    </motion.div>
+
+                    <motion.div
+                      variants={fadeUp}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
+                    >
+                      <Label htmlFor="message" className="text-gray-200 font-medium">
+                        Message *
                       </Label>
                       <textarea
                         id="message"
@@ -260,35 +314,109 @@ export default function Contact() {
                         value={formData.message}
                         onChange={handleChange}
                         rows={5}
-                        className="mt-2 w-full rounded-xl border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#007AFF] focus:border-transparent"
-                        placeholder="Tell us about your automation needs..."
+                        className="mt-2 w-full rounded-xl border border-gray-600 bg-transparent px-3 py-2 text-white placeholder:text-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-300"
+                        placeholder="What challenges are slowing your business down?"
                       />
-                    </div>
+                    </motion.div>
 
-                    <Button
-                      type="submit"
-                      size="lg"
-                      className="w-full rounded-2xl bg-[#007AFF] text-white hover:bg-[#0056CC] hover:shadow-lg hover:shadow-[#007AFF]/30 transition-all text-lg glow-effect disabled:opacity-50 disabled:cursor-not-allowed"
-                      disabled={isSubmitting}
+                    <motion.div
+                      variants={fadeUp}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
                     >
-                      {isSubmitting ? "Sending..." : (
-                        <>
-                          Book 15-Minute Demo
-                          <Send className="ml-2 h-5 w-5" />
-                        </>
-                      )}
-                    </Button>
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="group w-full rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
+                        disabled={isSubmitting}
+                      >
+                        <span className="relative z-10 flex items-center justify-center gap-2">
+                          {isSubmitting ? (
+                            <>
+                              <motion.div
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                              />
+                              Sending...
+                            </>
+                          ) : (
+                            <>
+                              Send Message
+                              <Send className="h-5 w-5" />
+                            </>
+                          )}
+                        </span>
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          initial={false}
+                        />
+                      </Button>
+                    </motion.div>
                   </form>
                 </CardContent>
               </Card>
-              <p className="mt-6 text-center text-sm text-muted-foreground">
-                Privacy-first automation for modern businesses. We reply within 24 hours.
-              </p>
-            </motion.div>
-          </div>
+            )}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Calendly CTA Section */}
+      <section className="py-20 relative z-10">
+        <div className="container px-4 md:px-6 max-w-4xl mx-auto">
+          <motion.div
+            variants={scaleIn}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <motion.a
+              href="https://calendly.com/iops-ai/assessment"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-block px-8 py-4 text-lg font-medium rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:opacity-90 transition-all duration-300 shadow-lg shadow-indigo-500/50 hover:shadow-xl hover:shadow-indigo-500/70 relative overflow-hidden"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <span className="relative z-10">
+                Book a free strategy call
+              </span>
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                initial={false}
+              />
+            </motion.a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Gradient Divider */}
+      <div className="relative z-10 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent my-16" />
+
+      {/* Trust Footer */}
+      <section className="py-12 relative z-10">
+        <div className="container px-4 md:px-6 max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Shield className="h-5 w-5 text-indigo-400" />
+            </div>
+            <p className="text-gray-300 text-sm md:text-base mb-4">
+              Privacy-first automation for modern businesses • We reply within 24 hours • Enterprise-grade security
+            </p>
+            <p className="text-gray-400 text-sm md:text-base">
+              Trusted by business owners in finance, logistics, and SaaS to streamline operations with AI.
+            </p>
+          </motion.div>
         </div>
       </section>
     </main>
   );
 }
-
