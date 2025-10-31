@@ -4,12 +4,11 @@ import { useEffect } from "react";
 import {
   getConsentStatus,
   getCookiePreferences,
-  loadAnalyticsScripts,
   loadCalendlyScripts,
 } from "@/lib/gdpr-consent";
 
 /**
- * Client component that conditionally loads analytics and functional scripts
+ * Client component that conditionally loads functional scripts (Calendly)
  * based on user consent status and preferences
  */
 export function AnalyticsLoader() {
@@ -18,18 +17,10 @@ export function AnalyticsLoader() {
     const consentStatus = getConsentStatus();
     const preferences = getCookiePreferences();
 
-    if (consentStatus === "accepted") {
-      if (preferences) {
-        // Load scripts based on granular preferences
-        if (preferences.analytics) {
-          loadAnalyticsScripts();
-        }
-        if (preferences.functional) {
-          loadCalendlyScripts();
-        }
-      } else {
-        // Legacy: if no preferences but consent was accepted, load analytics
-        loadAnalyticsScripts();
+    if (consentStatus === "accepted" && preferences) {
+      // Load Calendly if functional cookies are enabled
+      if (preferences.functional) {
+        loadCalendlyScripts();
       }
     }
 
@@ -37,15 +28,8 @@ export function AnalyticsLoader() {
     const handleConsentChange = (event: CustomEvent) => {
       if (event.detail?.status === "accepted") {
         const prefs = getCookiePreferences();
-        if (prefs) {
-          if (prefs.analytics) {
-            loadAnalyticsScripts();
-          }
-          if (prefs.functional) {
-            loadCalendlyScripts();
-          }
-        } else {
-          loadAnalyticsScripts();
+        if (prefs?.functional) {
+          loadCalendlyScripts();
         }
       }
     };
@@ -53,13 +37,8 @@ export function AnalyticsLoader() {
     // Listen for preference changes
     const handlePreferenceChange = (event: CustomEvent) => {
       const prefs = event.detail?.preferences;
-      if (prefs) {
-        if (prefs.analytics) {
-          loadAnalyticsScripts();
-        }
-        if (prefs.functional) {
-          loadCalendlyScripts();
-        }
+      if (prefs?.functional) {
+        loadCalendlyScripts();
       }
     };
 

@@ -6,10 +6,9 @@
 export type ConsentStatus = "accepted" | "rejected" | null;
 
 export interface CookiePreferences {
-  essential: boolean; // Always true, required for site functionality
-  functional: boolean; // Calendly and similar services
-  analytics: boolean; // Google Analytics, etc.
-  marketing: boolean; // Marketing and advertising cookies
+  essential: boolean; // Always true, required for site functionality (Cloudflare Turnstile, session)
+  functional: boolean; // Calendly scheduling service
+  preference: boolean; // Theme selection, cookie consent choices
 }
 
 const STORAGE_KEY = "gdprConsent";
@@ -65,7 +64,6 @@ export function clearConsentStatus(): void {
   if (typeof window === "undefined") return;
   localStorage.removeItem(STORAGE_KEY);
   localStorage.removeItem(PREFERENCES_KEY);
-  removeAnalyticsScripts();
   removeCalendlyScripts();
   // Dispatch event to notify other parts of the app
   window.dispatchEvent(new CustomEvent("gdprConsentChanged", { detail: { status: null } }));
@@ -97,16 +95,10 @@ export function setCookiePreferences(preferences: CookiePreferences): void {
   localStorage.setItem(PREFERENCES_KEY, JSON.stringify(preferences));
 
   // Set overall consent status based on preferences
-  const hasNonEssential = preferences.functional || preferences.analytics || preferences.marketing;
+  const hasNonEssential = preferences.functional || preferences.preference;
   setConsentStatus(hasNonEssential ? "accepted" : "rejected");
 
   // Load or remove scripts based on preferences
-  if (preferences.analytics) {
-    loadAnalyticsScripts();
-  } else {
-    removeAnalyticsScripts();
-  }
-
   if (preferences.functional) {
     loadCalendlyScripts();
   } else {
@@ -117,61 +109,6 @@ export function setCookiePreferences(preferences: CookiePreferences): void {
   window.dispatchEvent(
     new CustomEvent("cookiePreferencesChanged", { detail: { preferences } })
   );
-}
-
-/**
- * Load analytics scripts if consent is given
- * This function should be called after consent is granted
- */
-export function loadAnalyticsScripts(): void {
-  if (typeof window === "undefined") return;
-
-  // Check if scripts are already loaded
-  if (document.getElementById("google-analytics")) return;
-
-  // Load Google Analytics if environment variable is set
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
-  if (gaId) {
-    // Create and load gtag script
-    const script1 = document.createElement("script");
-    script1.async = true;
-    script1.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-    script1.id = "google-analytics-loader";
-    document.head.appendChild(script1);
-
-    // Initialize gtag
-    const script2 = document.createElement("script");
-    script2.id = "google-analytics";
-    script2.innerHTML = `
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', '${gaId}', {
-        anonymize_ip: true,
-        cookie_flags: 'SameSite=None;Secure'
-      });
-    `;
-    document.head.appendChild(script2);
-  }
-}
-
-/**
- * Remove analytics scripts if consent is revoked
- */
-export function removeAnalyticsScripts(): void {
-  if (typeof window === "undefined") return;
-
-  // Remove Google Analytics scripts
-  const gaLoader = document.getElementById("google-analytics-loader");
-  const gaScript = document.getElementById("google-analytics");
-
-  if (gaLoader) gaLoader.remove();
-  if (gaScript) gaScript.remove();
-
-  // Clear gtag dataLayer
-  if (typeof window !== "undefined" && (window as any).dataLayer) {
-    (window as any).dataLayer = [];
-  }
 }
 
 /**

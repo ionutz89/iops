@@ -258,42 +258,52 @@ export default function PrivacyPolicy() {
           {/* Cookies */}
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-foreground">
-              8. Cookies and Tracking Technologies
+              8. Types of Cookies We Use
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              We use cookies and similar tracking technologies to collect and store
-              information about your preferences and activity on our website.
+              We use cookies to provide essential security and enable optional features.
+              We do not use analytics or marketing tracking.
             </p>
             <div className="space-y-4">
               <div>
                 <h3 className="text-xl font-semibold mb-2 text-foreground">
-                  Types of Cookies We Use:
+                  Cookie Categories:
                 </h3>
-                <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
+                <ul className="list-disc list-inside space-y-3 text-muted-foreground ml-4">
                   <li>
-                    <strong className="text-foreground">Essential Cookies:</strong>{" "}
-                    Required for the website to function properly, including Cloudflare Turnstile for security and session management. These cookies are always enabled and do not require consent.
+                    <strong className="text-foreground">Essential Cookies</strong> (always enabled)
+                    <br />
+                    <span className="text-sm">
+                      Required for security and basic functionality. Includes Cloudflare Turnstile
+                      for spam protection and session management. These cookies do not require consent
+                      as they are strictly necessary for the website to operate.
+                    </span>
                   </li>
                   <li>
-                    <strong className="text-foreground">Functional Cookies:</strong>{" "}
-                    Used by services like Calendly for scheduling consultations. These cookies are only loaded after you provide consent and are necessary for booking functionality.
+                    <strong className="text-foreground">Functional Cookies</strong> (requires consent)
+                    <br />
+                    <span className="text-sm">
+                      Enable optional features like Calendly for scheduling consultations. These cookies
+                      only load after you explicitly accept them and are necessary for booking functionality.
+                    </span>
                   </li>
                   <li>
-                    <strong className="text-foreground">Analytics Cookies:</strong>{" "}
-                    Help us understand how visitors interact with our website (e.g., Google Analytics). These cookies are optional and disabled by default until you consent.
-                  </li>
-                  <li>
-                    <strong className="text-foreground">Preference Cookies:</strong>{" "}
-                    Remember your settings and preferences (e.g., theme selection, cookie consent choices). These cookies are optional and only set after you interact with preference controls.
+                    <strong className="text-foreground">Preference Cookies</strong> (requires consent)
+                    <br />
+                    <span className="text-sm">
+                      Remember your settings such as theme selection (light/dark mode) and cookie consent
+                      choices. These are stored locally and only set after you interact with preference controls.
+                    </span>
                   </li>
                 </ul>
               </div>
-              <p className="text-muted-foreground leading-relaxed font-semibold">
-                Analytics, functional (Calendly), and marketing cookies are only activated after user consent. Essential cookies (security, session management) are always enabled as they are strictly necessary for the website to function.
+              <p className="text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Important:</strong> Only essential cookies are enabled by default.
+                Functional and preference cookies load only after you provide consent through our cookie banner.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                You can manage your cookie preferences at any time using the "Manage Cookies" link in the footer. You can also control cookies through your browser settings. However,
-                disabling certain cookies may affect website functionality.
+                You can manage your cookie preferences at any time using the "Manage Cookies" link in the footer.
+                Disabling functional cookies will prevent services like Calendly from loading.
               </p>
             </div>
           </section>
