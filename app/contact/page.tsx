@@ -16,7 +16,7 @@ import Script from "next/script";
 // Animation variants
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.0, 0.0, 0.58, 1.0] } },
+  visible: { opacity: 1, y: 0 },
 };
 
 const scaleIn = {
@@ -25,7 +25,12 @@ const scaleIn = {
 };
 
 const stagger = {
-  visible: { transition: { staggerChildren: 0.1 } },
+  visible: { 
+    transition: { 
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    } 
+  },
 };
 
 export default function Contact() {
@@ -152,6 +157,7 @@ export default function Contact() {
               initial="hidden"
               animate="visible"
               variants={stagger}
+              transition={{ duration: 0.6, ease: "easeOut" }}
               className="space-y-6 text-center"
             >
               <motion.h1
