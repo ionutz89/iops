@@ -1,19 +1,10 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import { Navigation } from "@/components/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EmailReveal } from "@/components/email-reveal";
-
-export const metadata: Metadata = {
-  title: "Privacy Policy | IOPS",
-  description:
-    "IOPS Privacy Policy - Learn how we collect, use, and protect your personal data in compliance with GDPR.",
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
 
 export default function PrivacyPolicy() {
   const currentYear = new Date().getFullYear();
@@ -245,6 +236,17 @@ export default function PrivacyPolicy() {
                   Privacy Policy
                 </Link>
               </li>
+              <li>
+                <strong className="text-foreground">Calendly:</strong> We use Calendly to schedule consultations. Calendly processes your name, email, and booking details. Data may be transferred to the United States under Standard Contractual Clauses (SCCs).{" "}
+                <Link
+                  href="https://calendly.com/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
             </ul>
             <p className="text-muted-foreground leading-relaxed mt-4">
               All third-party service providers are contractually obligated to
@@ -270,23 +272,27 @@ export default function PrivacyPolicy() {
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4">
                   <li>
                     <strong className="text-foreground">Essential Cookies:</strong>{" "}
-                    Required for the website to function properly
+                    Required for the website to function properly, including Cloudflare Turnstile for security and session management. These cookies are always enabled and do not require consent.
+                  </li>
+                  <li>
+                    <strong className="text-foreground">Functional Cookies:</strong>{" "}
+                    Used by services like Calendly for scheduling consultations. These cookies are only loaded after you provide consent and are necessary for booking functionality.
                   </li>
                   <li>
                     <strong className="text-foreground">Analytics Cookies:</strong>{" "}
-                    Help us understand how visitors interact with our website
+                    Help us understand how visitors interact with our website (e.g., Google Analytics). These cookies are optional and disabled by default until you consent.
                   </li>
                   <li>
                     <strong className="text-foreground">Preference Cookies:</strong>{" "}
-                    Remember your settings and preferences (e.g., theme selection)
+                    Remember your settings and preferences (e.g., theme selection, cookie consent choices). These cookies are optional and only set after you interact with preference controls.
                   </li>
                 </ul>
               </div>
               <p className="text-muted-foreground leading-relaxed font-semibold">
-                Analytics and marketing cookies are only activated after user consent. Essential cookies are always enabled.
+                Analytics, functional (Calendly), and marketing cookies are only activated after user consent. Essential cookies (security, session management) are always enabled as they are strictly necessary for the website to function.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                You can control cookies through your browser settings. However,
+                You can manage your cookie preferences at any time using the "Manage Cookies" link in the footer. You can also control cookies through your browser settings. However,
                 disabling certain cookies may affect website functionality.
               </p>
             </div>
@@ -415,7 +421,17 @@ export default function PrivacyPolicy() {
           </section>
 
           {/* Footer */}
-          <div className="mt-12 pt-8 border-t border-border">
+          <div className="mt-12 pt-8 border-t border-border space-y-4">
+            <div className="text-center">
+              <button
+                onClick={() => {
+                  window.dispatchEvent(new Event("openCookiePreferences"));
+                }}
+                className="text-sm text-primary hover:underline transition-colors"
+              >
+                Manage Cookie Preferences
+              </button>
+            </div>
             <p className="text-sm text-muted-foreground text-center">
               &copy; {currentYear} IOPS. All rights reserved.
             </p>

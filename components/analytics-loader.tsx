@@ -1,31 +1,74 @@
 "use client";
 
 import { useEffect } from "react";
-import { getConsentStatus, loadAnalyticsScripts } from "@/lib/gdpr-consent";
+import {
+  getConsentStatus,
+  getCookiePreferences,
+  loadAnalyticsScripts,
+  loadCalendlyScripts,
+} from "@/lib/gdpr-consent";
 
 /**
- * Client component that conditionally loads analytics scripts
- * based on user consent status
+ * Client component that conditionally loads analytics and functional scripts
+ * based on user consent status and preferences
  */
 export function AnalyticsLoader() {
   useEffect(() => {
-    // Check consent status and load analytics if accepted
+    // Check consent status and preferences
     const consentStatus = getConsentStatus();
+    const preferences = getCookiePreferences();
+
     if (consentStatus === "accepted") {
-      loadAnalyticsScripts();
+      if (preferences) {
+        // Load scripts based on granular preferences
+        if (preferences.analytics) {
+          loadAnalyticsScripts();
+        }
+        if (preferences.functional) {
+          loadCalendlyScripts();
+        }
+      } else {
+        // Legacy: if no preferences but consent was accepted, load analytics
+        loadAnalyticsScripts();
+      }
     }
 
     // Listen for consent changes
     const handleConsentChange = (event: CustomEvent) => {
       if (event.detail?.status === "accepted") {
-        loadAnalyticsScripts();
+        const prefs = getCookiePreferences();
+        if (prefs) {
+          if (prefs.analytics) {
+            loadAnalyticsScripts();
+          }
+          if (prefs.functional) {
+            loadCalendlyScripts();
+          }
+        } else {
+          loadAnalyticsScripts();
+        }
+      }
+    };
+
+    // Listen for preference changes
+    const handlePreferenceChange = (event: CustomEvent) => {
+      const prefs = event.detail?.preferences;
+      if (prefs) {
+        if (prefs.analytics) {
+          loadAnalyticsScripts();
+        }
+        if (prefs.functional) {
+          loadCalendlyScripts();
+        }
       }
     };
 
     window.addEventListener("gdprConsentChanged", handleConsentChange as EventListener);
+    window.addEventListener("cookiePreferencesChanged", handlePreferenceChange as EventListener);
 
     return () => {
       window.removeEventListener("gdprConsentChanged", handleConsentChange as EventListener);
+      window.removeEventListener("cookiePreferencesChanged", handlePreferenceChange as EventListener);
     };
   }, []);
 
