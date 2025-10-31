@@ -131,16 +131,19 @@ export default function About() {
                 name: "Ionut",
                 title: "Founder & DevOps/AI Automation Specialist",
                 description: "10+ years building intelligent systems that scale businesses. Specializes in Kubernetes, Azure, and AI-driven automation.",
+                link: null,
               },
               {
-                name: "Maria",
-                title: "DevOps Expert",
-                description: "Specializes in cloud infrastructure and CI/CD pipelines. Turns complex deployments into one-click operations.",
+                name: "Tudor",
+                title: "Automation Engineer",
+                description: "Focuses on cloud infrastructure and workflow reliability.",
+                link: { text: "See his work", url: "https://imiddle.online/experiences" },
               },
               {
                 name: "Daniel",
                 title: "Workflow Engineer",
                 description: "Designs seamless automation workflows for complex operations. Makes the impossible feel inevitable.",
+                link: null,
               },
             ].map((member, index) => (
               <motion.div
@@ -157,7 +160,23 @@ export default function About() {
                     </div>
                     <h3 className="text-xl font-bold mb-2 text-foreground">{member.name}</h3>
                     <p className="text-sm text-[#007AFF] font-medium mb-3">{member.title}</p>
-                    <p className="text-sm text-muted-foreground">{member.description}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {member.description}
+                      {member.link && (
+                        <>
+                          {" "}
+                          <a
+                            href={member.link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#007AFF] hover:text-[#0051D5] font-medium underline transition-colors"
+                          >
+                            {member.link.text}
+                          </a>
+                          .
+                        </>
+                      )}
+                    </p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -207,7 +226,9 @@ export default function About() {
               bottlenecks and show you exactly how to automate them.
             </p>
             <a
-              href="/contact"
+              href="https://calendly.com/ionut-iops/30min"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-block bg-white text-[#007AFF] px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg"
             >
               Book Your Free Audit
