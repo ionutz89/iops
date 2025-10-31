@@ -16,7 +16,7 @@ import Script from "next/script";
 // Animation variants
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
 const scaleIn = {
@@ -25,7 +25,7 @@ const scaleIn = {
 };
 
 const stagger = {
-  visible: { transition: { staggerChildren: 0.15 } },
+  visible: { transition: { staggerChildren: 0.1 } },
 };
 
 export default function Contact() {
@@ -97,14 +97,14 @@ export default function Contact() {
         }}
       />
 
-      <main className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-black animate-gradient relative overflow-hidden">
+      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-white dark:from-slate-900 dark:via-indigo-900 dark:to-black animate-gradient relative overflow-hidden">
         <Navigation />
 
         {/* Animated Background Elements */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
           {/* Breathing light gradient orbs */}
           <motion.div
-            className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl"
+            className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl"
             animate={{
               scale: [1, 1.2, 1],
               opacity: [0.3, 0.5, 0.3],
@@ -116,7 +116,7 @@ export default function Contact() {
             }}
           />
           <motion.div
-            className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
+            className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 dark:bg-purple-500/20 rounded-full blur-3xl"
             animate={{
               scale: [1, 1.3, 1],
               opacity: [0.3, 0.5, 0.3],
@@ -141,24 +141,21 @@ export default function Contact() {
             >
               <motion.h1
                 variants={fadeUp}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
+                className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight"
               >
                 Make Your Operations Run Themselves.
               </motion.h1>
 
               <motion.p
                 variants={fadeUp}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-2xl mx-auto"
+                className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-2xl mx-auto"
               >
                 We help growing teams automate workflows, cut costs, and deliver results faster.
               </motion.p>
 
               <motion.p
                 variants={fadeUp}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="text-base md:text-lg text-indigo-300 font-medium max-w-xl mx-auto"
+                className="text-base md:text-lg text-indigo-600 dark:text-indigo-300 font-medium max-w-xl mx-auto"
               >
                 Example: A logistics firm cut manual reporting by 45% using IOPS automation.
               </motion.p>
@@ -177,10 +174,9 @@ export default function Contact() {
             >
               <motion.div
                 variants={fadeUp}
-                transition={{ duration: 0.6, ease: "easeOut" }}
                 className="mb-12 text-center md:text-left"
               >
-                <p className="text-gray-300 text-xl md:text-2xl">
+                <p className="text-muted-foreground text-xl md:text-2xl">
                   Tell us what slows your business down. We&apos;ll show you how automation pays for itself.
                 </p>
               </motion.div>
@@ -206,10 +202,10 @@ export default function Contact() {
                           <CheckCircle2 className="h-10 w-10 text-white" />
                         </div>
                       </motion.div>
-                      <h3 className="text-2xl font-bold mb-4 text-white">
+                      <h3 className="text-2xl font-bold mb-4 text-foreground">
                         Thank You!
                       </h3>
-                      <p className="text-gray-300 mb-6">
+                      <p className="text-muted-foreground mb-6">
                         We&apos;ve received your message and will get back to you
                         within 24 hours.
                       </p>
@@ -224,7 +220,7 @@ export default function Contact() {
                   </Card>
                 </motion.div>
               ) : (
-                <Card className="rounded-2xl border border-gray-700/50 shadow-2xl bg-slate-800/50 backdrop-blur-sm">
+                <Card className="rounded-2xl border shadow-2xl bg-card/50 backdrop-blur-sm">
                   <CardContent className="p-6 md:p-8 lg:p-10">
                     <form
                       onSubmit={handleSubmit}
@@ -238,7 +234,7 @@ export default function Contact() {
                         whileInView="visible"
                         viewport={{ once: true }}
                       >
-                        <Label htmlFor="name" className="text-gray-200 font-medium">
+                        <Label htmlFor="name" className="text-foreground font-medium">
                           Name *
                         </Label>
                         <Input
@@ -248,7 +244,7 @@ export default function Contact() {
                           required
                           value={formData.name}
                           onChange={handleChange}
-                          className="mt-2 rounded-xl bg-transparent border-gray-600 text-white placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-300"
+                          className="mt-2 rounded-xl bg-background/50 border-input text-foreground placeholder:text-muted-foreground focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-300"
                           placeholder="John Doe"
                         />
                       </motion.div>
@@ -259,7 +255,7 @@ export default function Contact() {
                         whileInView="visible"
                         viewport={{ once: true }}
                       >
-                        <Label htmlFor="email" className="text-gray-200 font-medium">
+                        <Label htmlFor="email" className="text-foreground font-medium">
                           Email *
                         </Label>
                         <Input
@@ -269,7 +265,7 @@ export default function Contact() {
                           required
                           value={formData.email}
                           onChange={handleChange}
-                          className="mt-2 rounded-xl bg-transparent border-gray-600 text-white placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-300"
+                          className="mt-2 rounded-xl bg-background/50 border-input text-foreground placeholder:text-muted-foreground focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-300"
                           placeholder="john@company.com"
                         />
                       </motion.div>
@@ -280,8 +276,8 @@ export default function Contact() {
                         whileInView="visible"
                         viewport={{ once: true }}
                       >
-                        <Label htmlFor="company" className="text-gray-200 font-medium">
-                          Company
+                        <Label htmlFor="company" className="text-foreground font-medium">
+                          Company <span className="text-muted-foreground text-sm font-normal">(optional)</span>
                         </Label>
                         <Input
                           id="company"
@@ -289,7 +285,7 @@ export default function Contact() {
                           type="text"
                           value={formData.company}
                           onChange={handleChange}
-                          className="mt-2 rounded-xl bg-transparent border-gray-600 text-white placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-300"
+                          className="mt-2 rounded-xl bg-background/50 border-input text-foreground placeholder:text-muted-foreground focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 transition-all duration-300"
                           placeholder="Acme Inc."
                         />
                       </motion.div>
@@ -300,7 +296,7 @@ export default function Contact() {
                         whileInView="visible"
                         viewport={{ once: true }}
                       >
-                        <Label htmlFor="message" className="text-gray-200 font-medium">
+                        <Label htmlFor="message" className="text-foreground font-medium">
                           Message *
                         </Label>
                         <textarea
@@ -310,7 +306,7 @@ export default function Contact() {
                           value={formData.message}
                           onChange={handleChange}
                           rows={5}
-                          className="mt-2 w-full rounded-xl border border-gray-600 bg-transparent px-3 py-2 text-white placeholder:text-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-300"
+                          className="mt-2 w-full rounded-xl border border-input bg-background/50 px-3 py-2 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-300"
                           placeholder="What challenges are slowing your business down?"
                         />
                       </motion.div>
@@ -350,7 +346,7 @@ export default function Contact() {
                             initial={false}
                           />
                         </Button>
-                        <p className="text-center text-gray-400 text-sm">
+                        <p className="text-center text-muted-foreground text-sm">
                           We&apos;ll respond within 24 hours.
                         </p>
                       </motion.div>
@@ -366,17 +362,16 @@ export default function Contact() {
         <section className="py-12 md:py-16 relative z-10">
           <div className="container px-4 md:px-6 max-w-4xl mx-auto">
             <motion.div
-              variants={scaleIn}
+              variants={fadeUp}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
             >
               <motion.a
                 href="https://calendly.com/iops-ai/assessment"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block w-full px-8 py-4 text-lg font-medium rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:opacity-90 transition-all duration-300 shadow-lg shadow-indigo-500/50 hover:shadow-xl hover:shadow-indigo-500/70 relative overflow-hidden text-center"
+                className="group block w-full px-8 py-4 text-lg font-semibold rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:opacity-90 transition-all duration-300 shadow-lg shadow-indigo-500/50 hover:shadow-xl hover:shadow-indigo-500/70 relative overflow-hidden text-center"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -393,7 +388,7 @@ export default function Contact() {
         </section>
 
         {/* Footer */}
-        <footer className="py-12 md:py-16 relative z-10 border-t border-gray-800/50">
+        <footer className="py-12 md:py-16 relative z-10 border-t border-border/50">
           <div className="container px-4 md:px-6 max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -403,12 +398,12 @@ export default function Contact() {
               className="text-center space-y-4"
             >
               <div className="flex items-center justify-center gap-3 mb-4">
-                <Shield className="h-5 w-5 text-indigo-400" />
+                <Shield className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
               </div>
-              <p className="text-gray-300 text-sm md:text-base">
+              <p className="text-foreground text-sm md:text-base">
                 Privacy-first automation for modern businesses • Enterprise-grade security.
               </p>
-              <p className="text-gray-400 text-sm md:text-base">
+              <p className="text-muted-foreground text-sm md:text-base">
                 Trusted by business owners in finance, logistics, and SaaS to streamline operations with AI.
               </p>
             </motion.div>

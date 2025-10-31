@@ -3,19 +3,20 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Contact IOPS | Automate Your Business Operations with AI",
   description:
-    "Book a free strategy call with IOPS to see how intelligent automation reduces costs, improves efficiency, and helps your business scale.",
+    "Book a free strategy call with IOPS to learn how intelligent automation reduces costs and improves efficiency across your business.",
   keywords: [
     "business automation",
-    "intelligent operations",
     "workflow automation",
-    "AI efficiency",
+    "AI operations",
+    "efficiency",
     "cost reduction",
-    "IOPS AI",
+    "IOPS",
+    "automation consulting",
   ],
   openGraph: {
-    title: "Contact IOPS | Automate Your Business Operations",
+    title: "Contact IOPS | Automate Your Business Operations with AI",
     description:
-      "Talk to IOPS experts and learn how AI automation can streamline your operations and cut overhead.",
+      "See how intelligent automation can streamline your workflows and boost performance. Book your free strategy call today.",
     type: "website",
     url: "https://iops.pro/contact",
     siteName: "IOPS",
@@ -31,9 +32,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact IOPS | Automate Your Business Operations",
+    title: "Contact IOPS | Automate Your Business Operations with AI",
     description:
-      "Book a free strategy call with IOPS to learn how AI can simplify your workflows and reduce costs.",
+      "Book your free strategy call with IOPS and learn how automation helps your business run smarter.",
     images: ["https://iops.pro/assets/og-contact.jpg"],
   },
   alternates: {
