@@ -463,7 +463,7 @@ export default function Home() {
                     onClick={() => {
                       window.dispatchEvent(new Event("openCookiePreferences"));
                     }}
-                    className="text-foreground hover:text-primary transition-colors text-left"
+                    className="text-foreground hover:text-primary transition-colors"
                   >
                     Manage Cookies
                   </button>
