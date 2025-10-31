@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-  // Handle llms.txt request
-  if (request.nextUrl.pathname === "/llms.txt") {
+  const pathname = request.nextUrl.pathname;
+
+  // Handle llms.txt request - must match exactly
+  if (pathname === "/llms.txt") {
     const llmsContent = `# LLM & AI Discovery Metadata for IOPS
 
 # Overview
@@ -37,6 +39,9 @@ This llms.txt file provides reference URLs and key topics to help LLMs (Large La
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
         "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
       },
     });
   }
@@ -45,6 +50,6 @@ This llms.txt file provides reference URLs and key topics to help LLMs (Large La
 }
 
 export const config = {
-  matcher: "/llms.txt",
+  matcher: ["/llms.txt"],
 };
 
