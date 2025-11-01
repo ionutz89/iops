@@ -255,7 +255,14 @@ export function AnimatedWorkflow() {
                 top: baseY,
               }}
               initial={{ opacity: 0, scale: 0, x: offsetX, y: offsetY }}
-              animate={{
+              animate={isMobile ? {
+                // Mobile: NO animation, just static position
+                opacity: 1,
+                scale: 1,
+                x: offsetX,
+                y: offsetY,
+              } : {
+                // Desktop: Full floating animation
                 opacity: 1,
                 scale: 1,
                 x: [
@@ -275,7 +282,12 @@ export function AnimatedWorkflow() {
                   offsetY,
                 ],
               }}
-              transition={{
+              transition={isMobile ? {
+                // Mobile: Only initial fade-in, NO infinite animation
+                opacity: { duration: 0.6, delay: index * 0.15 },
+                scale: { duration: 0.6, delay: index * 0.15 },
+              } : {
+                // Desktop: Full animation with infinite loop
                 opacity: { duration: 0.6, delay: index * 0.15 },
                 scale: { duration: 0.6, delay: index * 0.15 },
                 x: {
