@@ -126,7 +126,7 @@ export function ROICalculator() {
         </motion.div>
 
         <div className="relative max-w-6xl mx-auto min-h-[600px]">
-          <div className={`relative ${hasCalculated ? 'lg:grid lg:grid-cols-2' : 'flex justify-center'} gap-8 transition-all duration-[600ms] ease-in-out`}>
+          <div className={`relative ${hasCalculated ? 'lg:grid lg:grid-cols-2' : 'flex justify-center'} gap-8 transition-all duration-500 ease-in-out`}>
             {/* Calculator Panel - Centered initially, slides left after calculation */}
             <motion.div
               layout
