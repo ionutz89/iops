@@ -183,59 +183,120 @@ export function AnimatedWorkflow() {
     // Mark as initialized BEFORE generating to prevent re-generation
     nodesInitializedRef.current = true;
 
-    // Generate non-overlapping random positions for nodes with size-aware spacing
+    // Generate non-overlapping positions for nodes with size-aware spacing
     const generatedNodes: Node[] = [];
-    // MASSIVE padding on mobile to prevent ANY overlap - Safari needs extra space
-    // More padding on desktop for larger bubbles, even more on mobile
-    const extraPadding = isMobile ? 150 : 80;
+    const extraPadding = isMobile ? 200 : 80; // Massive padding on mobile
 
-    nodeLabels.forEach((label, i) => {
-      let x: number, y: number;
-      let attempts = 0;
-      const maxAttempts = 500;
-      const currentBubbleSize = getBubbleSize(label, isMobile);
-
-      do {
-        // Use wider range but with margin from edges based on bubble size
-        // Much larger margin on mobile to ensure bubbles don't touch edges
-        const margin =
-          (currentBubbleSize.radius / containerSize.width) * 100 +
-          (isMobile ? 25 : 12);
-        x = Math.random() * (100 - 2 * margin) + margin;
-        y = Math.random() * (100 - 2 * margin) + margin;
-        attempts++;
-      } while (
-        attempts < maxAttempts &&
-        generatedNodes.some((node) => {
-          const nodeBubbleSize = getBubbleSize(node.label, isMobile);
-          // Convert percentage positions to pixel positions for accurate overlap check
-          const x1Px = (x / 100) * containerSize.width;
-          const y1Px = (y / 100) * containerSize.height;
-          const x2Px = (node.x / 100) * containerSize.width;
-          const y2Px = (node.y / 100) * containerSize.height;
-          // Ultra-strict overlap check with proper radius and massive padding
-          const distance = Math.sqrt(
-            Math.pow(x2Px - x1Px, 2) + Math.pow(y2Px - y1Px, 2)
-          );
-          // Add extra safety buffer for mobile Safari
-          const safetyBuffer = isMobile ? 20 : 0;
-          const minDistance = currentBubbleSize.radius + nodeBubbleSize.radius + extraPadding + safetyBuffer;
-          return distance < minDistance;
-        })
-      );
-
-      // If we hit max attempts, log warning but still place the node
-      if (attempts >= maxAttempts) {
-        console.warn(`Max attempts reached for node ${i} (${label}). May overlap.`);
-      }
-
-      generatedNodes.push({
-        id: `node-${i}`,
+    if (isMobile) {
+      // MOBILE: Use deterministic grid-based layout to GUARANTEE no overlaps
+      const bubbles = nodeLabels.map((label) => ({
         label,
-        x,
-        y,
+        size: getBubbleSize(label, true),
+      }));
+
+      // Calculate total area needed
+      const maxBubbleSize = Math.max(...bubbles.map(b => b.size.width));
+      const minSpacing = maxBubbleSize + extraPadding;
+
+      // Use a grid: 2 columns, multiple rows
+      const cols = 2;
+      const rows = Math.ceil(nodeLabels.length / cols);
+
+      // Calculate cell size based on container
+      const cellWidth = containerSize.width / cols;
+      const cellHeight = containerSize.height / rows;
+
+      // Ensure cells are large enough
+      const minCellSize = minSpacing * 1.2;
+      if (cellWidth < minCellSize || cellHeight < minCellSize) {
+        // Container too small, use more conservative spacing
+        const adjustedPadding = Math.min(extraPadding, Math.min(cellWidth, cellHeight) * 0.4);
+
+        nodeLabels.forEach((label, i) => {
+          const col = i % cols;
+          const row = Math.floor(i / cols);
+          const currentBubbleSize = getBubbleSize(label, isMobile);
+
+          // Center within cell with padding
+          const cellCenterX = (col + 0.5) * cellWidth;
+          const cellCenterY = (row + 0.5) * cellHeight;
+
+          // Add small random offset to avoid perfect grid, but keep within safe bounds
+          const maxOffset = Math.min(cellWidth, cellHeight) * 0.15;
+          const offsetX = (Math.random() - 0.5) * maxOffset;
+          const offsetY = (Math.random() - 0.5) * maxOffset;
+
+          const x = ((cellCenterX + offsetX) / containerSize.width) * 100;
+          const y = ((cellCenterY + offsetY) / containerSize.height) * 100;
+
+          // Clamp to safe bounds
+          const margin = (currentBubbleSize.radius / containerSize.width) * 100 + 15;
+          const clampedX = Math.max(margin, Math.min(100 - margin, x));
+          const clampedY = Math.max(margin, Math.min(100 - margin, y));
+
+          generatedNodes.push({
+            id: `node-${i}`,
+            label,
+            x: clampedX,
+            y: clampedY,
+          });
+        });
+      } else {
+        // Enough space, use grid layout
+        nodeLabels.forEach((label, i) => {
+          const col = i % cols;
+          const row = Math.floor(i / cols);
+
+          // Center within cell
+          const x = ((col + 0.5) / cols) * 100;
+          const y = ((row + 0.5) / rows) * 100;
+
+          generatedNodes.push({
+            id: `node-${i}`,
+            label,
+            x,
+            y,
+          });
+        });
+      }
+    } else {
+      // DESKTOP: Use random positioning with overlap checks
+      nodeLabels.forEach((label, i) => {
+        let x: number, y: number;
+        let attempts = 0;
+        const maxAttempts = 500;
+        const currentBubbleSize = getBubbleSize(label, isMobile);
+
+        do {
+          const margin =
+            (currentBubbleSize.radius / containerSize.width) * 100 + 12;
+          x = Math.random() * (100 - 2 * margin) + margin;
+          y = Math.random() * (100 - 2 * margin) + margin;
+          attempts++;
+        } while (
+          attempts < maxAttempts &&
+          generatedNodes.some((node) => {
+            const nodeBubbleSize = getBubbleSize(node.label, isMobile);
+            const x1Px = (x / 100) * containerSize.width;
+            const y1Px = (y / 100) * containerSize.height;
+            const x2Px = (node.x / 100) * containerSize.width;
+            const y2Px = (node.y / 100) * containerSize.height;
+            const distance = Math.sqrt(
+              Math.pow(x2Px - x1Px, 2) + Math.pow(y2Px - y1Px, 2)
+            );
+            const minDistance = currentBubbleSize.radius + nodeBubbleSize.radius + extraPadding;
+            return distance < minDistance;
+          })
+        );
+
+        generatedNodes.push({
+          id: `node-${i}`,
+          label,
+          x,
+          y,
+        });
       });
-    });
+    }
 
     setNodes(generatedNodes);
 
