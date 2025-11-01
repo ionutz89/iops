@@ -128,6 +128,7 @@ export function AnimatedWorkflow() {
     // Initialize node positions
     const initialPositions: { [key: string]: { x: number; y: number } } = {};
     generatedNodes.forEach((node) => {
+      const bubbleSize = getBubbleSize(node.label, isMobile);
       initialPositions[node.id] = {
         x: (node.x / 100) * containerSize.width,
         y: (node.y / 100) * containerSize.height,
@@ -247,28 +248,57 @@ export function AnimatedWorkflow() {
           const offsetX = -bubbleRadius;
           const offsetY = -bubbleRadius;
 
+          // Mobile: Use plain div, NO Framer Motion at all
+          if (isMobile) {
+            return (
+              <div
+                key={node.id}
+                className="absolute z-10"
+                style={{
+                  left: baseX,
+                  top: baseY,
+                  transform: `translate(${offsetX}px, ${offsetY}px)`,
+                  touchAction: "none",
+                  pointerEvents: "none",
+                  userSelect: "none",
+                }}
+              >
+                {/* Static bubble on mobile */}
+                <div
+                  className="relative bg-white/90 dark:bg-[#1C1E22] text-gray-800 dark:text-gray-200 font-semibold shadow-lg dark:shadow-xl rounded-full flex items-center justify-center text-center backdrop-blur-md border border-gray-200 dark:border-white/10"
+                  style={{
+                    width: `${bubbleWidth}px`,
+                    height: `${bubbleWidth}px`,
+                    padding: "8px",
+                    fontSize: "10px",
+                    lineHeight: "1.2",
+                    touchAction: "none",
+                    pointerEvents: "none",
+                    userSelect: "none",
+                    WebkitTouchCallout: "none",
+                    WebkitUserSelect: "none",
+                  }}
+                >
+                  {/* Improved text wrapping with responsive sizing and proper line breaks */}
+                  <p className="break-words whitespace-normal leading-tight text-center w-full px-1">
+                    {node.label}
+                  </p>
+                </div>
+              </div>
+            );
+          }
+
+          // Desktop: Use Framer Motion with full animations
           return (
             <motion.div
               key={node.id}
               className="absolute z-10"
-              drag={false}
-              dragConstraints={false}
               style={{
                 left: baseX,
                 top: baseY,
-                touchAction: isMobile ? "none" : "auto",
-                pointerEvents: isMobile ? "none" : "auto",
-                userSelect: isMobile ? "none" : "auto",
               }}
               initial={{ opacity: 0, scale: 0, x: offsetX, y: offsetY }}
-              animate={isMobile ? {
-                // Mobile: NO animation, just static position
-                opacity: 1,
-                scale: 1,
-                x: offsetX,
-                y: offsetY,
-              } : {
-                // Desktop: Full floating animation
+              animate={{
                 opacity: 1,
                 scale: 1,
                 x: [
@@ -288,12 +318,7 @@ export function AnimatedWorkflow() {
                   offsetY,
                 ],
               }}
-              transition={isMobile ? {
-                // Mobile: Only initial fade-in, NO infinite animation
-                opacity: { duration: 0.6, delay: index * 0.15 },
-                scale: { duration: 0.6, delay: index * 0.15 },
-              } : {
-                // Desktop: Full animation with infinite loop
+              transition={{
                 opacity: { duration: 0.6, delay: index * 0.15 },
                 scale: { duration: 0.6, delay: index * 0.15 },
                 x: {
@@ -319,25 +344,18 @@ export function AnimatedWorkflow() {
               {/* Enhanced bubble with dual-theme frosted glass effect and proper overflow handling */}
               <motion.div
                 className="relative bg-white/90 dark:bg-[#1C1E22] text-gray-800 dark:text-gray-200 font-semibold shadow-lg dark:shadow-xl rounded-full flex items-center justify-center text-center backdrop-blur-md border border-gray-200 dark:border-white/10"
-                drag={false}
                 style={{
                   width: `${bubbleWidth}px`,
                   height: `${bubbleWidth}px`,
-                  padding: isMobile ? "8px" : "12px",
-                  fontSize: isMobile ? "10px" : "12px",
-                  lineHeight: isMobile ? "1.2" : "1.3",
-                  pointerEvents: isMobile ? "none" : "auto",
-                  touchAction: isMobile ? "none" : "auto",
-                  userSelect: "none",
-                  WebkitTouchCallout: "none",
-                  WebkitUserSelect: "none",
+                  padding: "12px",
+                  fontSize: "12px",
+                  lineHeight: "1.3",
                 }}
-                whileHover={!isMobile ? {
+                whileHover={{
                   scale: 1.05,
                   boxShadow: "0 0 30px rgba(0, 184, 217, 0.4)",
                   borderColor: "rgba(0, 184, 217, 0.3)"
-                } : undefined}
-                whileTap={!isMobile ? undefined : {}}
+                }}
                 transition={{ duration: 0.2 }}
               >
                 {/* Improved text wrapping with responsive sizing and proper line breaks */}
