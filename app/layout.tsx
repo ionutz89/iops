@@ -149,8 +149,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="transition-colors duration-300">
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className="transition-colors duration-300"
+    >
+      <body
+        className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}
+      >
         {/* JSON-LD Structured Data */}
         <Script
           id="organization-schema"
@@ -169,9 +175,12 @@ export default function RootLayout({
         {/* Cloudflare Turnstile is loaded dynamically only when needed (contact forms) */}
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
-          enableSystem
-          enableColorScheme
+          defaultTheme="system"
+          enableSystem={true}
+          enableColorScheme={true}
+          storageKey="theme"
+          disableTransitionOnChange={false}
+          forcedTheme={undefined}
         >
           {children}
           <GdprConsent />
