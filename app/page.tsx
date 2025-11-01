@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Navigation } from "@/components/navigation";
 import { AnimatedWorkflow } from "@/components/animated-workflow";
@@ -18,6 +18,8 @@ import {
   Zap,
   Brain,
   Infinity as InfinityIcon,
+  ChevronLeft,
+  ChevronRight,
   type LucideIcon,
 } from "lucide-react";
 import { useCountUp } from "@/lib/count-up";
@@ -130,6 +132,153 @@ function MetricCard({
   );
 }
 
+// Testimonials Section Component with Carousel
+function TestimonialsSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const testimonials = [
+    {
+      quote:
+        "IOPS automation cut our manual reporting time by 70% and enabled 24/7 uptime monitoring.",
+      author: "Operations Director",
+      company: "SaaS Firm",
+      initials: "OD",
+    },
+    {
+      quote:
+        "We reduced billing errors by half and freed up 40+ hours weekly for strategic work.",
+      author: "Finance Lead",
+      company: "Logistics Group",
+      initials: "FL",
+    },
+    {
+      quote:
+        "Their AI systems prevented 15+ incidents before they became problems. ROI exceeded 300%.",
+      author: "CTO",
+      company: "Tech Startup",
+      initials: "CT",
+    },
+    {
+      quote:
+        "Automation handles our daily operations seamlessly. The team can finally focus on growth.",
+      author: "COO",
+      company: "E-commerce Platform",
+      initials: "CO",
+    },
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [testimonials.length]);
+
+  const nextTestimonial = () => {
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const prevTestimonial = () => {
+    setCurrentIndex(
+      (prev) => (prev - 1 + testimonials.length) % testimonials.length
+    );
+  };
+
+  return (
+    <section className="py-24 bg-muted">
+      <div className="container px-4 md:px-6 max-w-5xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+            What Clients Say
+          </h2>
+          <p className="text-lg text-muted-foreground">
+            Trusted by operations teams to automate and scale efficiently
+          </p>
+        </motion.div>
+
+        {/* Carousel Container */}
+        <div className="relative">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="bg-card rounded-2xl border border-border p-8 md:p-12 shadow-lg"
+            >
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+                {/* Company Logo Circle */}
+                <div className="flex-shrink-0">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#00E5FF] to-[#8B5CF6] flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                    {testimonials[currentIndex].initials}
+                  </div>
+                </div>
+
+                {/* Quote */}
+                <div className="flex-1">
+                  <blockquote className="text-lg md:text-xl text-foreground mb-4 leading-relaxed">
+                    "{testimonials[currentIndex].quote}"
+                  </blockquote>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                    <p className="font-semibold text-foreground">
+                      {testimonials[currentIndex].author}
+                    </p>
+                    <span className="hidden sm:inline text-muted-foreground">
+                      —
+                    </span>
+                    <p className="text-muted-foreground">
+                      {testimonials[currentIndex].company}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation Arrows */}
+          <button
+            onClick={prevTestimonial}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 bg-card border border-border rounded-full p-2 hover:bg-muted transition-colors shadow-lg"
+            aria-label="Previous testimonial"
+          >
+            <ChevronLeft className="h-5 w-5 text-foreground" />
+          </button>
+          <button
+            onClick={nextTestimonial}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 bg-card border border-border rounded-full p-2 hover:bg-muted transition-colors shadow-lg"
+            aria-label="Next testimonial"
+          >
+            <ChevronRight className="h-5 w-5 text-foreground" />
+          </button>
+        </div>
+
+        {/* Dots Indicator */}
+        <div className="flex justify-center gap-2 mt-8">
+          {testimonials.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentIndex
+                  ? "bg-[#00E5FF] w-8"
+                  : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+              }`}
+              aria-label={`Go to testimonial ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   // Counter animation script
   useEffect(() => {
@@ -158,96 +307,78 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-        {/* Animated Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-background to-purple-50 dark:from-blue-950/20 dark:via-background dark:to-purple-950/20" />
+        {/* Animated Blue-Violet Gradient Background */}
+        <motion.div
+          className="absolute inset-0"
+          animate={{
+            background: [
+              "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
+              "radial-gradient(ellipse at bottom left, rgba(0, 229, 255, 0.2) 0%, transparent 50%), radial-gradient(ellipse at top right, rgba(139, 92, 246, 0.2) 0%, transparent 50%)",
+              "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
+            ],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
 
         {/* Floating Circles */}
         <div className="absolute inset-0 overflow-hidden">
           <FloatingCircles />
         </div>
 
-        {/* Subtle gradient overlay */}
-        <motion.div
-          className="absolute inset-0 opacity-40"
-          animate={{
-            background: [
-              "radial-gradient(circle at 20% 50%, rgba(0, 122, 255, 0.1) 0%, transparent 50%)",
-              "radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%)",
-              "radial-gradient(circle at 20% 50%, rgba(0, 122, 255, 0.1) 0%, transparent 50%)",
-            ],
-          }}
-          transition={{ duration: 10, repeat: Infinity }}
-        />
-
         <div className="container relative z-10 px-4 md:px-6 py-24 md:py-32 max-w-6xl mx-auto">
-          <div className="flex flex-col items-center text-center space-y-8">
+          <div className="flex flex-col items-center text-center space-y-6 md:space-y-8">
             {/* Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-4xl sm:text-6xl font-bold tracking-tight text-foreground"
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground"
               data-motion
             >
               Automate Your Business{" "}
               <span className="gradient-text">with AI</span>
             </motion.h1>
 
-            {/* New Line */}
+            {/* Sub-headline */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.05 }}
-              className="text-lg text-muted-foreground mt-2"
+              transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+              className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
             >
-              We automate workflows, monitor systems, and reduce downtime — without replacing your team.
-            </motion.p>
-
-            {/* Summary Line */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-base sm:text-lg font-medium text-foreground max-w-2xl mx-auto"
-            >
-              We help businesses automate repetitive work, monitor systems, and reduce downtime using AI.
-            </motion.p>
-
-            {/* Subtext */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg text-muted-foreground max-w-2xl mx-auto"
-            >
-              We build automation systems that cut manual work, prevent issues, and keep your operations running 24/7.
+              We build AI systems that cut manual work, prevent issues, and keep
+              operations running 24/7.
             </motion.p>
 
             {/* CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto items-center justify-center"
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+              className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center justify-center"
             >
               <Button
                 size="lg"
                 asChild
-                className="rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 font-medium shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-blue-500/50 hover:from-blue-600 hover:to-purple-700"
+                className="rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-blue-500/50 hover:from-blue-600 hover:to-purple-700 w-full sm:w-auto"
                 aria-label="Get free assessment"
               >
-                <Link href="/contact">
+                <Link href="/contact" className="flex items-center justify-center">
                   Get Free Assessment
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Link
-                href="#roi-calculator"
-                className="inline-block px-6 py-3 text-sm font-medium text-blue-600 border border-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-200 ml-4"
+              <Button
+                size="lg"
+                variant="outline"
+                asChild
+                className="rounded-2xl border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-6 text-base font-semibold transition-all duration-300 hover:scale-105 w-full sm:w-auto"
                 aria-label="Calculate ROI"
               >
-                Calculate ROI
-              </Link>
+                <Link href="#roi-calculator" className="flex items-center justify-center">
+                  Calculate ROI
+                </Link>
+              </Button>
             </motion.div>
 
             {/* Animated Workflow */}
@@ -264,9 +395,15 @@ export default function Home() {
       </section>
 
       {/* Impact Highlights with Count-Up */}
-      <section className="py-16 bg-muted">
+      <section className="py-16 md:py-24 bg-muted">
         <div className="container px-4 md:px-6 max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+            className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center"
+          >
             <MetricCard
               icon={Clock}
               value={70}
@@ -291,27 +428,29 @@ export default function Home() {
               description="Your operations work around the clock"
               delay={0.2}
             />
-          </div>
+          </motion.div>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.3 }}
             className="text-center text-muted-foreground mt-8 text-base"
           >
-            Trusted by businesses worldwide to automate their operations and scale efficiently.
+            Trusted by businesses worldwide to automate their operations and
+            scale efficiently.
           </motion.p>
         </div>
       </section>
 
       {/* Why Choose IOPS */}
-      <section className="py-24 bg-background">
+      <section className="py-16 md:py-24 bg-background">
         <div className="container px-4 md:px-6 max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12 md:mb-16"
           >
             <p className="text-lg text-muted-foreground mb-4">
               Proven results across SaaS, logistics, and service companies.
@@ -320,10 +459,17 @@ export default function Home() {
               Why Businesses Choose IOPS
             </h2>
             <p className="text-lg text-muted-foreground">
-              Businesses choose IOPS because it makes operations faster, cheaper, and more reliable.
+              Businesses choose IOPS because it makes operations faster,
+              cheaper, and more reliable.
             </p>
           </motion.div>
-          <div className="flex flex-wrap justify-center gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="flex flex-wrap justify-center gap-4 md:gap-6"
+          >
             {[
               { icon: Clock, title: "Time Savings" },
               { icon: TrendingDown, title: "Cost Reduction" },
@@ -350,78 +496,29 @@ export default function Home() {
                 </Card>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* What Clients Say */}
-      <section className="py-16 bg-muted">
-        <div className="container px-4 md:px-6 max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <h3 className="text-2xl font-semibold mb-6 text-foreground">
-              What Clients Say
-            </h3>
-            <motion.blockquote
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg md:text-xl text-foreground italic max-w-3xl mx-auto mb-4"
-            >
-              "IOPS helped us cut 70% of manual reporting and achieve 24/7 uptime in under two weeks."
-            </motion.blockquote>
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="text-sm text-muted-foreground"
-            >
-              – SaaS Operations Director
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="italic text-muted-foreground mt-4 text-lg md:text-xl max-w-3xl mx-auto"
-            >
-              "We cut manual billing work by half in our first month." — Finance Lead, Logistics Company
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="italic text-muted-foreground mt-2 text-lg md:text-xl max-w-3xl mx-auto"
-            >
-              "Automating our reports saved 60+ hours weekly." — COO, SaaS Startup
-            </motion.p>
           </motion.div>
         </div>
       </section>
 
+      {/* Testimonials Section - Redesigned with Carousel */}
+      <TestimonialsSection />
+
       {/* Use Case Section */}
-      <section className="py-16 bg-background">
+      <section className="py-16 md:py-24 bg-background">
         <div className="container px-4 md:px-6 max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
             className="text-center"
           >
             <h2 className="text-3xl font-bold mb-4 text-foreground">
               Real Example
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              A SaaS company saved 80 hours per month by automating reports and system checks with IOPS.
+              A SaaS company saved 80 hours per month by automating reports and
+              system checks with IOPS.
             </p>
           </motion.div>
         </div>
@@ -434,24 +531,36 @@ export default function Home() {
       <TechEcosystemSection />
 
       {/* Final CTA Banner */}
-      <section className="py-24 bg-gray-950 dark:bg-gray-950 relative overflow-hidden pb-32 md:pb-24 transition-colors duration-300">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10" />
+      <section className="py-16 md:py-24 bg-[#0B0C10] relative overflow-hidden transition-colors duration-300">
+        <motion.div
+          className="absolute inset-0"
+          animate={{
+            background: [
+              "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.1) 0%, transparent 50%)",
+              "radial-gradient(ellipse at bottom left, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse at top right, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
+              "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.1) 0%, transparent 50%)",
+            ],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
           className="container relative z-10 px-4 md:px-6 max-w-6xl mx-auto text-center"
         >
-          <h2 className="text-2xl md:text-4xl font-semibold text-white dark:text-gray-200 mb-6 transition-colors duration-300">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[rgba(255,255,255,0.87)] mb-4 md:mb-6 transition-colors duration-300">
             Book 30-Minute Call
           </h2>
-          <p className="text-xl text-gray-200 dark:text-gray-400 mb-8 max-w-2xl mx-auto transition-colors duration-300">
-            We'll review your current operations and show how automation can reduce your workload.
+          <p className="text-lg md:text-xl text-[rgba(255,255,255,0.6)] mb-6 md:mb-8 max-w-2xl mx-auto transition-colors duration-300">
+            We'll review your current operations and show how automation can
+            reduce your workload.
           </p>
           <Button
             size="lg"
             asChild
-            className="rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-6 font-medium shadow-lg hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 hover:scale-105 hover:from-blue-600 hover:to-purple-700"
+            className="rounded-xl bg-[#00E5FF] hover:bg-[#00CCE5] text-[#0B0C10] px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
             aria-label="Book 30-minute call"
           >
             <Link href="https://calendly.com/me-ionut/30min">
@@ -460,26 +569,18 @@ export default function Home() {
             </Link>
           </Button>
         </motion.div>
-        {/* Sticky button for mobile */}
-        <div className="fixed bottom-4 left-0 right-0 flex justify-center md:hidden z-40 px-4">
-          <Button
-            size="lg"
-            asChild
-            className="rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 font-medium shadow-lg hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300"
-            aria-label="Book 30-minute call"
-          >
-            <Link href="https://calendly.com/me-ionut/30min">
-              Book 30-Minute Call
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
-        </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border py-12 bg-muted">
+      <footer className="border-t border-border py-12 md:py-16 bg-muted">
         <div className="container px-4 md:px-6 max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12"
+          >
             <div>
               <div className="flex flex-col items-start mb-4">
                 <span className="text-2xl font-bold gradient-text">IOPS</span>
@@ -509,12 +610,12 @@ export default function Home() {
                   />
                 </li>
                 <li>
-              <Link
-                href="/contact"
-                className="text-foreground hover:text-primary dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300"
-              >
-                Get in Touch
-              </Link>
+                  <Link
+                    href="/contact"
+                    className="text-foreground hover:text-primary dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300"
+                  >
+                    Get in Touch
+                  </Link>
                 </li>
                 <li>
                   <Link
@@ -526,12 +627,18 @@ export default function Home() {
                 </li>
               </ul>
             </div>
-          </div>
-          <div className="mt-8 pt-8 border-t text-center">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-8 md:mt-12 pt-8 border-t text-center"
+          >
             <p className="text-sm text-muted-foreground">
               &copy; {new Date().getFullYear()} IOPS. All rights reserved.
             </p>
-          </div>
+          </motion.div>
         </div>
       </footer>
     </main>

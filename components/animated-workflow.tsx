@@ -1,146 +1,286 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 interface Node {
   id: string;
   label: string;
   x: number;
   y: number;
-  connections: string[];
 }
 
-const nodes: Node[] = [
-  { id: "website", label: "Website", x: 20, y: 30, connections: ["ai-agent"] },
-  { id: "database", label: "Database", x: 20, y: 70, connections: ["ai-agent"] },
-  { id: "ai-agent", label: "AI Assistant for Operations", x: 50, y: 50, connections: ["monitoring", "scaling"] },
-  { id: "monitoring", label: "Automatic System Monitoring", x: 80, y: 30, connections: ["notification"] },
-  { id: "scaling", label: "Smart Resource Scaling", x: 80, y: 70, connections: ["notification"] },
-  { id: "notification", label: "Instant Team Alerts", x: 65, y: 15, connections: [] },
+const nodeLabels = [
+  "Website",
+  "Database",
+  "AI Assistant for Operations",
+  "Automatic System Monitoring",
+  "Smart Resource Scaling",
+  "Instant Team Alerts",
+  "ChatBot",
 ];
 
-const getNodePosition = (node: Node, containerWidth: number, containerHeight: number) => {
-  return {
-    x: (node.x / 100) * containerWidth,
-    y: (node.y / 100) * containerHeight,
-  };
+// Calculate bubble size based on text length
+const getBubbleRadius = (label: string) => {
+  // Estimate width based on character count
+  // Longer text = bigger bubble
+  const charCount = label.length;
+  if (charCount > 25) return 90; // Large bubble
+  if (charCount > 15) return 70; // Medium bubble
+  return 50; // Small bubble
+};
+
+// Function to check if two circles overlap with proper spacing
+const checkOverlap = (
+  x1: number,
+  y1: number,
+  radius1: number,
+  x2: number,
+  y2: number,
+  radius2: number,
+  extraPadding: number = 40
+) => {
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const distance = Math.sqrt(dx * dx + dy * dy);
+  const minDistance = radius1 + radius2 + extraPadding;
+  return distance < minDistance;
 };
 
 export function AnimatedWorkflow() {
-  const [containerSize, setContainerSize] = useState({ width: 600, height: 400 });
+  const [containerSize, setContainerSize] = useState({ width: 800, height: 500 });
+  const [nodes, setNodes] = useState<Node[]>([]);
+  const [connections, setConnections] = useState<[number, number][]>([]);
+  const [nodePositions, setNodePositions] = useState<{ [key: string]: { x: number; y: number } }>({});
 
   useEffect(() => {
     const updateSize = () => {
-      const width = Math.min(600, window.innerWidth - 80);
-      setContainerSize({ width, height: 400 });
+      const width = Math.min(900, window.innerWidth - 80);
+      const height = Math.min(500, window.innerHeight * 0.6);
+      setContainerSize({ width, height });
     };
     updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
   }, []);
 
-  const getConnectionPath = (
-    from: Node,
-    to: Node,
-    width: number,
-    height: number
-  ): string => {
-    const fromPos = getNodePosition(from, width, height);
-    const toPos = getNodePosition(to, width, height);
-    const dx = toPos.x - fromPos.x;
-    const dy = toPos.y - fromPos.y;
-    const controlX = fromPos.x + dx * 0.5;
-    return `M ${fromPos.x} ${fromPos.y} Q ${controlX} ${fromPos.y} ${controlX} ${(fromPos.y + toPos.y) / 2} T ${toPos.x} ${toPos.y}`;
-  };
+  useEffect(() => {
+    // Generate non-overlapping random positions for nodes with size-aware spacing
+    const generatedNodes: Node[] = [];
+    const extraPadding = 50; // Extra space between bubbles
+
+    nodeLabels.forEach((label, i) => {
+      let x, y;
+      let attempts = 0;
+      const maxAttempts = 200; // More attempts for better positioning
+      const currentBubbleRadius = getBubbleRadius(label);
+
+      do {
+        // Use wider range but with margin from edges based on bubble size
+        const margin = (currentBubbleRadius / containerSize.width) * 100 + 5;
+        x = Math.random() * (100 - 2 * margin) + margin;
+        y = Math.random() * (100 - 2 * margin) + margin;
+        attempts++;
+      } while (
+        attempts < maxAttempts &&
+        generatedNodes.some((node) => {
+          const nodeBubbleRadius = getBubbleRadius(node.label);
+          return checkOverlap(
+            (x / 100) * containerSize.width,
+            (y / 100) * containerSize.height,
+            currentBubbleRadius,
+            (node.x / 100) * containerSize.width,
+            (node.y / 100) * containerSize.height,
+            nodeBubbleRadius,
+            extraPadding
+          );
+        })
+      );
+
+      generatedNodes.push({
+        id: `node-${i}`,
+        label,
+        x,
+        y,
+      });
+    });
+
+    setNodes(generatedNodes);
+
+    // Initialize node positions
+    const initialPositions: { [key: string]: { x: number; y: number } } = {};
+    generatedNodes.forEach((node) => {
+      initialPositions[node.id] = {
+        x: (node.x / 100) * containerSize.width,
+        y: (node.y / 100) * containerSize.height,
+      };
+    });
+    setNodePositions(initialPositions);
+
+    // Generate random connections (each node connects to 1-2 random other nodes)
+    const generatedConnections: [number, number][] = [];
+    generatedNodes.forEach((_, i) => {
+      const numConnections = Math.floor(Math.random() * 2) + 1; // 1-2 connections per node
+      for (let j = 0; j < numConnections; j++) {
+        let targetIndex = Math.floor(Math.random() * generatedNodes.length);
+        // Avoid self-connection
+        while (targetIndex === i) {
+          targetIndex = Math.floor(Math.random() * generatedNodes.length);
+        }
+        // Avoid duplicate connections
+        if (!generatedConnections.some(([a, b]) => (a === i && b === targetIndex) || (a === targetIndex && b === i))) {
+          generatedConnections.push([i, targetIndex]);
+        }
+      }
+    });
+    setConnections(generatedConnections);
+  }, [containerSize.width, containerSize.height]);
+
+  const updateNodePosition = useCallback((nodeId: string, x: number, y: number) => {
+    setNodePositions((prev) => ({
+      ...prev,
+      [nodeId]: { x, y },
+    }));
+  }, []);
 
   return (
-    <div className="w-full flex justify-center py-12">
+    <div className="w-full flex justify-center py-12 overflow-hidden">
       <div
-        className="relative"
-        style={{ width: containerSize.width, height: containerSize.height }}
+        className="relative mx-auto"
+        style={{
+          width: containerSize.width,
+          height: containerSize.height,
+        }}
       >
         {/* Connections */}
         <svg
-          className="absolute inset-0"
-          style={{ width: containerSize.width, height: containerSize.height }}
+          className="absolute inset-0 pointer-events-none"
+          style={{ width: "100%", height: "100%" }}
         >
           <defs>
             <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#007AFF" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#6366F1" stopOpacity="0.6" />
+              <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.8" />
             </linearGradient>
           </defs>
-          {nodes.map((node) =>
-            node.connections.map((targetId) => {
-              const targetNode = nodes.find((n) => n.id === targetId);
-              if (!targetNode) return null;
-              return (
-                <motion.path
-                  key={`${node.id}-${targetId}`}
-                  d={getConnectionPath(
-                    node,
-                    targetNode,
-                    containerSize.width,
-                    containerSize.height
-                  )}
-                  fill="none"
-                  stroke="url(#connectionGradient)"
-                  strokeWidth="2"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  whileInView={{ pathLength: 1, opacity: 0.6 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    duration: 1.5,
-                    delay: 0.5,
-                    ease: "easeInOut",
-                  }}
-                />
-              );
-            })
-          )}
+          {connections.map(([fromIndex, toIndex], i) => {
+            const fromNode = nodes[fromIndex];
+            const toNode = nodes[toIndex];
+            if (!fromNode || !toNode) return null;
+
+            const fromPos = nodePositions[fromNode.id] || {
+              x: (fromNode.x / 100) * containerSize.width,
+              y: (fromNode.y / 100) * containerSize.height,
+            };
+            const toPos = nodePositions[toNode.id] || {
+              x: (toNode.x / 100) * containerSize.width,
+              y: (toNode.y / 100) * containerSize.height,
+            };
+
+            return (
+              <motion.line
+                key={`connection-${i}`}
+                animate={{
+                  x1: fromPos.x,
+                  y1: fromPos.y,
+                  x2: toPos.x,
+                  y2: toPos.y,
+                  opacity: 0.7,
+                }}
+                initial={{
+                  x1: fromPos.x,
+                  y1: fromPos.y,
+                  x2: toPos.x,
+                  y2: toPos.y,
+                  opacity: 0,
+                }}
+                stroke="url(#connectionGradient)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                transition={{
+                  opacity: { duration: 1.5, delay: i * 0.2 + 0.5 },
+                  x1: { type: "spring", stiffness: 100, damping: 20 },
+                  y1: { type: "spring", stiffness: 100, damping: 20 },
+                  x2: { type: "spring", stiffness: 100, damping: 20 },
+                  y2: { type: "spring", stiffness: 100, damping: 20 },
+                }}
+              />
+            );
+          })}
         </svg>
 
         {/* Nodes */}
         {nodes.map((node, index) => {
-          const pos = getNodePosition(
-            node,
-            containerSize.width,
-            containerSize.height
-          );
+          const baseX = (node.x / 100) * containerSize.width;
+          const baseY = (node.y / 100) * containerSize.height;
+
+          // Very small, gentler floating animation to prevent overlap during motion
+          const floatRadius = 8; // Reduced to prevent any overlap during animation
+          const duration = 6 + Math.random() * 2;
+          const delay = index * 0.5;
+
           return (
             <motion.div
               key={node.id}
-              className="absolute"
+              className="absolute z-10"
               style={{
-                left: pos.x - 40,
-                top: pos.y - 40,
+                left: baseX,
+                top: baseY,
               }}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, scale: 0, x: -50, y: -50 }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                x: [
+                  -50,
+                  -50 + Math.sin(0) * floatRadius,
+                  -50 + Math.sin(Math.PI / 2) * floatRadius,
+                  -50 + Math.sin(Math.PI) * floatRadius,
+                  -50 + Math.sin((3 * Math.PI) / 2) * floatRadius,
+                  -50,
+                ],
+                y: [
+                  -50,
+                  -50 + Math.cos(0) * floatRadius,
+                  -50 + Math.cos(Math.PI / 2) * floatRadius,
+                  -50 + Math.cos(Math.PI) * floatRadius,
+                  -50 + Math.cos((3 * Math.PI) / 2) * floatRadius,
+                  -50,
+                ],
+              }}
               transition={{
-                duration: 0.5,
-                delay: index * 0.1,
-                ease: "easeOut",
+                opacity: { duration: 0.6, delay: index * 0.15 },
+                scale: { duration: 0.6, delay: index * 0.15 },
+                x: {
+                  duration,
+                  delay,
+                  repeat: Infinity,
+                  ease: "linear",
+                },
+                y: {
+                  duration,
+                  delay,
+                  repeat: Infinity,
+                  ease: "linear",
+                },
+              }}
+              onUpdate={(latest) => {
+                // Track actual position for connection lines
+                if (typeof latest.x === "number" && typeof latest.y === "number") {
+                  updateNodePosition(node.id, baseX + latest.x + 50, baseY + latest.y + 50);
+                }
               }}
             >
               <motion.div
-                className="relative w-20 h-20 rounded-full bg-gradient-to-br from-[#007AFF] to-[#6366F1] flex items-center justify-center text-white text-xs font-semibold shadow-lg transition-shadow duration-300 hover:shadow-blue-400"
-                whileHover={{ scale: 1.1 }}
-                animate={{
-                  y: [0, -5, 0, 5, 0],
+                className="relative bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6] text-white text-xs font-semibold shadow-xl rounded-full px-4 py-3 flex items-center justify-center text-center backdrop-blur-sm border border-white/20"
+                style={{
+                  maxWidth: "160px",
+                  minWidth: "80px",
+                  wordWrap: "break-word",
                 }}
-                transition={{
-                  y: {
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: index * 0.15,
-                  },
-                }}
+                whileHover={{ scale: 1.1, boxShadow: "0 20px 40px rgba(59, 130, 246, 0.4)" }}
               >
-                <span className="text-center px-2">{node.label}</span>
+                <span className="leading-tight break-words">{node.label}</span>
               </motion.div>
             </motion.div>
           );
@@ -149,4 +289,3 @@ export function AnimatedWorkflow() {
     </div>
   );
 }
-

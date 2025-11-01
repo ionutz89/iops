@@ -446,7 +446,7 @@ export default function Contact() {
                           value={formData.message}
                           onChange={handleChange}
                           rows={5}
-                          className="mt-2 w-full rounded-xl border border-input bg-background/50 px-3 py-2 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-300 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500"
+                          className="mt-2 w-full rounded-xl border border-input bg-background/50 px-3 py-2 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-300"
                           placeholder="What challenges are slowing your business down?"
                         />
                       </motion.div>
@@ -461,10 +461,10 @@ export default function Contact() {
                         <Button
                           type="submit"
                           size="lg"
-                          className="group w-full rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:opacity-90 transition-all duration-300 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden shadow-lg shadow-blue-500/50 hover:shadow-xl hover:shadow-blue-500/50 hover:scale-105 hover:from-blue-600 hover:to-purple-700"
+                          className="w-full rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 hover:scale-105 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                           disabled={isSubmitting}
                         >
-                          <span className="relative z-10 flex items-center justify-center gap-2">
+                          <span className="flex items-center justify-center gap-2">
                             {isSubmitting ? (
                               <>
                                 <motion.div
@@ -485,10 +485,6 @@ export default function Contact() {
                               </>
                             )}
                           </span>
-                          <motion.div
-                            className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                            initial={false}
-                          />
                         </Button>
 
                         <span className="text-muted-foreground text-sm">or</span>
@@ -497,15 +493,11 @@ export default function Contact() {
                           href="https://calendly.com/me-ionut/30min"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group block w-full px-8 py-4 text-lg font-semibold rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:opacity-90 transition-all duration-300 shadow-lg shadow-blue-500/50 hover:shadow-xl hover:shadow-blue-500/50 hover:scale-105 hover:from-blue-600 hover:to-purple-700 relative overflow-hidden text-center"
+                          className="block w-full px-8 py-4 text-lg font-semibold rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 hover:scale-105 text-center"
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                         >
-                          <span className="relative z-10">Book a free strategy call</span>
-                          <motion.div
-                            className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                            initial={false}
-                          />
+                          Book a free strategy call
                         </motion.a>
 
                         <p className="text-center text-muted-foreground text-sm pt-2">

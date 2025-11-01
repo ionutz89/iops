@@ -105,14 +105,14 @@ export function ROICalculator() {
 
 
   return (
-    <section id="roi-calculator" className="py-24 bg-slate-50 dark:bg-gray-950 scroll-mt-24 transition-colors duration-300">
+    <section id="roi-calculator" className="py-16 md:py-24 bg-muted dark:bg-[#0B0C10] scroll-mt-24 transition-colors duration-300">
       <div className="container px-4 md:px-6 max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12 md:mb-16"
         >
           <h2 className="text-4xl font-bold mb-4 text-foreground">
             Calculate Your ROI

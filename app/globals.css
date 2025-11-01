@@ -27,32 +27,35 @@
   }
 
   .dark {
-    /* Premium dark background - using #14161A (gray-950) */
-    --background: 220 13% 9%;
-    --foreground: 210 40% 89%;
-    /* Cards with backdrop blur effect */
-    --card: 220 13% 11%;
-    --card-foreground: 210 40% 89%;
-    --popover: 220 13% 11%;
-    --popover-foreground: 210 40% 89%;
-    /* Primary buttons - blue-600 with hover blue-500 */
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
-    /* Secondary elements */
-    --secondary: 220 13% 15%;
-    --secondary-foreground: 210 40% 89%;
-    /* Muted text - gray-400 for softer contrast */
-    --muted: 220 13% 15%;
-    --muted-foreground: 215 16% 65%;
-    --accent: 239 84% 67%;
-    --accent-foreground: 0 0% 100%;
+    /* Premium dark mode palette matching OpenAI/Anthropic/Scale AI style */
+    /* Background: #0B0C10 */
+    --background: 220 40% 6%;
+    /* Text primary: rgba(255,255,255,0.87) */
+    --foreground: 0 0% 87%;
+    /* Surface panels: #121417 */
+    --card: 220 20% 8%;
+    --card-foreground: 0 0% 87%;
+    --popover: 220 20% 8%;
+    --popover-foreground: 0 0% 87%;
+    /* Accent: #00E5FF */
+    --primary: 187 100% 50%;
+    --primary-foreground: 220 40% 6%;
+    /* Secondary: #8B5CF6 */
+    --secondary: 258 90% 66%;
+    --secondary-foreground: 0 0% 100%;
+    /* Muted surfaces */
+    --muted: 220 20% 10%;
+    /* Text secondary: rgba(255,255,255,0.6) */
+    --muted-foreground: 0 0% 60%;
+    /* Accent color */
+    --accent: 187 100% 50%;
+    --accent-foreground: 220 40% 6%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    /* Borders - gray-800 for subtle dividers */
-    --border: 220 13% 18%;
-    /* Inputs - gray-900 background with gray-700 border */
-    --input: 220 13% 18%;
-    --ring: 217 91% 60%;
+    /* Borders */
+    --border: 220 20% 15%;
+    --input: 220 20% 15%;
+    --ring: 187 100% 50%;
   }
 }
 
@@ -63,6 +66,27 @@
   body {
     @apply bg-background text-foreground transition-colors duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
+    /* Line height 1.6 for body text */
+    line-height: 1.6;
+  }
+
+  /* Headings use Space Grotesk, bold 700 */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading), system-ui, sans-serif;
+    font-weight: 700;
+    line-height: 1.6;
+  }
+
+  /* Body text uses Inter, regular 400-500 */
+  p, span, div, li, a {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  /* Medium weight for emphasis */
+  .font-medium {
+    font-weight: 500;
   }
 
   /* Ensure content is visible even before animations load */
@@ -101,19 +125,23 @@
   }
 
   .gradient-text {
-    background: linear-gradient(to right, #007aff, #6366f1, #007aff);
+    background: linear-gradient(to right, #00E5FF, #8B5CF6, #00E5FF);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
+    background-size: 200% 200%;
+    animation: gradient 8s ease infinite;
   }
 
   .dark .gradient-text {
-    background: linear-gradient(to right, #3b82f6, #818cf8, #3b82f6);
+    background: linear-gradient(to right, #00E5FF, #8B5CF6, #00E5FF);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
+    background-size: 200% 200%;
+    animation: gradient 8s ease infinite;
   }
 
   .glow-effect {

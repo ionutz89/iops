@@ -1,15 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Script from "next/script";
 import { GdprConsent } from "@/components/GdprConsent";
 import { AnalyticsLoader } from "@/components/analytics-loader";
 import "./globals.css";
 
+// Body text font - Inter
 const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500"],
+});
+
+// Heading font - Space Grotesk
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-heading",
+  subsets: ["latin"],
+  weight: ["700"],
 });
 
 const organizationSchema = {
@@ -142,7 +150,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="transition-colors duration-300">
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
         {/* JSON-LD Structured Data */}
         <Script
           id="organization-schema"
