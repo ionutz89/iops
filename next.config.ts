@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import webpack from "webpack";
 
 const nextConfig: NextConfig = {
   // OpenNext Cloudflare REQUIRES standalone output mode
@@ -35,27 +34,6 @@ const nextConfig: NextConfig = {
       // Configure output to avoid issues with module naming
       config.output = config.output || {};
       config.output.globalObject = "self";
-
-      // Provide __name function globally via webpack ProvidePlugin
-      // This ensures __name is available before any webpack runtime code executes
-      config.plugins = config.plugins || [];
-      try {
-        config.plugins.push(
-          new webpack.ProvidePlugin({
-            __name: [
-              require.resolve("./lib/webpack-name-polyfill.js"),
-              "default",
-            ],
-          })
-        );
-      } catch (error) {
-        // Fallback: define __name inline if module resolution fails
-        config.plugins.push(
-          new webpack.DefinePlugin({
-            __name: `function(m){return m&&typeof m==='object'?m.id||m.resource||'unknown':String(m||'unknown');}`,
-          })
-        );
-      }
     }
 
     // Production optimizations to reduce bundle size
