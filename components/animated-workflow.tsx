@@ -21,15 +21,25 @@ const nodeLabels = [
 ];
 
 // Calculate bubble size based on text length and screen width
-const getBubbleRadius = (label: string, isMobile: boolean) => {
+const getBubbleSize = (label: string, isMobile: boolean) => {
   // Estimate width based on character count
-  // Longer text = bigger bubble, but smaller on mobile
   const charCount = label.length;
-  const mobileScale = isMobile ? 0.65 : 1; // 35% smaller on mobile
+  const mobileScale = isMobile ? 0.7 : 1;
   
-  if (charCount > 25) return 90 * mobileScale; // Large bubble
-  if (charCount > 15) return 70 * mobileScale; // Medium bubble
-  return 50 * mobileScale; // Small bubble
+  // Return both width and approximate radius for collision detection
+  let width: number;
+  if (charCount > 25) {
+    width = 180 * mobileScale; // Large bubble
+  } else if (charCount > 15) {
+    width = 140 * mobileScale; // Medium bubble
+  } else {
+    width = 100 * mobileScale; // Small bubble
+  }
+  
+  return {
+    width,
+    radius: width / 2, // Use half the width as radius for collision detection
+  };
 };
 
 // Function to check if two circles overlap with proper spacing
@@ -81,25 +91,25 @@ export function AnimatedWorkflow() {
       let x: number, y: number;
       let attempts = 0;
       const maxAttempts = 300; // More attempts for better positioning
-      const currentBubbleRadius = getBubbleRadius(label, isMobile);
+      const currentBubbleSize = getBubbleSize(label, isMobile);
 
       do {
         // Use wider range but with margin from edges based on bubble size
-        const margin = (currentBubbleRadius / containerSize.width) * 100 + (isMobile ? 8 : 5);
+        const margin = (currentBubbleSize.radius / containerSize.width) * 100 + (isMobile ? 8 : 5);
         x = Math.random() * (100 - 2 * margin) + margin;
         y = Math.random() * (100 - 2 * margin) + margin;
         attempts++;
       } while (
         attempts < maxAttempts &&
         generatedNodes.some((node) => {
-          const nodeBubbleRadius = getBubbleRadius(node.label, isMobile);
+          const nodeBubbleSize = getBubbleSize(node.label, isMobile);
           return checkOverlap(
             (x / 100) * containerSize.width,
             (y / 100) * containerSize.height,
-            currentBubbleRadius,
+            currentBubbleSize.radius,
             (node.x / 100) * containerSize.width,
             (node.y / 100) * containerSize.height,
-            nodeBubbleRadius,
+            nodeBubbleSize.radius,
             extraPadding
           );
         })
@@ -223,12 +233,18 @@ export function AnimatedWorkflow() {
         {nodes.map((node, index) => {
           const baseX = (node.x / 100) * containerSize.width;
           const baseY = (node.y / 100) * containerSize.height;
+          const bubbleSize = getBubbleSize(node.label, isMobile);
+          const bubbleWidth = bubbleSize.width;
+          const bubbleRadius = bubbleSize.radius;
 
           // Very small, gentler floating animation to prevent overlap during motion
-          // Even smaller on mobile to prevent any overlap
-          const floatRadius = isMobile ? 4 : 8;
+          const floatRadius = isMobile ? 3 : 6;
           const duration = 6 + Math.random() * 2;
           const delay = index * 0.5;
+
+          // Center the bubble by offsetting by its radius
+          const offsetX = -bubbleRadius;
+          const offsetY = -bubbleRadius;
 
           return (
             <motion.div
@@ -238,25 +254,25 @@ export function AnimatedWorkflow() {
                 left: baseX,
                 top: baseY,
               }}
-              initial={{ opacity: 0, scale: 0, x: -50, y: -50 }}
+              initial={{ opacity: 0, scale: 0, x: offsetX, y: offsetY }}
               animate={{
                 opacity: 1,
                 scale: 1,
                 x: [
-                  -50,
-                  -50 + Math.sin(0) * floatRadius,
-                  -50 + Math.sin(Math.PI / 2) * floatRadius,
-                  -50 + Math.sin(Math.PI) * floatRadius,
-                  -50 + Math.sin((3 * Math.PI) / 2) * floatRadius,
-                  -50,
+                  offsetX,
+                  offsetX + Math.sin(0) * floatRadius,
+                  offsetX + Math.sin(Math.PI / 2) * floatRadius,
+                  offsetX + Math.sin(Math.PI) * floatRadius,
+                  offsetX + Math.sin((3 * Math.PI) / 2) * floatRadius,
+                  offsetX,
                 ],
                 y: [
-                  -50,
-                  -50 + Math.cos(0) * floatRadius,
-                  -50 + Math.cos(Math.PI / 2) * floatRadius,
-                  -50 + Math.cos(Math.PI) * floatRadius,
-                  -50 + Math.cos((3 * Math.PI) / 2) * floatRadius,
-                  -50,
+                  offsetY,
+                  offsetY + Math.cos(0) * floatRadius,
+                  offsetY + Math.cos(Math.PI / 2) * floatRadius,
+                  offsetY + Math.cos(Math.PI) * floatRadius,
+                  offsetY + Math.cos((3 * Math.PI) / 2) * floatRadius,
+                  offsetY,
                 ],
               }}
               transition={{
@@ -276,20 +292,21 @@ export function AnimatedWorkflow() {
                 },
               }}
               onUpdate={(latest) => {
-                // Track actual position for connection lines
+                // Track actual position for connection lines (centered)
                 if (typeof latest.x === "number" && typeof latest.y === "number") {
-                  updateNodePosition(node.id, baseX + latest.x + 50, baseY + latest.y + 50);
+                  updateNodePosition(node.id, baseX + latest.x + bubbleRadius, baseY + latest.y + bubbleRadius);
                 }
               }}
             >
               {/* Enhanced bubble with dual-theme frosted glass effect and proper overflow handling */}
               <motion.div
-                className="relative bg-white/90 dark:bg-[#1C1E22] text-gray-800 dark:text-gray-200 text-xs md:text-sm font-semibold shadow-lg dark:shadow-xl rounded-full px-4 py-3 flex items-center justify-center text-center backdrop-blur-md border border-gray-200 dark:border-white/10"
+                className="relative bg-white/90 dark:bg-[#1C1E22] text-gray-800 dark:text-gray-200 font-semibold shadow-lg dark:shadow-xl rounded-full flex items-center justify-center text-center backdrop-blur-md border border-gray-200 dark:border-white/10"
                 style={{
-                  maxWidth: "160px",
-                  minWidth: "80px",
-                  wordWrap: "break-word",
-                  overflow: "hidden",
+                  width: `${bubbleWidth}px`,
+                  height: `${bubbleWidth}px`,
+                  padding: isMobile ? "8px" : "12px",
+                  fontSize: isMobile ? "10px" : "12px",
+                  lineHeight: isMobile ? "1.2" : "1.3",
                 }}
                 whileHover={{ 
                   scale: 1.05, 
@@ -299,7 +316,7 @@ export function AnimatedWorkflow() {
                 transition={{ duration: 0.2 }}
               >
                 {/* Improved text wrapping with responsive sizing and proper line breaks */}
-                <p className="break-words whitespace-normal leading-tight text-xs md:text-sm p-1">
+                <p className="break-words whitespace-normal leading-tight text-center w-full px-1">
                   {node.label}
                 </p>
               </motion.div>
