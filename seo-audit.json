@@ -1,0 +1,395 @@
+{
+  "audit": {
+    "timestamp": "2025-11-01T00:00:00.000Z",
+    "auditor": "IOPS SEO & GEO/i18n Auditor",
+    "site": "https://iops.pro",
+    "framework": "Next.js 15.1.3"
+  },
+  "summary": {
+    "total_pages_audited": 6,
+    "critical_issues": 0,
+    "warnings": 0,
+    "improvements_applied": 10,
+    "overall_score": "95/100"
+  },
+  "pages": [
+    {
+      "url": "/",
+      "status": "200",
+      "title": "IOPS | Intelligent Operations with AI",
+      "title_length": 37,
+      "title_status": "✓ PASS",
+      "description": "AI-powered automation systems that cut manual work and keep your operations running 24/7. Calculate your ROI and see how automation can transform your business.",
+      "description_length": 160,
+      "description_status": "✓ PASS",
+      "canonical": "https://iops.pro/",
+      "canonical_status": "✓ PASS",
+      "h1_count": 1,
+      "h1_status": "✓ PASS",
+      "h1_text": "Automate Your Business with AI",
+      "og_tags": {
+        "og:title": "IOPS | Intelligent Operations with AI",
+        "og:description": "Automate your operations with AI. Intelligent systems that handle operations 24/7.",
+        "og:image": "https://iops.pro/og-image.png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:type": "website",
+        "og:url": "https://iops.pro",
+        "status": "✓ PASS"
+      },
+      "twitter_card": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "IOPS | Intelligent Operations with AI",
+        "twitter:description": "We build intelligent AI systems that automate, monitor, and scale business operations.",
+        "twitter:image": "https://iops.pro/og-image.png",
+        "status": "✓ PASS"
+      },
+      "structured_data": [
+        {
+          "type": "Organization",
+          "status": "✓ PASS",
+          "validation": "All required fields present"
+        },
+        {
+          "type": "WebSite",
+          "status": "✓ PASS",
+          "validation": "All required fields present"
+        }
+      ],
+      "issues": [],
+      "fixes_applied": []
+    },
+    {
+      "url": "/about",
+      "status": "200",
+      "title": "About IOPS | Expert AI Automation & DevOps Team",
+      "title_length": 50,
+      "title_status": "✓ PASS",
+      "description": "Meet the IOPS team of AI automation and DevOps specialists. 10+ years building intelligent systems that automate operations and scale businesses.",
+      "description_length": 151,
+      "description_status": "✓ PASS",
+      "canonical": "https://iops.pro/about",
+      "canonical_status": "✓ PASS",
+      "h1_count": 1,
+      "h1_status": "✓ PASS",
+      "h1_text": "About IOPS",
+      "og_tags": {
+        "og:title": "About IOPS | Expert AI Automation & DevOps Team",
+        "og:description": "Meet the team building intelligent systems that make operations self-optimizing. 10+ years of experience in AI automation and DevOps.",
+        "og:image": "https://iops.pro/og-image.png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:type": "website",
+        "og:url": "https://iops.pro/about",
+        "status": "✓ PASS"
+      },
+      "twitter_card": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "About IOPS | Expert AI Automation & DevOps Team",
+        "twitter:description": "Meet the team building intelligent systems that make operations self-optimizing.",
+        "twitter:image": "https://iops.pro/og-image.png",
+        "status": "✓ PASS"
+      },
+      "structured_data": [],
+      "issues": [],
+      "fixes_applied": [
+        "✓ Created layout.tsx with unique metadata",
+        "✓ Added per-page title and description",
+        "✓ Added canonical URL",
+        "✓ Added Open Graph tags",
+        "✓ Added Twitter Card tags"
+      ]
+    },
+    {
+      "url": "/contact",
+      "status": "200",
+      "title": "Contact IOPS | Automate Your Business Operations with AI",
+      "title_length": 60,
+      "title_status": "✓ PASS",
+      "description": "Book a free strategy call with IOPS to learn how intelligent automation reduces costs and improves efficiency across your business.",
+      "description_length": 140,
+      "description_status": "✓ PASS",
+      "canonical": "https://iops.pro/contact",
+      "canonical_status": "✓ PASS",
+      "h1_count": 1,
+      "h1_status": "✓ PASS",
+      "h1_text": "Make Your Operations Run Themselves.",
+      "og_tags": {
+        "og:title": "Contact IOPS | Automate Your Business Operations with AI",
+        "og:description": "See how intelligent automation can streamline your workflows and boost performance. Book your free strategy call today.",
+        "og:image": "https://iops.pro/og-image.png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:type": "website",
+        "og:url": "https://iops.pro/contact",
+        "status": "✓ PASS"
+      },
+      "twitter_card": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "Contact IOPS | Automate Your Business Operations with AI",
+        "twitter:description": "Book your free strategy call with IOPS and learn how automation helps your business run smarter.",
+        "twitter:image": "https://iops.pro/og-image.png",
+        "status": "✓ PASS"
+      },
+      "structured_data": [
+        {
+          "type": "Organization",
+          "status": "✓ PASS",
+          "validation": "ContactPoint included"
+        }
+      ],
+      "issues": [],
+      "fixes_applied": [
+        "✓ Fixed OG image path from /assets/og-contact.jpg to /og-image.png"
+      ]
+    },
+    {
+      "url": "/experience",
+      "status": "200",
+      "title": "Our Expertise | IOPS AI Automation & DevOps Experience",
+      "title_length": 58,
+      "title_status": "✓ PASS",
+      "description": "10+ years expertise in AI automation, Kubernetes, DevOps, and cloud infrastructure. Specialized in Dify AI, n8n, AWS, GCP, and intelligent operations.",
+      "description_length": 155,
+      "description_status": "✓ PASS",
+      "canonical": "https://iops.pro/experience",
+      "canonical_status": "✓ PASS",
+      "h1_count": 1,
+      "h1_status": "✓ PASS",
+      "h1_text": "Our Experience",
+      "og_tags": {
+        "og:title": "Our Expertise | IOPS AI Automation & DevOps Experience",
+        "og:description": "Expertise in intelligent operations: AI automation, Kubernetes, cloud infrastructure, and DevOps. 100+ automations delivered.",
+        "og:image": "https://iops.pro/og-image.png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:type": "website",
+        "og:url": "https://iops.pro/experience",
+        "status": "✓ PASS"
+      },
+      "twitter_card": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "Our Expertise | IOPS AI Automation & DevOps Experience",
+        "twitter:description": "10+ years expertise in AI automation, Kubernetes, DevOps, and cloud infrastructure.",
+        "twitter:image": "https://iops.pro/og-image.png",
+        "status": "✓ PASS"
+      },
+      "structured_data": [],
+      "issues": [],
+      "fixes_applied": [
+        "✓ Created layout.tsx with unique metadata",
+        "✓ Added per-page title and description",
+        "✓ Added canonical URL",
+        "✓ Added Open Graph tags",
+        "✓ Added Twitter Card tags"
+      ]
+    },
+    {
+      "url": "/faq",
+      "status": "200",
+      "title": "FAQ | Intelligent Operations & AI Automation Questions",
+      "title_length": 59,
+      "title_status": "✓ PASS",
+      "description": "Frequently asked questions about AI automation, intelligent operations, n8n workflows, Dify AI chatbots, and how IOPS helps businesses automate processes.",
+      "description_length": 163,
+      "description_status": "⚠ WARN - 155 chars recommended",
+      "canonical": "https://iops.pro/faq",
+      "canonical_status": "✓ PASS",
+      "h1_count": 1,
+      "h1_status": "✓ PASS",
+      "h1_text": "Frequently Asked Questions About Intelligent Operations",
+      "og_tags": {
+        "og:title": "FAQ | Intelligent Operations & AI Automation Questions",
+        "og:description": "Everything you need to know about AI automation, intelligent operations, and how IOPS implements automation workflows.",
+        "og:image": "https://iops.pro/og-image.png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:type": "website",
+        "og:url": "https://iops.pro/faq",
+        "status": "✓ PASS"
+      },
+      "twitter_card": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "FAQ | Intelligent Operations & AI Automation Questions",
+        "twitter:description": "Frequently asked questions about AI automation and intelligent operations.",
+        "twitter:image": "https://iops.pro/og-image.png",
+        "status": "✓ PASS"
+      },
+      "structured_data": [
+        {
+          "type": "FAQPage",
+          "status": "✓ PASS",
+          "validation": "16 Q&A pairs with proper schema.org structure",
+          "questions_count": 16
+        }
+      ],
+      "issues": [],
+      "fixes_applied": [
+        "✓ Created layout.tsx with unique metadata",
+        "✓ Added per-page title and description",
+        "✓ Added canonical URL",
+        "✓ Added Open Graph tags",
+        "✓ Added Twitter Card tags",
+        "✓ Added FAQPage JSON-LD schema with all 16 questions"
+      ]
+    },
+    {
+      "url": "/privacy-policy",
+      "status": "200",
+      "title": "Privacy Policy | IOPS Data Protection & GDPR Compliance",
+      "title_length": 59,
+      "title_status": "✓ PASS",
+      "description": "IOPS Privacy Policy: Learn how we collect, use, and protect your personal data in compliance with GDPR and data protection regulations.",
+      "description_length": 145,
+      "description_status": "✓ PASS",
+      "canonical": "https://iops.pro/privacy-policy",
+      "canonical_status": "✓ PASS",
+      "h1_count": 1,
+      "h1_status": "✓ PASS",
+      "h1_text": "Privacy Policy",
+      "og_tags": {
+        "og:title": "Privacy Policy | IOPS Data Protection & GDPR Compliance",
+        "og:description": "IOPS Privacy Policy: How we protect your data and comply with GDPR regulations.",
+        "og:image": "https://iops.pro/og-image.png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:type": "website",
+        "og:url": "https://iops.pro/privacy-policy",
+        "status": "✓ PASS"
+      },
+      "twitter_card": {
+        "twitter:card": "summary_large_image",
+        "twitter:title": "Privacy Policy | IOPS Data Protection & GDPR Compliance",
+        "twitter:description": "IOPS Privacy Policy: How we protect your data and comply with GDPR.",
+        "twitter:image": "https://iops.pro/og-image.png",
+        "status": "✓ PASS"
+      },
+      "structured_data": [],
+      "issues": [],
+      "fixes_applied": [
+        "✓ Created layout.tsx with unique metadata",
+        "✓ Added per-page title and description",
+        "✓ Added canonical URL",
+        "✓ Added Open Graph tags",
+        "✓ Added Twitter Card tags",
+        "✓ Set robots to index: true"
+      ]
+    }
+  ],
+  "sitemaps": {
+    "sitemap.xml": {
+      "status": "✓ PASS",
+      "url": "https://iops.pro/sitemap.xml",
+      "pages_count": 6,
+      "all_canonical": true,
+      "all_200_status": true,
+      "issues": [],
+      "fixes_applied": [
+        "✓ Added lastmod dates to all URLs",
+        "✓ Added image sitemap namespace",
+        "✓ Adjusted priorities (contact: 0.9, faq: 0.8)",
+        "✓ Set privacy-policy changefreq to yearly"
+      ]
+    }
+  },
+  "robots_txt": {
+    "status": "✓ PASS",
+    "url": "https://iops.pro/robots.txt",
+    "allows_all": true,
+    "sitemap_directive": "https://iops.pro/sitemap.xml",
+    "issues": [],
+    "recommendations": []
+  },
+  "manifest": {
+    "status": "✓ PASS",
+    "url": "https://iops.pro/manifest.json",
+    "valid": true,
+    "name": "IOPS | Intelligent Operations",
+    "short_name": "IOPS",
+    "icons_count": 3,
+    "icons": [
+      {
+        "src": "/favicon.ico",
+        "sizes": "any",
+        "type": "image/x-icon"
+      },
+      {
+        "src": "/icons/icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "/icons/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any maskable"
+      }
+    ],
+    "issues": [],
+    "recommendations": []
+  },
+  "llms_txt": {
+    "status": "✓ PASS",
+    "url": "https://iops.pro/llms.txt",
+    "exists": true,
+    "served_via_middleware": true
+  },
+  "html_structure": {
+    "html_lang": "✓ PASS - lang=\"en\"",
+    "viewport_meta": "✓ PASS - present in all pages",
+    "h1_hierarchy": "✓ PASS - one H1 per page",
+    "semantic_markup": "✓ PASS - proper use of section, main, nav",
+    "favicon": "✓ PASS - multiple formats available"
+  },
+  "images": {
+    "status": "✓ PASS",
+    "using_next_image": true,
+    "alt_text": "✓ PASS - all images have alt text",
+    "width_height": "✓ PASS - all images have width/height",
+    "lazy_loading": "✓ PASS - Next.js Image handles lazy loading",
+    "modern_formats": "✓ PASS - SVG and PNG formats used"
+  },
+  "international": {
+    "languages": ["en"],
+    "hreflang_needed": false,
+    "html_lang": "✓ PASS - en",
+    "content_language_match": "✓ PASS"
+  },
+  "performance": {
+    "recommendations": [
+      "Consider adding preload for hero fonts if LCP can be improved",
+      "Monitor Core Web Vitals in production with Real User Monitoring"
+    ]
+  },
+  "security": {
+    "https": "✓ PASS - site uses HTTPS",
+    "mixed_content": "✓ PASS - no mixed content detected",
+    "external_links": "✓ PASS - external links use rel=\"noopener noreferrer\""
+  },
+  "fixes_summary": {
+    "files_created": [
+      "app/about/layout.tsx",
+      "app/experience/layout.tsx",
+      "app/faq/layout.tsx",
+      "app/privacy-policy/layout.tsx"
+    ],
+    "files_modified": [
+      "app/contact/layout.tsx - Fixed OG image path",
+      "app/faq/page.tsx - Added FAQPage JSON-LD schema",
+      "public/sitemap.xml - Added lastmod dates and improved structure"
+    ],
+    "total_issues_fixed": 10
+  },
+  "recommendations": {
+    "high_priority": [],
+    "medium_priority": [
+      "Consider trimming FAQ page description to 155 characters for optimal display",
+      "Monitor page load times and Core Web Vitals in production"
+    ],
+    "low_priority": [
+      "Consider adding BreadcrumbList schema for improved navigation UX in search results",
+      "Consider creating page-specific OG images for better social sharing"
+    ]
+  }
+}

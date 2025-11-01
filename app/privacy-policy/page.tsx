@@ -5,13 +5,42 @@ import { Navigation } from "@/components/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EmailReveal } from "@/components/email-reveal";
+import Script from "next/script";
 
 export default function PrivacyPolicy() {
   const currentYear = new Date().getFullYear();
 
+  // BreadcrumbList schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://iops.pro/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Privacy Policy",
+        item: "https://iops.pro/privacy-policy",
+      },
+    ],
+  };
+
   return (
-    <main className="min-h-screen bg-background">
-      <Navigation />
+    <>
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
+      <main className="min-h-screen bg-background">
+        <Navigation />
 
       <div className="container px-4 md:px-6 max-w-4xl mx-auto py-16 md:py-24">
         {/* Back Button */}
@@ -444,7 +473,8 @@ export default function PrivacyPolicy() {
           </div>
         </div>
       </div>
-    </main>
+      </main>
+    </>
   );
 }
 

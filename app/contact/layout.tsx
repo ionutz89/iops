@@ -23,10 +23,11 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "https://iops.pro/assets/og-contact.jpg",
+        url: "https://iops.pro/og-image.png",
         width: 1200,
         height: 630,
         alt: "IOPS | Contact Us",
+        type: "image/png",
       },
     ],
   },
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     title: "Contact IOPS | Automate Your Business Operations with AI",
     description:
       "Book your free strategy call with IOPS and learn how automation helps your business run smarter.",
-    images: ["https://iops.pro/assets/og-contact.jpg"],
+    images: ["https://iops.pro/og-image.png"],
   },
   alternates: {
     canonical: "https://iops.pro/contact",

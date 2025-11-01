@@ -35,6 +35,26 @@ const stagger = {
 };
 
 export default function Contact() {
+  // BreadcrumbList schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://iops.pro/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Contact",
+        item: "https://iops.pro/contact",
+      },
+    ],
+  };
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -178,7 +198,7 @@ export default function Contact() {
 
   return (
     <>
-      {/* SEO Structured Data */}
+      {/* SEO Structured Data - Organization with ContactPoint */}
       <Script
         id="contact-schema"
         type="application/ld+json"
@@ -194,6 +214,14 @@ export default function Contact() {
               url: "https://iops.pro/contact",
             },
           }),
+        }}
+      />
+      {/* BreadcrumbList schema */}
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
         }}
       />
 

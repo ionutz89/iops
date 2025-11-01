@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Progress } from "@/components/ui/progress";
+import Script from "next/script";
 
 interface Skill {
   name: string;
@@ -95,9 +96,37 @@ function SkillBar({ skill, delay }: { skill: Skill; delay: number }) {
 }
 
 export default function Experience() {
+  // BreadcrumbList schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://iops.pro/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Experience",
+        item: "https://iops.pro/experience",
+      },
+    ],
+  };
+
   return (
-    <main className="min-h-screen bg-background">
-      <Navigation />
+    <>
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
+      <main className="min-h-screen bg-background">
+        <Navigation />
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 bg-gradient-to-br from-blue-50 via-background to-purple-50 dark:from-blue-950/20 dark:via-background dark:to-purple-950/20">
@@ -178,7 +207,8 @@ export default function Experience() {
           </motion.div>
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }
 
