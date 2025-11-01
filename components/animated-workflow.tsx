@@ -185,7 +185,7 @@ export function AnimatedWorkflow() {
 
     // Generate non-overlapping positions for nodes with size-aware spacing
     const generatedNodes: Node[] = [];
-    const extraPadding = isMobile ? 200 : 80; // Massive padding on mobile
+    const extraPadding = isMobile ? 200 : 120; // Increased padding on desktop to prevent overlaps
 
     if (isMobile) {
       // MOBILE: Use deterministic grid-based layout to GUARANTEE no overlaps
@@ -260,42 +260,83 @@ export function AnimatedWorkflow() {
         });
       }
     } else {
-      // DESKTOP: Use random positioning with overlap checks
-      nodeLabels.forEach((label, i) => {
-        let x: number, y: number;
-        let attempts = 0;
-        const maxAttempts = 500;
-        const currentBubbleSize = getBubbleSize(label, isMobile);
+      // DESKTOP: Use deterministic grid-based layout to GUARANTEE no overlaps
+      // Account for float animation radius (3px) in spacing calculation
+      const floatRadius = 3;
+      const maxAnimationMovement = floatRadius * 2; // Both bubbles can move max floatRadius towards each other
+      const effectivePadding = extraPadding + maxAnimationMovement; // Account for animation movement
 
-        do {
-          const margin =
-            (currentBubbleSize.radius / containerSize.width) * 100 + 12;
-          x = Math.random() * (100 - 2 * margin) + margin;
-          y = Math.random() * (100 - 2 * margin) + margin;
-          attempts++;
-        } while (
-          attempts < maxAttempts &&
-          generatedNodes.some((node) => {
-            const nodeBubbleSize = getBubbleSize(node.label, isMobile);
-            const x1Px = (x / 100) * containerSize.width;
-            const y1Px = (y / 100) * containerSize.height;
-            const x2Px = (node.x / 100) * containerSize.width;
-            const y2Px = (node.y / 100) * containerSize.height;
-            const distance = Math.sqrt(
-              Math.pow(x2Px - x1Px, 2) + Math.pow(y2Px - y1Px, 2)
-            );
-            const minDistance = currentBubbleSize.radius + nodeBubbleSize.radius + extraPadding;
-            return distance < minDistance;
-          })
-        );
+      const bubbles = nodeLabels.map((label) => ({
+        label,
+        size: getBubbleSize(label, isMobile),
+      }));
 
-        generatedNodes.push({
-          id: `node-${i}`,
-          label,
-          x,
-          y,
+      // Calculate total area needed
+      const maxBubbleSize = Math.max(...bubbles.map(b => b.size.width));
+      const minSpacing = maxBubbleSize + effectivePadding;
+
+      // Use a grid: 3 columns for desktop (more horizontal space)
+      const cols = 3;
+      const rows = Math.ceil(nodeLabels.length / cols);
+
+      // Calculate cell size based on container
+      const cellWidth = containerSize.width / cols;
+      const cellHeight = containerSize.height / rows;
+
+      // Ensure cells are large enough to accommodate bubbles with padding
+      const minCellSize = minSpacing * 1.3; // Extra 30% margin for safety
+
+      if (cellWidth < minCellSize || cellHeight < minCellSize) {
+        // Container too small, use more conservative spacing
+        const adjustedPadding = Math.min(effectivePadding, Math.min(cellWidth, cellHeight) * 0.5);
+
+        nodeLabels.forEach((label, i) => {
+          const col = i % cols;
+          const row = Math.floor(i / cols);
+          const currentBubbleSize = getBubbleSize(label, isMobile);
+
+          // Center within cell with padding
+          const cellCenterX = (col + 0.5) * cellWidth;
+          const cellCenterY = (row + 0.5) * cellHeight;
+
+          // Add small random offset to avoid perfect grid, but keep within safe bounds
+          const maxOffset = Math.min(cellWidth, cellHeight) * 0.1; // Smaller offset on desktop
+          const offsetX = (Math.random() - 0.5) * maxOffset;
+          const offsetY = (Math.random() - 0.5) * maxOffset;
+
+          const x = ((cellCenterX + offsetX) / containerSize.width) * 100;
+          const y = ((cellCenterY + offsetY) / containerSize.height) * 100;
+
+          // Clamp to safe bounds
+          const margin = (currentBubbleSize.radius / containerSize.width) * 100 + 10;
+          const clampedX = Math.max(margin, Math.min(100 - margin, x));
+          const clampedY = Math.max(margin, Math.min(100 - margin, y));
+
+          generatedNodes.push({
+            id: `node-${i}`,
+            label,
+            x: clampedX,
+            y: clampedY,
+          });
         });
-      });
+      } else {
+        // Enough space, use grid layout with guaranteed spacing
+        nodeLabels.forEach((label, i) => {
+          const col = i % cols;
+          const row = Math.floor(i / cols);
+
+          // Center within cell - guaranteed no overlap due to cell size
+          const x = ((col + 0.5) / cols) * 100;
+          const y = ((row + 0.5) / rows) * 100;
+
+          generatedNodes.push({
+            id: `node-${i}`,
+            label,
+            x,
+            y,
+          });
+        });
+      }
     }
 
     setNodes(generatedNodes);
@@ -434,7 +475,8 @@ export function AnimatedWorkflow() {
           const isUserControlled = userControlledNodes.has(node.id);
 
           // Gentle floating on desktop for untouched bubbles, disabled on mobile and for user-controlled bubbles
-          const floatRadius = isMobile || isUserControlled ? 0 : 6;
+          // Minimal float radius to prevent any overlap risk
+          const floatRadius = isMobile || isUserControlled ? 0 : 3;
           const duration = 6 + Math.random() * 2;
           const delay = index * 0.5;
 
