@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 
 interface Node {
   id: string;
@@ -60,18 +60,36 @@ const checkOverlap = (
 };
 
 export function AnimatedWorkflow() {
-  const [containerSize, setContainerSize] = useState({ width: 800, height: 500 });
+  const [containerSize, setContainerSize] = useState({
+    width: 800,
+    height: 500,
+  });
   const [isMobile, setIsMobile] = useState(false);
   const [nodes, setNodes] = useState<Node[]>([]);
   const [connections, setConnections] = useState<[number, number][]>([]);
-  const [nodePositions, setNodePositions] = useState<{ [key: string]: { x: number; y: number } }>({});
+  const [nodePositions, setNodePositions] = useState<{
+    [key: string]: { x: number; y: number };
+  }>({});
+  const [userControlledNodes, setUserControlledNodes] = useState<Set<string>>(
+    new Set()
+  );
+  const [dragStates, setDragStates] = useState<{
+    [key: string]: {
+      x: number;
+      y: number;
+      touchStart: { x: number; y: number } | null;
+      isDragging: boolean;
+    };
+  }>({});
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updateSize = () => {
       const width = Math.min(900, window.innerWidth - 40);
-      const height = window.innerWidth < 768
-        ? Math.min(800, window.innerHeight * 0.8) // Much taller on mobile for spacing
-        : Math.min(500, window.innerHeight * 0.6);
+      const height =
+        window.innerWidth < 768
+          ? Math.min(800, window.innerHeight * 0.8) // Much taller on mobile for spacing
+          : Math.min(500, window.innerHeight * 0.6);
       const mobile = window.innerWidth < 768;
       setContainerSize({ width, height });
       setIsMobile(mobile);
@@ -95,7 +113,9 @@ export function AnimatedWorkflow() {
 
       do {
         // Use wider range but with margin from edges based on bubble size
-        const margin = (currentBubbleSize.radius / containerSize.width) * 100 + (isMobile ? 15 : 8);
+        const margin =
+          (currentBubbleSize.radius / containerSize.width) * 100 +
+          (isMobile ? 15 : 8);
         x = Math.random() * (100 - 2 * margin) + margin;
         y = Math.random() * (100 - 2 * margin) + margin;
         attempts++;
@@ -147,7 +167,12 @@ export function AnimatedWorkflow() {
           targetIndex = Math.floor(Math.random() * generatedNodes.length);
         }
         // Avoid duplicate connections
-        if (!generatedConnections.some(([a, b]) => (a === i && b === targetIndex) || (a === targetIndex && b === i))) {
+        if (
+          !generatedConnections.some(
+            ([a, b]) =>
+              (a === i && b === targetIndex) || (a === targetIndex && b === i)
+          )
+        ) {
           generatedConnections.push([i, targetIndex]);
         }
       }
@@ -155,22 +180,26 @@ export function AnimatedWorkflow() {
     setConnections(generatedConnections);
   }, [containerSize.width, containerSize.height, isMobile]);
 
-  const updateNodePosition = useCallback((nodeId: string, x: number, y: number) => {
-    setNodePositions((prev) => ({
-      ...prev,
-      [nodeId]: { x, y },
-    }));
-  }, []);
+  const updateNodePosition = useCallback(
+    (nodeId: string, x: number, y: number) => {
+      setNodePositions((prev) => ({
+        ...prev,
+        [nodeId]: { x, y },
+      }));
+    },
+    []
+  );
 
   return (
     <div className="w-full flex justify-center py-12 overflow-hidden px-4">
       {/* Enhanced container with overflow handling */}
       <div
+        ref={containerRef}
         className="relative mx-auto overflow-hidden rounded-2xl"
         style={{
           width: containerSize.width,
           height: containerSize.height,
-          touchAction: isMobile ? "none" : "auto",
+          touchAction: "auto",
         }}
       >
         {/* Connections */}
@@ -179,7 +208,13 @@ export function AnimatedWorkflow() {
           style={{ width: "100%", height: "100%" }}
         >
           <defs>
-            <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <linearGradient
+              id="connectionGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="0%"
+            >
               <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.8" />
               <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.8" />
             </linearGradient>
@@ -239,17 +274,107 @@ export function AnimatedWorkflow() {
           const bubbleWidth = bubbleSize.width;
           const bubbleRadius = bubbleSize.radius;
 
-          // Gentle floating on desktop, disabled on mobile to prevent overlap
-          const floatRadius = isMobile ? 0 : 6; // Restored original desktop animation
-          const duration = 6 + Math.random() * 2; // Restored original timing
+          // Check if this node is user-controlled (touched/dragged)
+          const isUserControlled = userControlledNodes.has(node.id);
+
+          // Gentle floating on desktop for untouched bubbles, disabled on mobile and for user-controlled bubbles
+          const floatRadius = isMobile || isUserControlled ? 0 : 6;
+          const duration = 6 + Math.random() * 2;
           const delay = index * 0.5;
 
           // Center the bubble by offsetting by its radius
           const offsetX = -bubbleRadius;
           const offsetY = -bubbleRadius;
 
-          // Mobile: Use plain div, NO Framer Motion at all
+          // Mobile: Static bubbles until touched, then draggable
           if (isMobile) {
+            const dragState = dragStates[node.id] || {
+              x: 0,
+              y: 0,
+              touchStart: null,
+              isDragging: false,
+            };
+
+            const handleTouchStart = (e: React.TouchEvent) => {
+              if (!containerRef.current) return;
+
+              // Mark this node as user-controlled
+              if (!isUserControlled) {
+                setUserControlledNodes((prev) => new Set(prev).add(node.id));
+              }
+
+              const touch = e.touches[0];
+              const containerRect =
+                containerRef.current.getBoundingClientRect();
+
+              const touchX = touch.clientX - containerRect.left;
+              const touchY = touch.clientY - containerRect.top;
+
+              const currentBubbleX = baseX + offsetX + dragState.x;
+              const currentBubbleY = baseY + offsetY + dragState.y;
+
+              setDragStates((prev) => ({
+                ...prev,
+                [node.id]: {
+                  x: dragState.x,
+                  y: dragState.y,
+                  touchStart: {
+                    x: touchX - currentBubbleX,
+                    y: touchY - currentBubbleY,
+                  },
+                  isDragging: true,
+                },
+              }));
+              e.preventDefault();
+            };
+
+            const handleTouchMove = (e: React.TouchEvent) => {
+              if (!containerRef.current) return;
+
+              const currentDragState = dragStates[node.id];
+              if (!currentDragState?.touchStart || !currentDragState.isDragging)
+                return;
+
+              const touch = e.touches[0];
+              const containerRect =
+                containerRef.current.getBoundingClientRect();
+
+              const touchX = touch.clientX - containerRect.left;
+              const touchY = touch.clientY - containerRect.top;
+
+              const newX =
+                touchX - baseX - offsetX - currentDragState.touchStart.x;
+              const newY =
+                touchY - baseY - offsetY - currentDragState.touchStart.y;
+
+              setDragStates((prev) => ({
+                ...prev,
+                [node.id]: {
+                  ...prev[node.id],
+                  x: newX,
+                  y: newY,
+                },
+              }));
+
+              updateNodePosition(
+                node.id,
+                baseX + offsetX + newX + bubbleRadius,
+                baseY + offsetY + newY + bubbleRadius
+              );
+              e.preventDefault();
+            };
+
+            const handleTouchEnd = () => {
+              setDragStates((prev) => ({
+                ...prev,
+                [node.id]: {
+                  ...prev[node.id],
+                  touchStart: null,
+                  isDragging: false,
+                },
+              }));
+            };
+
             return (
               <div
                 key={node.id}
@@ -257,13 +382,20 @@ export function AnimatedWorkflow() {
                 style={{
                   left: baseX,
                   top: baseY,
-                  transform: `translate(${offsetX}px, ${offsetY}px)`,
+                  transform: `translate(${offsetX + dragState.x}px, ${
+                    offsetY + dragState.y
+                  }px)`,
                   touchAction: "none",
-                  pointerEvents: "none",
                   userSelect: "none",
+                  transition: isUserControlled
+                    ? "none"
+                    : "transform 0.3s ease-out",
                 }}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
               >
-                {/* Static bubble on mobile */}
+                {/* Draggable bubble on mobile - playful interaction */}
                 <div
                   className="relative bg-white/90 dark:bg-[#1C1E22] text-gray-800 dark:text-gray-200 font-semibold shadow-lg dark:shadow-xl rounded-full flex items-center justify-center text-center backdrop-blur-md border border-gray-200 dark:border-white/10"
                   style={{
@@ -273,13 +405,14 @@ export function AnimatedWorkflow() {
                     fontSize: "10px",
                     lineHeight: "1.2",
                     touchAction: "none",
-                    pointerEvents: "none",
                     userSelect: "none",
                     WebkitTouchCallout: "none",
                     WebkitUserSelect: "none",
+                    cursor: dragState.isDragging ? "grabbing" : "grab",
+                    transform: dragState.isDragging ? "scale(1.1)" : "scale(1)",
+                    transition: "transform 0.15s ease-out",
                   }}
                 >
-                  {/* Improved text wrapping with responsive sizing and proper line breaks */}
                   <p className="break-words whitespace-normal leading-tight text-center w-full px-1">
                     {node.label}
                   </p>
@@ -288,7 +421,7 @@ export function AnimatedWorkflow() {
             );
           }
 
-          // Desktop: Use Framer Motion with full animations
+          // Desktop: Animated bubbles until touched, then draggable
           return (
             <motion.div
               key={node.id}
@@ -301,47 +434,80 @@ export function AnimatedWorkflow() {
               animate={{
                 opacity: 1,
                 scale: 1,
-                x: [
-                  offsetX,
-                  offsetX + Math.sin(0) * floatRadius,
-                  offsetX + Math.sin(Math.PI / 2) * floatRadius,
-                  offsetX + Math.sin(Math.PI) * floatRadius,
-                  offsetX + Math.sin((3 * Math.PI) / 2) * floatRadius,
-                  offsetX,
-                ],
-                y: [
-                  offsetY,
-                  offsetY + Math.cos(0) * floatRadius,
-                  offsetY + Math.cos(Math.PI / 2) * floatRadius,
-                  offsetY + Math.cos(Math.PI) * floatRadius,
-                  offsetY + Math.cos((3 * Math.PI) / 2) * floatRadius,
-                  offsetY,
-                ],
+                // Only animate if NOT user-controlled
+                x: isUserControlled
+                  ? offsetX
+                  : [
+                      offsetX,
+                      offsetX + Math.sin(0) * floatRadius,
+                      offsetX + Math.sin(Math.PI / 2) * floatRadius,
+                      offsetX + Math.sin(Math.PI) * floatRadius,
+                      offsetX + Math.sin((3 * Math.PI) / 2) * floatRadius,
+                      offsetX,
+                    ],
+                y: isUserControlled
+                  ? offsetY
+                  : [
+                      offsetY,
+                      offsetY + Math.cos(0) * floatRadius,
+                      offsetY + Math.cos(Math.PI / 2) * floatRadius,
+                      offsetY + Math.cos(Math.PI) * floatRadius,
+                      offsetY + Math.cos((3 * Math.PI) / 2) * floatRadius,
+                      offsetY,
+                    ],
               }}
               transition={{
                 opacity: { duration: 0.6, delay: index * 0.15 },
                 scale: { duration: 0.6, delay: index * 0.15 },
-                x: {
-                  duration,
-                  delay,
-                  repeat: Infinity,
-                  ease: "linear",
-                },
-                y: {
-                  duration,
-                  delay,
-                  repeat: Infinity,
-                  ease: "linear",
-                },
+                x: isUserControlled
+                  ? { duration: 0 }
+                  : {
+                      duration,
+                      delay,
+                      repeat: Infinity,
+                      ease: "linear",
+                    },
+                y: isUserControlled
+                  ? { duration: 0 }
+                  : {
+                      duration,
+                      delay,
+                      repeat: Infinity,
+                      ease: "linear",
+                    },
+              }}
+              drag
+              dragMomentum={false}
+              dragElastic={0.2}
+              onDragStart={() => {
+                // Mark as user-controlled when drag starts - stops random animation
+                if (!isUserControlled) {
+                  setUserControlledNodes((prev) => new Set(prev).add(node.id));
+                }
+              }}
+              onDrag={(event, info) => {
+                updateNodePosition(
+                  node.id,
+                  baseX + info.point.x + bubbleRadius,
+                  baseY + info.point.y + bubbleRadius
+                );
               }}
               onUpdate={(latest) => {
-                // Track actual position for connection lines (centered)
-                if (typeof latest.x === "number" && typeof latest.y === "number") {
-                  updateNodePosition(node.id, baseX + latest.x + bubbleRadius, baseY + latest.y + bubbleRadius);
+                // Track actual position for connection lines (centered) - only for animated bubbles
+                if (
+                  !isUserControlled &&
+                  typeof latest.x === "number" &&
+                  typeof latest.y === "number"
+                ) {
+                  updateNodePosition(
+                    node.id,
+                    baseX + latest.x + bubbleRadius,
+                    baseY + latest.y + bubbleRadius
+                  );
                 }
               }}
             >
-              {/* Enhanced bubble with dual-theme frosted glass effect and proper overflow handling */}
+              {/* Enhanced bubble with dual-theme frosted glass effect and playful interaction */}
               <motion.div
                 className="relative bg-white/90 dark:bg-[#1C1E22] text-gray-800 dark:text-gray-200 font-semibold shadow-lg dark:shadow-xl rounded-full flex items-center justify-center text-center backdrop-blur-md border border-gray-200 dark:border-white/10"
                 style={{
@@ -350,11 +516,26 @@ export function AnimatedWorkflow() {
                   padding: "12px",
                   fontSize: "12px",
                   lineHeight: "1.3",
+                  cursor: "grab",
                 }}
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 0 30px rgba(0, 184, 217, 0.4)",
-                  borderColor: "rgba(0, 184, 217, 0.3)"
+                whileHover={
+                  isUserControlled
+                    ? {
+                        scale: 1.08,
+                        boxShadow: "0 0 30px rgba(0, 184, 217, 0.5)",
+                        borderColor: "rgba(0, 184, 217, 0.4)",
+                      }
+                    : {
+                        scale: 1.05,
+                        boxShadow: "0 0 30px rgba(0, 184, 217, 0.4)",
+                        borderColor: "rgba(0, 184, 217, 0.3)",
+                      }
+                }
+                whileDrag={{
+                  scale: 1.15,
+                  rotate: [0, -5, 5, -5, 0],
+                  boxShadow: "0 0 40px rgba(0, 184, 217, 0.6)",
+                  cursor: "grabbing",
                 }}
                 transition={{ duration: 0.2 }}
               >
