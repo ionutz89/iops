@@ -38,6 +38,7 @@ export function SocialProof() {
               width={100}
               height={32}
               className="h-8 w-auto hover:opacity-100 transition-opacity"
+              style={{ width: "auto" }}
             />
           ))}
         </motion.div>

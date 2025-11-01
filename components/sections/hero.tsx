@@ -98,6 +98,7 @@ export function Hero() {
               width={80}
               height={32}
               className="h-8 w-auto"
+              style={{ width: "auto" }}
             />
             <Image
               src="/logos/google.svg"
@@ -105,6 +106,7 @@ export function Hero() {
               width={100}
               height={32}
               className="h-8 w-auto"
+              style={{ width: "auto" }}
             />
             <Image
               src="/logos/n8n.svg"
@@ -112,6 +114,7 @@ export function Hero() {
               width={80}
               height={32}
               className="h-8 w-auto"
+              style={{ width: "auto" }}
             />
             <Image
               src="/logos/dify.svg"
@@ -119,6 +122,7 @@ export function Hero() {
               width={100}
               height={32}
               className="h-8 w-auto"
+              style={{ width: "auto" }}
             />
           </motion.div>
         </div>

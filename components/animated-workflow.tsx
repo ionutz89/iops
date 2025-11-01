@@ -95,12 +95,19 @@ export function AnimatedWorkflow() {
           ? Math.min(800, window.innerHeight * 0.8) // Much taller on mobile for spacing
           : Math.min(500, window.innerHeight * 0.6);
       const mobile = window.innerWidth < 768;
+      // Set both together to ensure they're synchronized
       setContainerSize({ width, height });
       setIsMobile(mobile);
     };
+    // Call immediately and also on next tick to ensure mobile detection is accurate
     updateSize();
+    // Small delay to ensure window size is fully settled, especially on mobile
+    const timeoutId = setTimeout(updateSize, 50);
     window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", updateSize);
+    };
   }, []);
 
   useEffect(() => {
@@ -113,13 +120,21 @@ export function AnimatedWorkflow() {
       return;
     }
 
+    // CRITICAL: Double-check mobile state matches actual window size before generating
+    // This prevents generating with wrong mobile state on initial load
+    const actualIsMobile = window.innerWidth < 768;
+    if (actualIsMobile !== isMobile) {
+      // Mobile state mismatch, wait for it to sync
+      return;
+    }
+
     // Mark as initialized BEFORE generating to prevent re-generation
     nodesInitializedRef.current = true;
 
     // Generate non-overlapping random positions for nodes with size-aware spacing
     const generatedNodes: Node[] = [];
-    // Strong padding on mobile, good padding on desktop
-    const extraPadding = isMobile ? 80 : 50;
+    // Increased padding on mobile to prevent ANY overlap - especially important on load/refresh
+    const extraPadding = isMobile ? 120 : 50;
 
     nodeLabels.forEach((label, i) => {
       let x: number, y: number;
@@ -129,9 +144,10 @@ export function AnimatedWorkflow() {
 
       do {
         // Use wider range but with margin from edges based on bubble size
+        // Increased margin on mobile to ensure bubbles don't touch edges
         const margin =
           (currentBubbleSize.radius / containerSize.width) * 100 +
-          (isMobile ? 15 : 8);
+          (isMobile ? 20 : 8);
         x = Math.random() * (100 - 2 * margin) + margin;
         y = Math.random() * (100 - 2 * margin) + margin;
         attempts++;
@@ -139,12 +155,17 @@ export function AnimatedWorkflow() {
         attempts < maxAttempts &&
         generatedNodes.some((node) => {
           const nodeBubbleSize = getBubbleSize(node.label, isMobile);
+          // Convert percentage positions to pixel positions for accurate overlap check
+          const x1Px = (x / 100) * containerSize.width;
+          const y1Px = (y / 100) * containerSize.height;
+          const x2Px = (node.x / 100) * containerSize.width;
+          const y2Px = (node.y / 100) * containerSize.height;
           return checkOverlap(
-            (x / 100) * containerSize.width,
-            (y / 100) * containerSize.height,
+            x1Px,
+            y1Px,
             currentBubbleSize.radius,
-            (node.x / 100) * containerSize.width,
-            (node.y / 100) * containerSize.height,
+            x2Px,
+            y2Px,
             nodeBubbleSize.radius,
             extraPadding
           );
