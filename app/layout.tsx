@@ -157,6 +157,15 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}
       >
+        {/* Polyfill for __name to prevent webpack runtime errors in Cloudflare Workers */}
+        {/* This must run before any webpack code executes */}
+        <Script
+          id="webpack-name-polyfill"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){if(typeof __name==='undefined'){var __name=function(m){return m&&typeof m==='object'?m.id||m.resource||'unknown':String(m||'unknown');};}})();`,
+          }}
+        />
         {/* JSON-LD Structured Data */}
         <Script
           id="organization-schema"

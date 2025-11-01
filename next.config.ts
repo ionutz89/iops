@@ -28,6 +28,14 @@ const nextConfig: NextConfig = {
       };
     }
 
+    // Fix for __name is not defined error in Cloudflare Workers runtime
+    // This can occur when webpack's code splitting references module names
+    if (!isServer) {
+      // Configure output to avoid issues with module naming
+      config.output = config.output || {};
+      config.output.globalObject = "self";
+    }
+
     // Production optimizations to reduce bundle size
     if (!dev && !isServer) {
       config.optimization = {
