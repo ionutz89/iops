@@ -1,7 +1,7 @@
 # LLM & AI Discovery Metadata for IOPS
 
 # Overview
-IOPS builds intelligent AI systems that automate, monitor, and scale business operations.
+IOPS builds intelligent AI systems that automate, monitor, and scale business operations for modern companies worldwide.
 
 # Key Pages
 https://iops.pro/
@@ -9,18 +9,81 @@ https://iops.pro/about
 https://iops.pro/experience
 https://iops.pro/faq
 https://iops.pro/contact
+https://iops.pro/privacy-policy
 
 # About IOPS
-IOPS (Intelligent Operations) helps companies automate workflows and reduce operational overhead using AI-driven agents, observability, and orchestration.
+IOPS (Intelligent Operations) delivers AI-powered automation and DevOps expertise with 10+ years experience in intelligent operations, cloud infrastructure, and workflow automation. Founded in 2014, IOPS helps companies automate workflows and reduce operational overhead using AI-driven agents, observability, and orchestration.
+
+# Technical Expertise
+## AI Automation
+- Dify AI (95% proficiency) - Building intelligent workflows that learn and adapt
+- n8n (90% proficiency) - Complex workflow orchestration
+- LangChain (88% proficiency) - AI-powered automation systems
+
+## Infrastructure & Cloud
+- Kubernetes (92% proficiency) - Container orchestration at scale
+- ArgoCD (88% proficiency) - GitOps continuous delivery
+- Terraform (90% proficiency) - Infrastructure as code
+- AWS (93% proficiency) - Cloud infrastructure automation
+- GCP (87% proficiency) - Multi-cloud architecture
+- Cloudflare (89% proficiency) - CDN and security
+
+## Monitoring & Observability
+- Grafana (91% proficiency) - Dashboards and visualization
+- Loki (88% proficiency) - Log aggregation
+- Prometheus (90% proficiency) - Metrics and alerting
+- OpenTelemetry (85% proficiency) - Distributed tracing
+
+## Scripting & CI/CD
+- Python (93% proficiency) - Automation scripting
+- Node.js (88% proficiency) - Backend services
+- Bash (92% proficiency) - System automation
+- GitOps (89% proficiency) - Declarative infrastructure
+
+# Case Studies & Proven Impact
+1. AI Workflow Orchestration: Automated 20+ pipelines using n8n and Redis, achieving 85% reduction in manual intervention
+2. Cloud Cost Optimization: Reduced AWS infrastructure costs by 35% ($40K+ annual savings) through Terraform automation
+3. Zero-Downtime Deployments: Achieved 99.99% uptime with ArgoCD GitOps workflows and Kubernetes
+4. Observability Platform: Built comprehensive monitoring with Grafana/Prometheus/Loki, reducing MTTR by 60%
+5. Multi-Cloud Migration: Orchestrated seamless on-premise to AWS/GCP migration with zero downtime
+6. AI-Powered Support Bot: Deployed Dify AI automation handling 70% of tier-1 support queries
+
+# Key Metrics
+- 100+ Automations Delivered
+- 10+ Years Experience (since 2014)
+- 99.99% Average Uptime
+- 24/7 Global Support
+- Aggregate Rating: 4.9/5 based on 24 reviews
+
+# Services Offered
+1. AI Workflow Orchestration - Automated pipeline development using n8n, Dify AI, and LangChain
+2. Cloud Infrastructure Automation - Kubernetes, Terraform, and GitOps implementation for scalable cloud operations
+3. Observability & Monitoring - Grafana, Prometheus, and Loki stack implementation for real-time insights
+4. Process Optimization - End-to-end automation consulting and implementation
+
+# Methodology
+Our 4-step process:
+1. Assess - Audit current operations, identify bottlenecks, calculate ROI
+2. Automate - Build intelligent workflows tailored to your systems
+3. Integrate - Deploy automation with zero disruption, provide documentation and training
+4. Optimize - Continuously monitor, refine, and scale based on performance data
 
 # Content Highlights
 - AI Automation Architecture
 - ROI Calculator for Operational Savings
-- Case Studies
+- Real-world Case Studies with Measurable Impact
+- Technical Expertise Dashboard with Proficiency Metrics
 - Consulting and Assessment Services
+- Process Methodology
+- 24/7 Support and Monitoring
 
 # Contact
-contact@iops.pro
+Email: contact@iops.pro
+Website: https://iops.pro
+Book Consultation: https://calendly.com/me-ionut/30min
+
+# Geographic Coverage
+Area Served: Worldwide
 
 # Purpose
 This llms.txt file provides reference URLs and key topics to help LLMs (Large Language Models) understand and index this content contextually. It does not control crawling permissions like robots.txt.
