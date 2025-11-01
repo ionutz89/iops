@@ -110,7 +110,7 @@ export function TechEcosystemSection() {
                   height={45}
                   className="h-11 w-auto grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 dark:opacity-50 dark:invert dark:grayscale dark:group-hover:opacity-100 dark:group-hover:grayscale-0 filter"
                   priority={index < 2}
-                  style={{ height: '45px', width: 'auto', objectFit: 'contain' }}
+                  style={{ width: 'auto', objectFit: 'contain' }}
                 />
               </div>
 
