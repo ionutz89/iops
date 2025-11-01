@@ -163,7 +163,7 @@ export default function RootLayout({
           id="webpack-name-polyfill"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
-            __html: `(function(){if(typeof __name==='undefined'){var __name=function(m){return m&&typeof m==='object'?m.id||m.resource||'unknown':String(m||'unknown');};}})();`,
+            __html: `(function(){if(typeof window!=='undefined'&&typeof window.__name==='undefined'){window.__name=function(m){return m&&typeof m==='object'?m.id||m.resource||'unknown':String(m||'unknown');};}if(typeof globalThis!=='undefined'&&typeof globalThis.__name==='undefined'){globalThis.__name=function(m){return m&&typeof m==='object'?m.id||m.resource||'unknown':String(m||'unknown');};}if(typeof self!=='undefined'&&typeof self.__name==='undefined'){self.__name=function(m){return m&&typeof m==='object'?m.id||m.resource||'unknown':String(m||'unknown');};}})();`,
           }}
         />
         {/* JSON-LD Structured Data */}
