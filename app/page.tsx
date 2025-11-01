@@ -136,7 +136,9 @@ export default function Home() {
     const counters = document.querySelectorAll(".counter");
     counters.forEach((counter) => {
       const update = () => {
-        const target = +counter.getAttribute("data-target");
+        const targetAttr = counter.getAttribute("data-target");
+        if (targetAttr === null) return;
+        const target = +targetAttr;
         const current = +counter.innerText;
         const increment = target / 100;
         if (current < target) {

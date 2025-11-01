@@ -456,7 +456,7 @@ export default function Contact() {
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
-                        className="space-y-4"
+                        className="flex flex-col items-center space-y-1"
                       >
                         <Button
                           type="submit"
@@ -490,7 +490,25 @@ export default function Contact() {
                             initial={false}
                           />
                         </Button>
-                        <p className="text-center text-muted-foreground text-sm">
+
+                        <span className="text-gray-500 text-sm">or</span>
+
+                        <motion.a
+                          href="https://calendly.com/me-ionut/30min"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group block w-full px-8 py-4 text-lg font-semibold rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:opacity-90 transition-all duration-300 shadow-lg shadow-blue-500/50 hover:shadow-xl hover:shadow-blue-500/50 hover:scale-105 hover:from-blue-600 hover:to-purple-700 relative overflow-hidden text-center"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <span className="relative z-10">Book a free strategy call</span>
+                          <motion.div
+                            className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            initial={false}
+                          />
+                        </motion.a>
+
+                        <p className="text-center text-muted-foreground text-sm pt-2">
                           We&apos;ll respond within 24 hours.
                         </p>
                       </motion.div>
@@ -502,32 +520,6 @@ export default function Contact() {
           </div>
         </section>
 
-        {/* Calendly CTA Section */}
-        <section className="py-12 md:py-16 relative z-10">
-          <div className="container px-4 md:px-6 max-w-4xl mx-auto">
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-            >
-              <motion.a
-                href="https://calendly.com/me-ionut/30min"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block w-full px-8 py-4 text-lg font-semibold rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:opacity-90 transition-all duration-300 shadow-lg shadow-blue-500/50 hover:shadow-xl hover:shadow-blue-500/50 hover:scale-105 hover:from-blue-600 hover:to-purple-700 relative overflow-hidden text-center"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <span className="relative z-10">Book a free strategy call</span>
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  initial={false}
-                />
-              </motion.a>
-            </motion.div>
-          </div>
-        </section>
 
         {/* Footer */}
         <footer className="py-12 md:py-16 relative z-10 border-t border-border/50">
