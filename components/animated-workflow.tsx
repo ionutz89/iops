@@ -24,8 +24,8 @@ const nodeLabels = [
 const getBubbleSize = (label: string, isMobile: boolean) => {
   // Estimate width based on character count
   const charCount = label.length;
-  const mobileScale = isMobile ? 0.7 : 1;
-  
+  const mobileScale = isMobile ? 0.6 : 1; // Even smaller on mobile for better spacing
+
   // Return both width and approximate radius for collision detection
   let width: number;
   if (charCount > 25) {
@@ -35,7 +35,7 @@ const getBubbleSize = (label: string, isMobile: boolean) => {
   } else {
     width = 100 * mobileScale; // Small bubble
   }
-  
+
   return {
     width,
     radius: width / 2, // Use half the width as radius for collision detection
@@ -69,8 +69,8 @@ export function AnimatedWorkflow() {
   useEffect(() => {
     const updateSize = () => {
       const width = Math.min(900, window.innerWidth - 40);
-      const height = window.innerWidth < 768 
-        ? Math.min(600, window.innerHeight * 0.7) // Taller on mobile
+      const height = window.innerWidth < 768
+        ? Math.min(800, window.innerHeight * 0.8) // Much taller on mobile for spacing
         : Math.min(500, window.innerHeight * 0.6);
       const mobile = window.innerWidth < 768;
       setContainerSize({ width, height });
@@ -84,18 +84,18 @@ export function AnimatedWorkflow() {
   useEffect(() => {
     // Generate non-overlapping random positions for nodes with size-aware spacing
     const generatedNodes: Node[] = [];
-    // More padding on mobile to prevent overlap
-    const extraPadding = isMobile ? 30 : 50;
+    // Strong padding on mobile, good padding on desktop
+    const extraPadding = isMobile ? 80 : 50;
 
     nodeLabels.forEach((label, i) => {
       let x: number, y: number;
       let attempts = 0;
-      const maxAttempts = 300; // More attempts for better positioning
+      const maxAttempts = 500;
       const currentBubbleSize = getBubbleSize(label, isMobile);
 
       do {
         // Use wider range but with margin from edges based on bubble size
-        const margin = (currentBubbleSize.radius / containerSize.width) * 100 + (isMobile ? 8 : 5);
+        const margin = (currentBubbleSize.radius / containerSize.width) * 100 + (isMobile ? 15 : 8);
         x = Math.random() * (100 - 2 * margin) + margin;
         y = Math.random() * (100 - 2 * margin) + margin;
         attempts++;
@@ -237,9 +237,9 @@ export function AnimatedWorkflow() {
           const bubbleWidth = bubbleSize.width;
           const bubbleRadius = bubbleSize.radius;
 
-          // Very small, gentler floating animation to prevent overlap during motion
-          const floatRadius = isMobile ? 3 : 6;
-          const duration = 6 + Math.random() * 2;
+          // Gentle floating on desktop, disabled on mobile to prevent overlap
+          const floatRadius = isMobile ? 0 : 6; // Restored original desktop animation
+          const duration = 6 + Math.random() * 2; // Restored original timing
           const delay = index * 0.5;
 
           // Center the bubble by offsetting by its radius
@@ -307,12 +307,13 @@ export function AnimatedWorkflow() {
                   padding: isMobile ? "8px" : "12px",
                   fontSize: isMobile ? "10px" : "12px",
                   lineHeight: isMobile ? "1.2" : "1.3",
+                  pointerEvents: isMobile ? "none" : "auto", // Only disable on mobile
                 }}
-                whileHover={{ 
-                  scale: 1.05, 
+                whileHover={!isMobile ? {
+                  scale: 1.05,
                   boxShadow: "0 0 30px rgba(0, 184, 217, 0.4)",
                   borderColor: "rgba(0, 184, 217, 0.3)"
-                }}
+                } : undefined}
                 transition={{ duration: 0.2 }}
               >
                 {/* Improved text wrapping with responsive sizing and proper line breaks */}
