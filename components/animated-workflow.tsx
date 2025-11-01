@@ -81,6 +81,9 @@ export function AnimatedWorkflow() {
       isDragging: boolean;
     };
   }>({});
+  const [desktopDragPositions, setDesktopDragPositions] = useState<{
+    [key: string]: { x: number; y: number; startX: number; startY: number };
+  }>({});
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -434,9 +437,9 @@ export function AnimatedWorkflow() {
               animate={{
                 opacity: 1,
                 scale: 1,
-                // Only animate if NOT user-controlled
+                // Only animate if NOT user-controlled, otherwise use drag position
                 x: isUserControlled
-                  ? offsetX
+                  ? offsetX + (desktopDragPositions[node.id]?.x || 0)
                   : [
                       offsetX,
                       offsetX + Math.sin(0) * floatRadius,
@@ -446,7 +449,7 @@ export function AnimatedWorkflow() {
                       offsetX,
                     ],
                 y: isUserControlled
-                  ? offsetY
+                  ? offsetY + (desktopDragPositions[node.id]?.y || 0)
                   : [
                       offsetY,
                       offsetY + Math.cos(0) * floatRadius,
@@ -476,22 +479,7 @@ export function AnimatedWorkflow() {
                       ease: "linear",
                     },
               }}
-              drag
-              dragMomentum={false}
-              dragElastic={0.2}
-              onDragStart={() => {
-                // Mark as user-controlled when drag starts - stops random animation
-                if (!isUserControlled) {
-                  setUserControlledNodes((prev) => new Set(prev).add(node.id));
-                }
-              }}
-              onDrag={(event, info) => {
-                updateNodePosition(
-                  node.id,
-                  baseX + info.point.x + bubbleRadius,
-                  baseY + info.point.y + bubbleRadius
-                );
-              }}
+              // Don't put drag here - it conflicts with animation
               onUpdate={(latest) => {
                 // Track actual position for connection lines (centered) - only for animated bubbles
                 if (
@@ -517,6 +505,69 @@ export function AnimatedWorkflow() {
                   fontSize: "12px",
                   lineHeight: "1.3",
                   cursor: "grab",
+                }}
+                drag
+                dragMomentum={false}
+                dragElastic={0.2}
+                dragConstraints={false}
+                dragPropagation={false}
+                onDragStart={(event, info) => {
+                  // Mark as user-controlled when drag starts - stops random animation immediately
+                  setUserControlledNodes((prev) => new Set(prev).add(node.id));
+
+                  // Capture the starting position when drag begins
+                  const currentPos = desktopDragPositions[node.id];
+                  setDesktopDragPositions((prev) => ({
+                    ...prev,
+                    [node.id]: {
+                      x: currentPos?.x || 0,
+                      y: currentPos?.y || 0,
+                      startX: currentPos?.x || 0,
+                      startY: currentPos?.y || 0,
+                    },
+                  }));
+                }}
+                onDrag={(event, info) => {
+                  // Calculate new position: start position + drag delta
+                  const dragState = desktopDragPositions[node.id] || {
+                    x: 0,
+                    y: 0,
+                    startX: 0,
+                    startY: 0,
+                  };
+                  const newX = dragState.startX + info.delta.x;
+                  const newY = dragState.startY + info.delta.y;
+
+                  setDesktopDragPositions((prev) => ({
+                    ...prev,
+                    [node.id]: {
+                      x: newX,
+                      y: newY,
+                      startX: dragState.startX,
+                      startY: dragState.startY,
+                    },
+                  }));
+
+                  // Update node position for connections
+                  updateNodePosition(
+                    node.id,
+                    baseX + offsetX + newX + bubbleRadius,
+                    baseY + offsetY + newY + bubbleRadius
+                  );
+                }}
+                onDragEnd={(event, info) => {
+                  // Final position is already set in onDrag
+                  const dragState = desktopDragPositions[node.id] || {
+                    x: 0,
+                    y: 0,
+                    startX: 0,
+                    startY: 0,
+                  };
+                  updateNodePosition(
+                    node.id,
+                    baseX + offsetX + dragState.x + bubbleRadius,
+                    baseY + offsetY + dragState.y + bubbleRadius
+                  );
                 }}
                 whileHover={
                   isUserControlled
