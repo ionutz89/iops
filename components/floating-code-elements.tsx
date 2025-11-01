@@ -6,7 +6,7 @@ const codeSnippets = [
   { text: "kubectl apply -f deployment.yaml", x: "10%", y: "20%", delay: 0 },
   { text: "$ ai-agent deploy --auto", x: "80%", y: "15%", delay: 0.5 },
   { text: "n8n workflow: ✓ executed", x: "15%", y: "70%", delay: 1 },
-  { text: "claude mcp://server/ready", x: "75%", y: "75%", delay: 1.5 },
+  { text: "dify://workflow/ready", x: "75%", y: "75%", delay: 1.5 },
   { text: "incidents: 10 → 1", x: "50%", y: "85%", delay: 2 },
   { text: "savings: +$200k/year", x: "85%", y: "45%", delay: 0.8 },
 ];

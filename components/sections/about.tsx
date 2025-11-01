@@ -20,7 +20,7 @@ export function About() {
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Our team of senior engineers has over 10 years experience in
-            Kubernetes, n8n Workflows, and Claude MCP automation. We help tech
+            Kubernetes, n8n Workflows, and Dify AI automation. We help tech
             teams shift from manual ops to self-healing systems.
           </p>
         </motion.div>
@@ -59,7 +59,7 @@ export function About() {
                   AI-Powered Solutions
                 </h3>
                 <p className="text-muted-foreground">
-                  Specialized in Claude MCP, n8n, and Kubernetes automation
+                  Specialized in Dify AI, n8n, and Kubernetes automation
                 </p>
               </CardContent>
             </Card>
@@ -116,6 +116,7 @@ export function About() {
     </section>
   );
 }
+
 
 
 

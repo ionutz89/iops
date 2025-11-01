@@ -22,9 +22,8 @@ const skillCategories: SkillCategory[] = [
   {
     title: "AI & Automation Tools",
     skills: [
-      { name: "Claude MCP", level: 95 },
+      { name: "Dify AI", level: 95 },
       { name: "n8n", level: 90 },
-      { name: "Dify", level: 85 },
       { name: "LangChain", level: 88 },
     ],
   },

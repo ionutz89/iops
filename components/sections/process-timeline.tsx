@@ -37,7 +37,7 @@ const timeline = [
     description: "Build and deploy your AI agent infrastructure",
     deliverables: [
       "AI workflow implementation",
-      "Claude MCP integration",
+      "Dify AI integration",
       "Kubernetes automation setup",
       "Monitoring & observability",
     ],

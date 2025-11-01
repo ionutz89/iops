@@ -44,6 +44,13 @@ export function ROICalculator() {
     // Add delay before showing results for natural feel
     setTimeout(() => {
       setShowResults(true);
+      // Smooth scroll to results section
+      setTimeout(() => {
+        const el = document.getElementById("roi-result");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 400);
     }, 300);
   };
 
@@ -206,7 +213,7 @@ export function ROICalculator() {
                         updateInput("hourlyRate", clampedValue);
                       }
                     }}
-                    placeholder="$50"
+                    placeholder="e.g. 50"
                     className="rounded-lg border-slate-300 dark:border-slate-700 focus:ring-blue-500 focus:ring-2"
                     min={20}
                     max={150}
@@ -233,7 +240,7 @@ export function ROICalculator() {
                         updateInput("incidentCost", clampedValue);
                       }
                     }}
-                    placeholder="$2000"
+                    placeholder="e.g. 1000"
                     className="rounded-lg border-slate-300 dark:border-slate-700 focus:ring-blue-500 focus:ring-2"
                     min={500}
                     max={5000}
@@ -260,7 +267,7 @@ export function ROICalculator() {
                         updateInput("setupCost", clampedValue);
                       }
                     }}
-                    placeholder="$5000"
+                    placeholder="e.g. 10000"
                     className="rounded-lg border-slate-300 dark:border-slate-700 focus:ring-blue-500 focus:ring-2"
                     min={1000}
                     max={100000}
@@ -310,6 +317,7 @@ export function ROICalculator() {
                     onClick={handleCalculate}
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-6 text-lg"
                     size="lg"
+                    aria-label="Calculate ROI"
                   >
                     Calculate ROI
                   </Button>
@@ -363,7 +371,7 @@ export function ROICalculator() {
               </motion.div>
 
               {/* Results Grid */}
-              <div className="grid grid-cols-1 gap-6">
+              <div id="roi-result" className="grid grid-cols-1 gap-6">
               {/* Manual Work Savings */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}

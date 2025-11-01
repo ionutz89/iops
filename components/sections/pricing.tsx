@@ -20,8 +20,8 @@ const pricingTiers = [
     popular: false,
     features: [
       "Single workflow automation",
-      "n8n or Dify implementation",
-      "Basic Claude MCP integration",
+      "n8n or Dify AI implementation",
+      "Basic AI automation workflows",
       "2 weeks implementation",
       "Documentation & training",
       "1 month support",
@@ -35,7 +35,7 @@ const pricingTiers = [
     popular: true,
     features: [
       "Full multi-agent system",
-      "Claude MCP + n8n orchestration",
+      "Dify AI + n8n orchestration",
       "Kubernetes automation",
       "ArgoCD GitOps workflows",
       "Monitoring & observability",

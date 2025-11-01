@@ -8,7 +8,7 @@ export function SocialProof() {
     { name: "AWS", src: "/logos/aws.svg" },
     { name: "Google Cloud", src: "/logos/google.svg" },
     { name: "n8n", src: "/logos/n8n.svg" },
-    { name: "Claude MCP", src: "/logos/claude.svg" },
+    { name: "Dify AI", src: "/logos/dify.svg" },
   ];
 
   return (

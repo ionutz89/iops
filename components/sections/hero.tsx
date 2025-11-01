@@ -114,8 +114,8 @@ export function Hero() {
               className="h-8 w-auto"
             />
             <Image
-              src="/logos/claude.svg"
-              alt="Claude MCP"
+              src="/logos/dify.svg"
+              alt="Dify AI"
               width={100}
               height={32}
               className="h-8 w-auto"

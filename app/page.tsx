@@ -131,6 +131,25 @@ function MetricCard({
 }
 
 export default function Home() {
+  // Counter animation script
+  useEffect(() => {
+    const counters = document.querySelectorAll(".counter");
+    counters.forEach((counter) => {
+      const update = () => {
+        const target = +counter.getAttribute("data-target");
+        const current = +counter.innerText;
+        const increment = target / 100;
+        if (current < target) {
+          counter.innerText = Math.ceil(current + increment);
+          setTimeout(update, 20);
+        } else {
+          counter.innerText = target;
+        }
+      };
+      update();
+    });
+  }, []);
+
   return (
     <main className="min-h-screen bg-background">
       <Navigation />
@@ -172,6 +191,16 @@ export default function Home() {
               <span className="gradient-text">with AI</span>
             </motion.h1>
 
+            {/* New Line */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.05 }}
+              className="text-lg text-gray-400 dark:text-gray-500 mt-2"
+            >
+              We automate workflows, monitor systems, and reduce downtime — without replacing your team.
+            </motion.p>
+
             {/* Summary Line */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -203,6 +232,7 @@ export default function Home() {
                 size="lg"
                 asChild
                 className="rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 font-medium shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-blue-500/50 hover:from-blue-600 hover:to-purple-700"
+                aria-label="Get free assessment"
               >
                 <Link href="/contact">
                   Get Free Assessment
@@ -212,6 +242,7 @@ export default function Home() {
               <Link
                 href="#roi-calculator"
                 className="inline-block px-6 py-3 text-sm font-medium text-blue-600 border border-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-200 ml-4"
+                aria-label="Calculate ROI"
               >
                 Calculate ROI
               </Link>
@@ -352,6 +383,24 @@ export default function Home() {
             >
               – SaaS Operations Director
             </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="italic text-gray-300 dark:text-gray-400 mt-4 text-lg md:text-xl max-w-3xl mx-auto"
+            >
+              "We cut manual billing work by half in our first month." — Finance Lead, Logistics Company
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="italic text-gray-300 dark:text-gray-400 mt-2 text-lg md:text-xl max-w-3xl mx-auto"
+            >
+              "Automating our reports saved 60+ hours weekly." — COO, SaaS Startup
+            </motion.p>
           </motion.div>
         </div>
       </section>
@@ -383,7 +432,7 @@ export default function Home() {
       <TechEcosystemSection />
 
       {/* Final CTA Banner */}
-      <section className="py-24 bg-[#0f172a] relative overflow-hidden">
+      <section className="py-24 bg-[#0f172a] relative overflow-hidden pb-32 md:pb-24">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -401,6 +450,7 @@ export default function Home() {
             size="lg"
             asChild
             className="rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-6 font-medium shadow-lg hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 hover:scale-105 hover:from-blue-600 hover:to-purple-700"
+            aria-label="Book 30-minute call"
           >
             <Link href="https://calendly.com/me-ionut/30min">
               Book 30-Minute Call
@@ -408,6 +458,20 @@ export default function Home() {
             </Link>
           </Button>
         </motion.div>
+        {/* Sticky button for mobile */}
+        <div className="fixed bottom-4 left-0 right-0 flex justify-center md:hidden z-40 px-4">
+          <Button
+            size="lg"
+            asChild
+            className="rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 font-medium shadow-lg hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300"
+            aria-label="Book 30-minute call"
+          >
+            <Link href="https://calendly.com/me-ionut/30min">
+              Book 30-Minute Call
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
+        </div>
       </section>
 
       {/* Footer */}

@@ -17,34 +17,79 @@ import { ArrowRight } from "lucide-react";
 
 const faqs = [
   {
-    question: "How does AI automation help my business?",
+    question: "What is Intelligent Operations?",
     answer:
-      "AI automation eliminates repetitive manual tasks, reduces errors, and allows your team to focus on strategic work. Our systems handle routine operations 24/7, from data processing to system monitoring, saving you time and reducing costs.",
+      "Intelligent Operations means combining automation, AI agents, and workflow orchestration to simplify business processes. We don't offer a SaaS platform — we consult, design, and implement solutions using tools like n8n, Dify AI, and Claude MCP. Our role is to connect your existing tools, remove repetitive work, and make operations smarter and faster inside your own systems.",
   },
   {
-    question: "Will AI replace our team?",
+    question: "How can AI automation help my business?",
     answer:
-      "No. Our automation systems are designed to augment your team, not replace them. They handle repetitive tasks so your employees can focus on creative problem-solving, strategy, and customer relationships. Most clients report their teams become more productive and engaged.",
+      "AI automation replaces repetitive manual work with intelligent workflows. For example, we can connect your CRM, billing, and analytics tools so reports and updates happen automatically — no coding required from your team.",
+  },
+  {
+    question: "Do I need technical knowledge to use it?",
+    answer:
+      "No. We handle setup, integration, and automation logic. You'll receive a simple dashboard or reports that show performance improvements, not a new platform to learn.",
   },
   {
     question: "How long does setup take?",
     answer:
-      "Most automation projects are completed in 4-8 weeks, depending on complexity. We start with a free assessment to understand your needs, then provide a detailed timeline. Simple automations can be live in as little as 2 weeks.",
+      "Most implementations take 2–4 weeks, depending on your system complexity and integration needs. We manage everything end-to-end.",
   },
   {
-    question: "Is data privacy guaranteed?",
+    question: "Will AI replace our team?",
     answer:
-      "Absolutely. We follow privacy-first design principles and comply with GDPR, SOC 2, and ISO 27001 standards. Your data never leaves your infrastructure unless you explicitly approve it. We build systems that respect your security and compliance requirements.",
+      "No. Our goal is to make your existing team more efficient, not replace them. AI handles repetitive work so your people can focus on strategy and growth.",
   },
   {
-    question: "What tools do you integrate with?",
+    question: "What frameworks or tools do you use?",
     answer:
-      "We integrate with hundreds of popular business tools including AWS, Google Cloud, Slack, Microsoft 365, Salesforce, databases, APIs, and more. If you use a specific tool, we can likely integrate with it. Our automation platforms (n8n, Claude MCP) are highly flexible.",
+      "We use n8n for workflow automation, Dify AI for chatbots and reasoning engines, and Claude MCP (Model Context Protocol) — an open-source framework from Anthropic for secure AI orchestration. These are open, flexible tools implemented and customized for each client, not hosted software.",
+  },
+  {
+    question: "What results should I expect?",
+    answer:
+      "Most clients reduce manual workloads by 40–60% within the first 60 days. You'll see faster operations, fewer human errors, and clearer visibility into your processes.",
+  },
+  {
+    question: "Is my data secure?",
+    answer:
+      "Yes. All automations and AI workflows are deployed inside your own infrastructure or a private cloud you control. We follow industry-standard security and privacy principles inspired by frameworks like GDPR, SOC 2, and ISO 27001 (without formal certification). Client data is never shared with external services without explicit consent.",
+  },
+  {
+    question: "How much does it cost?",
+    answer:
+      "Pricing depends on your current setup and workflow complexity. We start with a free assessment, then provide a transparent, fixed quote before implementation.",
   },
   {
     question: "What support do we get after delivery?",
     answer:
-      "Every project includes 30 days of free support. After that, we offer maintenance plans starting at $500/month. We also provide documentation, training for your team, and are available for questions. You can always reach us via email or schedule a call.",
+      "You get ongoing monitoring, maintenance, and optimization. We ensure your automations continue to run reliably and scale as your business grows.",
+  },
+  {
+    question: "Can I start small and expand later?",
+    answer:
+      "Yes. Many clients begin with a single workflow or chatbot, then scale up once they see measurable ROI.",
+  },
+  {
+    question: "What industries do you work with?",
+    answer:
+      "We work across e-commerce, logistics, finance, healthcare, and tech — any business with repetitive workflows or operational bottlenecks.",
+  },
+  {
+    question: "How do you measure ROI from automation?",
+    answer:
+      "We track time saved, cost reduction, and process efficiency. Reports show before-and-after performance in clear, business terms.",
+  },
+  {
+    question: "Do you offer training for my staff?",
+    answer:
+      "Yes. We provide onboarding sessions and documentation so your team understands how to manage and expand the automations safely.",
+  },
+  {
+    question: "What's the first step to get started?",
+    answer:
+      "Book a free assessment. We'll review your current operations, identify high-impact automation opportunities, and build a roadmap for implementation.",
   },
 ];
 
@@ -61,7 +106,7 @@ export default function FAQ() {
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-6xl font-bold text-center mb-6 text-foreground"
           >
-            Frequently Asked <span className="gradient-text">Questions</span>
+            Frequently Asked Questions About <span className="gradient-text">Intelligent Operations</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -69,7 +114,7 @@ export default function FAQ() {
             transition={{ delay: 0.2 }}
             className="text-center text-lg text-muted-foreground max-w-2xl mx-auto"
           >
-            Frequently Asked Questions About Intelligent Operations
+            Clear answers about our AI automation consulting and implementation services
           </motion.p>
         </div>
       </section>
@@ -86,11 +131,21 @@ export default function FAQ() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <AccordionItem value={`item-${index}`} className="border-b border-gray-200">
-                  <AccordionTrigger className="text-left text-lg font-semibold text-foreground hover:no-underline py-6">
+                <AccordionItem
+                  value={`item-${index}`}
+                  className="border-b border-gray-200 dark:border-gray-800"
+                >
+                  <AccordionTrigger
+                    className="text-left text-lg font-semibold text-foreground hover:no-underline py-6"
+                    aria-label={faq.question}
+                  >
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pb-6 leading-relaxed">
+                  <AccordionContent
+                    className="text-muted-foreground pb-6 leading-relaxed data-[state=open]:animate-fadeIn"
+                    role="region"
+                    aria-label={`Answer to: ${faq.question}`}
+                  >
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -118,7 +173,7 @@ export default function FAQ() {
             transition={{ delay: 0.2 }}
             className="text-lg text-muted-foreground mb-8"
           >
-            We're here to help. Get in touch and we'll answer any questions you have.
+            Message us and we'll answer any questions you have.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}

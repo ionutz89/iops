@@ -14,7 +14,7 @@ const caseStudies = [
     challenge:
       "Manual deployments taking 4+ hours with frequent rollbacks and configuration drift across environments.",
     solution:
-      "Implemented ArgoCD GitOps with Claude MCP-powered validation, automated rollback strategies, and n8n workflow orchestration for pre-deployment checks.",
+      "Implemented ArgoCD GitOps with Dify AI-powered validation, automated rollback strategies, and n8n workflow orchestration for pre-deployment checks.",
     results: [
       {
         metric: "Deployment Time",
@@ -84,7 +84,7 @@ const caseStudies = [
     challenge:
       "Large DevOps team manually managing infrastructure scaling, deployments, and routine maintenance tasks.",
     solution:
-      "Integrated Claude MCP for intelligent infrastructure management, predictive scaling with ML, and automated routine operations using n8n workflows.",
+      "Integrated Dify AI for intelligent infrastructure management, predictive scaling with ML, and automated routine operations using n8n workflows.",
     results: [
       {
         metric: "Ops Team Size",

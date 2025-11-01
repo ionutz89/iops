@@ -13,8 +13,8 @@ const logos = [
   {
     name: "Google Cloud",
     src: "/logos/google.svg",
-    tooltip: "Scalable infrastructure and AI tools.",
-    detailedTooltip: "Scalable infrastructure and AI tools.",
+    tooltip: "Scalable infrastructure and advanced AI tools.",
+    detailedTooltip: "Scalable infrastructure and advanced AI tools.",
   },
   {
     name: "n8n",
@@ -23,10 +23,10 @@ const logos = [
     detailedTooltip: "Connects all your workflows and systems.",
   },
   {
-    name: "Claude MCP",
-    src: "/logos/claude.svg",
-    tooltip: "Brings intelligent decision-making to your automation.",
-    detailedTooltip: "Brings intelligent decision-making to your automation.",
+    name: "Dify AI",
+    src: "/logos/dify.svg",
+    tooltip: "Modern AI app and workflow engine for intelligent automation.",
+    detailedTooltip: "Dify AI — modern AI app and workflow engine for intelligent automation.",
   },
 ];
 
@@ -91,7 +91,7 @@ export function TechEcosystemSection() {
                 delay: 0.3 + index * 0.1,
               }}
               whileHover={{ scale: 1.05 }}
-              className={`flex flex-col items-center justify-center group relative tech-logo-group transition-transform duration-300 ${
+              className={`flex flex-col items-center justify-center group relative tech-logo-group transition-transform duration-300 hover:shadow-lg ${
                 index > 0 && index % 2 === 0 ? 'sm:border-l sm:border-slate-200 dark:sm:border-slate-700 sm:pl-6' : ''
               } ${
                 index > 0 && index % 4 === 0 ? 'md:border-l md:border-slate-200 dark:md:border-slate-700 md:pl-6' : ''
@@ -109,10 +109,10 @@ export function TechEcosystemSection() {
                 />
               </div>
 
-              {/* Description - Hidden until hover */}
-              <p className="text-sm text-muted-foreground text-center max-w-[160px] absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 translate-y-[-10px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 whitespace-nowrap pointer-events-none">
+              {/* Tooltip - Hidden until hover */}
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-gray-800 dark:bg-gray-900 text-white text-xs rounded py-1 px-2 whitespace-nowrap pointer-events-none transition-opacity duration-200 shadow-lg z-10">
                 {logo.detailedTooltip || logo.tooltip}
-              </p>
+              </div>
             </motion.div>
           ))}
         </motion.div>

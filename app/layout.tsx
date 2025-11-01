@@ -49,7 +49,7 @@ const websiteSchema = {
 export const metadata: Metadata = {
   title: "IOPS | Intelligent Operations with AI",
   description:
-    "IOPS builds intelligent AI systems that automate, monitor, and scale business operations 24/7. Calculate your ROI and start automating today.",
+    "IOPS builds intelligent AI systems with Dify AI and AI automation workflows that automate, monitor, and scale business operations 24/7. Calculate your ROI and start automating today.",
   keywords: [
     "AI automation",
     "business automation",
@@ -60,6 +60,8 @@ export const metadata: Metadata = {
     "AI agents",
     "workflow automation",
     "operational efficiency",
+    "Dify AI",
+    "AI automation workflows",
   ],
   authors: [{ name: "IOPS" }],
   creator: "IOPS",
