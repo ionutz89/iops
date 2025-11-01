@@ -119,7 +119,15 @@ export default function FAQ() {
             transition={{ delay: 0.2 }}
             className="text-center text-lg text-muted-foreground max-w-2xl mx-auto"
           >
-            Everything you need to know about how we design and implement AI automation for your business.
+            Everything you need to know about how we design and implement AI automation for your company.
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-center text-gray-400 dark:text-gray-500 mt-2 max-w-2xl mx-auto"
+          >
+            We focus on building AI workflows, agents, and chatbots tailored to your operations.
           </motion.p>
         </div>
       </section>
@@ -141,17 +149,20 @@ export default function FAQ() {
                   className="border-b border-gray-200 dark:border-gray-800"
                 >
                   <AccordionTrigger
+                    id={`faq-question-${index}`}
+                    aria-controls={`faq-${index}`}
                     className="text-left text-lg font-semibold text-foreground hover:no-underline py-6"
                     aria-label={faq.question}
                   >
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent
-                    className="text-muted-foreground pb-6 leading-relaxed data-[state=open]:animate-fadeIn"
+                    id={`faq-${index}`}
                     role="region"
-                    aria-label={`Answer to: ${faq.question}`}
+                    aria-labelledby={`faq-question-${index}`}
+                    className="text-muted-foreground pb-6 leading-relaxed data-[state=open]:animate-fadeIn"
                   >
-                    {faq.answer}
+                    <p>{faq.answer}</p>
                   </AccordionContent>
                 </AccordionItem>
               </motion.div>
