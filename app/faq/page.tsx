@@ -17,7 +17,7 @@ import { ArrowRight } from "lucide-react";
 
 const faqs = [
   {
-    question: "What is Intelligent Operations?",
+    question: "What are Intelligent Operations?",
     answer:
       "Intelligent Operations means using AI agents and automation to make your business run smoother. We don't sell software. We analyze your processes, design automations, and implement them using tools like n8n, Dify AI, and Claude MCP. You end up with working workflows, AI assistants, and integrations that run inside your own tools — no new system to log into.",
   },
@@ -47,6 +47,11 @@ const faqs = [
       "We build automations using n8n (workflow orchestration), Dify AI (chatbots and AI reasoning), and Claude MCP, an open-source framework from Anthropic for managing AI agents securely. These tools let us create AI assistants, automated reports, and integrated workflows directly in your systems — all fully owned and controlled by you.",
   },
   {
+    question: "Can you build AI chatbots that use our company's data or documents?",
+    answer:
+      "Yes. We create chatbots and AI assistants that understand and respond using your own documentation, reports, or internal files. This is done using RAG (Retrieval-Augmented Generation), which allows the AI to reference your data instead of relying only on public models. We build these assistants using tools like n8n, Dify AI, or Flowise, depending on your setup. They can connect to your website, CRM, or internal systems, giving your team or customers instant answers from your verified content. All chatbot data stays within your environment for full privacy control.",
+  },
+  {
     question: "What results should I expect?",
     answer:
       "Most clients reduce manual workloads by 40–60% within the first 60 days. You'll see faster operations, fewer human errors, and clearer visibility into your processes.",
@@ -64,7 +69,7 @@ const faqs = [
   {
     question: "What support do we get after delivery?",
     answer:
-      "You get ongoing monitoring, maintenance, and optimization. We ensure your automations continue to run reliably and scale as your business grows.",
+      "We handle ongoing technical maintenance and monitoring to keep your automations running smoothly. We ensure your automations continue to run reliably and scale as your business grows.",
   },
   {
     question: "Can I start small and expand later?",
@@ -84,12 +89,12 @@ const faqs = [
   {
     question: "Do you offer training for my staff?",
     answer:
-      "Yes. We provide onboarding sessions and documentation so your team understands how to manage and expand the automations safely.",
+      "We provide human onboarding and training so your team knows how to manage and expand automations confidently. We provide onboarding sessions and documentation so your team understands how to manage and expand the automations safely.",
   },
   {
     question: "What's the first step to get started?",
     answer:
-      "Book a free assessment. We'll review your current operations, identify high-impact automation opportunities, and build a roadmap for implementation.",
+      "Book a free assessment. We'll review your current operations, identify high-impact automation opportunities, and build a roadmap for implementation. You can schedule a free 30-minute call to review your processes and identify automation opportunities.",
   },
 ];
 
@@ -114,7 +119,7 @@ export default function FAQ() {
             transition={{ delay: 0.2 }}
             className="text-center text-lg text-muted-foreground max-w-2xl mx-auto"
           >
-            Clear answers about our AI automation consulting and implementation services
+            Everything you need to know about how we design and implement AI automation for your business.
           </motion.p>
         </div>
       </section>
