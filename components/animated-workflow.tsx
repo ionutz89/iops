@@ -99,13 +99,37 @@ export function AnimatedWorkflow() {
       setContainerSize({ width, height });
       setIsMobile(mobile);
     };
-    // Call immediately and also on next tick to ensure mobile detection is accurate
+
+    // Call immediately
     updateSize();
-    // Small delay to ensure window size is fully settled, especially on mobile
-    const timeoutId = setTimeout(updateSize, 50);
+
+    // Multiple delayed checks for Safari/iOS which has timing issues with viewport
+    const timeout1 = setTimeout(updateSize, 100);
+    const timeout2 = setTimeout(updateSize, 300);
+    const timeout3 = setTimeout(updateSize, 500);
+
+    // Also check when container ref is available
+    const checkContainerSize = () => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+          const mobile = window.innerWidth < 768;
+          setContainerSize({ width: rect.width, height: rect.height });
+          setIsMobile(mobile);
+        }
+      }
+    };
+
+    const intervalId = setInterval(checkContainerSize, 50);
+    const stopInterval = setTimeout(() => clearInterval(intervalId), 1000);
+
     window.addEventListener("resize", updateSize);
     return () => {
-      clearTimeout(timeoutId);
+      clearTimeout(timeout1);
+      clearTimeout(timeout2);
+      clearTimeout(timeout3);
+      clearTimeout(stopInterval);
+      clearInterval(intervalId);
       window.removeEventListener("resize", updateSize);
     };
   }, []);
@@ -120,6 +144,28 @@ export function AnimatedWorkflow() {
       return;
     }
 
+    // CRITICAL: Verify container ref has actual dimensions (Safari fix)
+    if (!containerRef.current) {
+      // Container ref not ready yet, wait
+      return;
+    }
+
+    const rect = containerRef.current.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) {
+      // Container not yet rendered, wait
+      return;
+    }
+
+    // Use actual measured size - update state if there's a significant difference
+    if (Math.abs(rect.width - containerSize.width) > 10 ||
+        Math.abs(rect.height - containerSize.height) > 10) {
+      // Size mismatch detected - update to actual measured size
+      const mobile = window.innerWidth < 768;
+      setContainerSize({ width: rect.width, height: rect.height });
+      setIsMobile(mobile);
+      return; // Wait for state update
+    }
+
     // CRITICAL: Double-check mobile state matches actual window size before generating
     // This prevents generating with wrong mobile state on initial load
     const actualIsMobile = window.innerWidth < 768;
@@ -128,14 +174,20 @@ export function AnimatedWorkflow() {
       return;
     }
 
+    // CRITICAL: On mobile, ensure we have reasonable dimensions before proceeding
+    if (isMobile && (containerSize.width < 300 || containerSize.height < 400)) {
+      // Mobile container too small, wait for proper size
+      return;
+    }
+
     // Mark as initialized BEFORE generating to prevent re-generation
     nodesInitializedRef.current = true;
 
     // Generate non-overlapping random positions for nodes with size-aware spacing
     const generatedNodes: Node[] = [];
-    // Increased padding to prevent ANY overlap - especially important on load/refresh
+    // MASSIVE padding on mobile to prevent ANY overlap - Safari needs extra space
     // More padding on desktop for larger bubbles, even more on mobile
-    const extraPadding = isMobile ? 120 : 80;
+    const extraPadding = isMobile ? 150 : 80;
 
     nodeLabels.forEach((label, i) => {
       let x: number, y: number;
@@ -145,10 +197,10 @@ export function AnimatedWorkflow() {
 
       do {
         // Use wider range but with margin from edges based on bubble size
-        // Increased margin to ensure bubbles don't touch edges
+        // Much larger margin on mobile to ensure bubbles don't touch edges
         const margin =
           (currentBubbleSize.radius / containerSize.width) * 100 +
-          (isMobile ? 20 : 12);
+          (isMobile ? 25 : 12);
         x = Math.random() * (100 - 2 * margin) + margin;
         y = Math.random() * (100 - 2 * margin) + margin;
         attempts++;
@@ -161,14 +213,21 @@ export function AnimatedWorkflow() {
           const y1Px = (y / 100) * containerSize.height;
           const x2Px = (node.x / 100) * containerSize.width;
           const y2Px = (node.y / 100) * containerSize.height;
-          // Double-check overlap with proper radius and padding
+          // Ultra-strict overlap check with proper radius and massive padding
           const distance = Math.sqrt(
             Math.pow(x2Px - x1Px, 2) + Math.pow(y2Px - y1Px, 2)
           );
-          const minDistance = currentBubbleSize.radius + nodeBubbleSize.radius + extraPadding;
+          // Add extra safety buffer for mobile Safari
+          const safetyBuffer = isMobile ? 20 : 0;
+          const minDistance = currentBubbleSize.radius + nodeBubbleSize.radius + extraPadding + safetyBuffer;
           return distance < minDistance;
         })
       );
+
+      // If we hit max attempts, log warning but still place the node
+      if (attempts >= maxAttempts) {
+        console.warn(`Max attempts reached for node ${i} (${label}). May overlap.`);
+      }
 
       generatedNodes.push({
         id: `node-${i}`,
