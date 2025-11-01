@@ -85,6 +85,7 @@ export function AnimatedWorkflow() {
     [key: string]: { x: number; y: number; startX: number; startY: number };
   }>({});
   const containerRef = useRef<HTMLDivElement>(null);
+  const nodesInitializedRef = useRef(false);
 
   useEffect(() => {
     const updateSize = () => {
@@ -103,6 +104,18 @@ export function AnimatedWorkflow() {
   }, []);
 
   useEffect(() => {
+    // Only generate nodes once on initial page load - not on resize or touch
+    if (nodesInitializedRef.current) return;
+
+    // Wait for container size to be properly calculated (not default values)
+    if (containerSize.width === 800 && containerSize.height === 500) {
+      // Still using default values, wait for actual size
+      return;
+    }
+
+    // Mark as initialized BEFORE generating to prevent re-generation
+    nodesInitializedRef.current = true;
+
     // Generate non-overlapping random positions for nodes with size-aware spacing
     const generatedNodes: Node[] = [];
     // Strong padding on mobile, good padding on desktop
