@@ -476,8 +476,10 @@ export default function PrivacyPolicy() {
               </ul>
               <p className="text-muted-foreground leading-relaxed mt-4">
                 To access, correct, delete, or restrict processing of your data,
-                email privacy@iops.pro. We respond within 30 days and may verify
-                your identity before acting.
+                email{" "}
+                <EmailReveal email="privacy@iops.pro" className="font-medium" />
+                . We respond within 30 days and may verify your identity before
+                acting.
               </p>
             </section>
 
