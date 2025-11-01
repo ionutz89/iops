@@ -169,6 +169,7 @@ export function AnimatedWorkflow() {
         style={{
           width: containerSize.width,
           height: containerSize.height,
+          touchAction: isMobile ? "none" : "auto",
         }}
       >
         {/* Connections */}
@@ -250,9 +251,14 @@ export function AnimatedWorkflow() {
             <motion.div
               key={node.id}
               className="absolute z-10"
+              drag={false}
+              dragConstraints={false}
               style={{
                 left: baseX,
                 top: baseY,
+                touchAction: isMobile ? "none" : "auto",
+                pointerEvents: isMobile ? "none" : "auto",
+                userSelect: isMobile ? "none" : "auto",
               }}
               initial={{ opacity: 0, scale: 0, x: offsetX, y: offsetY }}
               animate={isMobile ? {
@@ -313,19 +319,25 @@ export function AnimatedWorkflow() {
               {/* Enhanced bubble with dual-theme frosted glass effect and proper overflow handling */}
               <motion.div
                 className="relative bg-white/90 dark:bg-[#1C1E22] text-gray-800 dark:text-gray-200 font-semibold shadow-lg dark:shadow-xl rounded-full flex items-center justify-center text-center backdrop-blur-md border border-gray-200 dark:border-white/10"
+                drag={false}
                 style={{
                   width: `${bubbleWidth}px`,
                   height: `${bubbleWidth}px`,
                   padding: isMobile ? "8px" : "12px",
                   fontSize: isMobile ? "10px" : "12px",
                   lineHeight: isMobile ? "1.2" : "1.3",
-                  pointerEvents: isMobile ? "none" : "auto", // Only disable on mobile
+                  pointerEvents: isMobile ? "none" : "auto",
+                  touchAction: isMobile ? "none" : "auto",
+                  userSelect: "none",
+                  WebkitTouchCallout: "none",
+                  WebkitUserSelect: "none",
                 }}
                 whileHover={!isMobile ? {
                   scale: 1.05,
                   boxShadow: "0 0 30px rgba(0, 184, 217, 0.4)",
                   borderColor: "rgba(0, 184, 217, 0.3)"
                 } : undefined}
+                whileTap={!isMobile ? undefined : {}}
                 transition={{ duration: 0.2 }}
               >
                 {/* Improved text wrapping with responsive sizing and proper line breaks */}
