@@ -133,8 +133,9 @@ export function AnimatedWorkflow() {
 
     // Generate non-overlapping random positions for nodes with size-aware spacing
     const generatedNodes: Node[] = [];
-    // Increased padding on mobile to prevent ANY overlap - especially important on load/refresh
-    const extraPadding = isMobile ? 120 : 50;
+    // Increased padding to prevent ANY overlap - especially important on load/refresh
+    // More padding on desktop for larger bubbles, even more on mobile
+    const extraPadding = isMobile ? 120 : 80;
 
     nodeLabels.forEach((label, i) => {
       let x: number, y: number;
@@ -144,10 +145,10 @@ export function AnimatedWorkflow() {
 
       do {
         // Use wider range but with margin from edges based on bubble size
-        // Increased margin on mobile to ensure bubbles don't touch edges
+        // Increased margin to ensure bubbles don't touch edges
         const margin =
           (currentBubbleSize.radius / containerSize.width) * 100 +
-          (isMobile ? 20 : 8);
+          (isMobile ? 20 : 12);
         x = Math.random() * (100 - 2 * margin) + margin;
         y = Math.random() * (100 - 2 * margin) + margin;
         attempts++;
@@ -160,15 +161,12 @@ export function AnimatedWorkflow() {
           const y1Px = (y / 100) * containerSize.height;
           const x2Px = (node.x / 100) * containerSize.width;
           const y2Px = (node.y / 100) * containerSize.height;
-          return checkOverlap(
-            x1Px,
-            y1Px,
-            currentBubbleSize.radius,
-            x2Px,
-            y2Px,
-            nodeBubbleSize.radius,
-            extraPadding
+          // Double-check overlap with proper radius and padding
+          const distance = Math.sqrt(
+            Math.pow(x2Px - x1Px, 2) + Math.pow(y2Px - y1Px, 2)
           );
+          const minDistance = currentBubbleSize.radius + nodeBubbleSize.radius + extraPadding;
+          return distance < minDistance;
         })
       );
 
@@ -237,6 +235,7 @@ export function AnimatedWorkflow() {
           width: containerSize.width,
           height: containerSize.height,
           touchAction: "auto",
+          pointerEvents: "auto",
         }}
       >
         {/* Connections */}
@@ -450,8 +449,24 @@ export function AnimatedWorkflow() {
                     transition: "transform 0.15s ease-out",
                   }}
                 >
-                  <p className="break-words whitespace-normal leading-tight text-center w-full px-1">
-                    {node.label}
+                  <p
+                    className="leading-tight text-center w-full px-1"
+                    style={{
+                      wordBreak: "normal",
+                      overflowWrap: "anywhere",
+                      whiteSpace: "normal",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {node.label.split(" ").map((word, idx) => (
+                      <span key={idx} style={{ whiteSpace: "nowrap", display: "inline-block" }}>
+                        {word}
+                        {idx < node.label.split(" ").length - 1 && " "}
+                      </span>
+                    ))}
                   </p>
                 </div>
               </div>
@@ -466,6 +481,7 @@ export function AnimatedWorkflow() {
               style={{
                 left: baseX,
                 top: baseY,
+                cursor: isUserControlled ? "grabbing" : "grab",
               }}
               initial={{ opacity: 0, scale: 0, x: offsetX, y: offsetY }}
               animate={{
@@ -497,7 +513,7 @@ export function AnimatedWorkflow() {
                 opacity: { duration: 0.6, delay: index * 0.15 },
                 scale: { duration: 0.6, delay: index * 0.15 },
                 x: isUserControlled
-                  ? { duration: 0 }
+                  ? { duration: 0, type: "tween" }
                   : {
                       duration,
                       delay,
@@ -505,7 +521,7 @@ export function AnimatedWorkflow() {
                       ease: "linear",
                     },
                 y: isUserControlled
-                  ? { duration: 0 }
+                  ? { duration: 0, type: "tween" }
                   : {
                       duration,
                       delay,
@@ -513,9 +529,72 @@ export function AnimatedWorkflow() {
                       ease: "linear",
                     },
               }}
-              // Don't put drag here - it conflicts with animation
+              drag={!isMobile}
+              dragMomentum={false}
+              dragElastic={0}
+              dragConstraints={false}
+              dragPropagation={false}
+              onDragStart={(event, info) => {
+                // Mark as user-controlled when drag starts - stops random animation immediately
+                setUserControlledNodes((prev) => new Set(prev).add(node.id));
+
+                // Capture the starting position when drag begins
+                const currentPos = desktopDragPositions[node.id];
+                setDesktopDragPositions((prev) => ({
+                  ...prev,
+                  [node.id]: {
+                    x: currentPos?.x || 0,
+                    y: currentPos?.y || 0,
+                    startX: currentPos?.x || 0,
+                    startY: currentPos?.y || 0,
+                  },
+                }));
+              }}
+              onDrag={(event, info) => {
+                // Calculate new position: start position + drag delta
+                const dragState = desktopDragPositions[node.id] || {
+                  x: 0,
+                  y: 0,
+                  startX: 0,
+                  startY: 0,
+                };
+                const newX = dragState.startX + info.delta.x;
+                const newY = dragState.startY + info.delta.y;
+
+                // Update state immediately for responsive drag
+                setDesktopDragPositions((prev) => ({
+                  ...prev,
+                  [node.id]: {
+                    x: newX,
+                    y: newY,
+                    startX: dragState.startX,
+                    startY: dragState.startY,
+                  },
+                }));
+
+                // Update node position for connections
+                updateNodePosition(
+                  node.id,
+                  baseX + offsetX + newX + bubbleRadius,
+                  baseY + offsetY + newY + bubbleRadius
+                );
+              }}
+              onDragEnd={(event, info) => {
+                // Final position is already set in onDrag
+                const dragState = desktopDragPositions[node.id] || {
+                  x: 0,
+                  y: 0,
+                  startX: 0,
+                  startY: 0,
+                };
+                updateNodePosition(
+                  node.id,
+                  baseX + offsetX + dragState.x + bubbleRadius,
+                  baseY + offsetY + dragState.y + bubbleRadius
+                );
+              }}
               onUpdate={(latest) => {
-                // Track actual position for connection lines (centered) - only for animated bubbles
+                // Track actual position for connection lines - only for animated bubbles
                 if (
                   !isUserControlled &&
                   typeof latest.x === "number" &&
@@ -526,11 +605,40 @@ export function AnimatedWorkflow() {
                     baseX + latest.x + bubbleRadius,
                     baseY + latest.y + bubbleRadius
                   );
+                } else if (isUserControlled) {
+                  // Update position for dragged bubbles too
+                  const dragState = desktopDragPositions[node.id];
+                  if (dragState) {
+                    updateNodePosition(
+                      node.id,
+                      baseX + offsetX + dragState.x + bubbleRadius,
+                      baseY + offsetY + dragState.y + bubbleRadius
+                    );
+                  }
                 }
+              }}
+              whileHover={
+                isUserControlled
+                  ? {
+                      scale: 1.08,
+                      boxShadow: "0 0 30px rgba(0, 184, 217, 0.5)",
+                      borderColor: "rgba(0, 184, 217, 0.4)",
+                    }
+                  : {
+                      scale: 1.05,
+                      boxShadow: "0 0 30px rgba(0, 184, 217, 0.4)",
+                      borderColor: "rgba(0, 184, 217, 0.3)",
+                    }
+              }
+              whileDrag={{
+                scale: 1.15,
+                rotate: [0, -5, 5, -5, 0],
+                boxShadow: "0 0 40px rgba(0, 184, 217, 0.6)",
+                cursor: "grabbing",
               }}
             >
               {/* Enhanced bubble with dual-theme frosted glass effect and playful interaction */}
-              <motion.div
+              <div
                 className="relative bg-white/90 dark:bg-[#1C1E22] text-gray-800 dark:text-gray-200 font-semibold shadow-lg dark:shadow-xl rounded-full flex items-center justify-center text-center backdrop-blur-md border border-gray-200 dark:border-white/10"
                 style={{
                   width: `${bubbleWidth}px`,
@@ -538,97 +646,30 @@ export function AnimatedWorkflow() {
                   padding: "12px",
                   fontSize: "12px",
                   lineHeight: "1.3",
-                  cursor: "grab",
+                  pointerEvents: "none",
                 }}
-                drag
-                dragMomentum={false}
-                dragElastic={0.2}
-                dragConstraints={false}
-                dragPropagation={false}
-                onDragStart={(event, info) => {
-                  // Mark as user-controlled when drag starts - stops random animation immediately
-                  setUserControlledNodes((prev) => new Set(prev).add(node.id));
-
-                  // Capture the starting position when drag begins
-                  const currentPos = desktopDragPositions[node.id];
-                  setDesktopDragPositions((prev) => ({
-                    ...prev,
-                    [node.id]: {
-                      x: currentPos?.x || 0,
-                      y: currentPos?.y || 0,
-                      startX: currentPos?.x || 0,
-                      startY: currentPos?.y || 0,
-                    },
-                  }));
-                }}
-                onDrag={(event, info) => {
-                  // Calculate new position: start position + drag delta
-                  const dragState = desktopDragPositions[node.id] || {
-                    x: 0,
-                    y: 0,
-                    startX: 0,
-                    startY: 0,
-                  };
-                  const newX = dragState.startX + info.delta.x;
-                  const newY = dragState.startY + info.delta.y;
-
-                  setDesktopDragPositions((prev) => ({
-                    ...prev,
-                    [node.id]: {
-                      x: newX,
-                      y: newY,
-                      startX: dragState.startX,
-                      startY: dragState.startY,
-                    },
-                  }));
-
-                  // Update node position for connections
-                  updateNodePosition(
-                    node.id,
-                    baseX + offsetX + newX + bubbleRadius,
-                    baseY + offsetY + newY + bubbleRadius
-                  );
-                }}
-                onDragEnd={(event, info) => {
-                  // Final position is already set in onDrag
-                  const dragState = desktopDragPositions[node.id] || {
-                    x: 0,
-                    y: 0,
-                    startX: 0,
-                    startY: 0,
-                  };
-                  updateNodePosition(
-                    node.id,
-                    baseX + offsetX + dragState.x + bubbleRadius,
-                    baseY + offsetY + dragState.y + bubbleRadius
-                  );
-                }}
-                whileHover={
-                  isUserControlled
-                    ? {
-                        scale: 1.08,
-                        boxShadow: "0 0 30px rgba(0, 184, 217, 0.5)",
-                        borderColor: "rgba(0, 184, 217, 0.4)",
-                      }
-                    : {
-                        scale: 1.05,
-                        boxShadow: "0 0 30px rgba(0, 184, 217, 0.4)",
-                        borderColor: "rgba(0, 184, 217, 0.3)",
-                      }
-                }
-                whileDrag={{
-                  scale: 1.15,
-                  rotate: [0, -5, 5, -5, 0],
-                  boxShadow: "0 0 40px rgba(0, 184, 217, 0.6)",
-                  cursor: "grabbing",
-                }}
-                transition={{ duration: 0.2 }}
               >
                 {/* Improved text wrapping with responsive sizing and proper line breaks */}
-                <p className="break-words whitespace-normal leading-tight text-center w-full px-1">
-                  {node.label}
+                <p
+                  className="leading-tight text-center w-full px-1"
+                  style={{
+                    wordBreak: "normal",
+                    overflowWrap: "anywhere",
+                    whiteSpace: "normal",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {node.label.split(" ").map((word, idx) => (
+                    <span key={idx} style={{ whiteSpace: "nowrap", display: "inline-block" }}>
+                      {word}
+                      {idx < node.label.split(" ").length - 1 && " "}
+                    </span>
+                  ))}
                 </p>
-              </motion.div>
+              </div>
             </motion.div>
           );
         })}
