@@ -105,7 +105,7 @@ export function ROICalculator() {
 
 
   return (
-    <section id="roi-calculator" className="py-16 md:py-24 bg-gray-50 dark:bg-[#0B0C10] scroll-mt-24 transition-colors duration-300">
+    <section id="roi-calculator" className="py-16 md:py-24 bg-[#F9FAFB] dark:bg-[#0B0C10] scroll-mt-24 transition-colors duration-300">
       <div className="container px-4 md:px-6 max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -114,14 +114,14 @@ export function ROICalculator() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+          <h2 className="text-4xl font-bold mb-4 text-[#0F0F0F] dark:text-white">
             Calculate Your ROI
           </h2>
-          <p className="text-sm text-gray-600 dark:text-white/60 mb-4 max-w-2xl mx-auto inline-flex items-center gap-2">
+          <p className="text-sm text-[#333] dark:text-white/60 mb-4 max-w-2xl mx-auto inline-flex items-center gap-2">
             Estimates based on typical mid-size business data
-            <span className="inline-flex items-center justify-center w-4 h-4 text-xs rounded-full bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white/70 border border-gray-300 dark:border-white/20 cursor-help" title="Based on industry averages from 2024 automation studies">ℹ️</span>
+            <span className="inline-flex items-center justify-center w-4 h-4 text-xs rounded-full bg-[#00B8D9]/10 dark:bg-white/10 text-[#00B8D9] dark:text-white/70 border border-[#00B8D9]/30 dark:border-white/20 cursor-help" title="Based on industry averages from 2024 automation studies">ℹ️</span>
           </p>
-          <p className="text-lg text-gray-700 dark:text-white/70 max-w-2xl mx-auto">
+          <p className="text-lg text-[#333] dark:text-white/70 max-w-2xl mx-auto">
             See how much time and money your business could save with automation.
           </p>
         </motion.div>
@@ -152,8 +152,8 @@ export function ROICalculator() {
                 {/* Team Size */}
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <Label className="text-base font-medium text-gray-900 dark:text-white">Your Team Size</Label>
-                    <span className="text-sm font-semibold text-gray-900 dark:text-white">{inputs.teamSize}</span>
+                    <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Your Team Size</Label>
+                    <span className="text-sm font-semibold text-[#0F0F0F] dark:text-white">{inputs.teamSize}</span>
                   </div>
                   <Slider
                     value={[inputs.teamSize]}
@@ -161,15 +161,15 @@ export function ROICalculator() {
                     min={1}
                     max={50}
                     step={1}
-                    className="w-full focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-all"
+                    className="w-full focus-visible:ring-2 focus-visible:ring-[#00B8D9] focus-visible:ring-offset-2 transition-all"
                   />
                 </div>
 
                 {/* Incidents per Week */}
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <Label className="text-base font-medium text-gray-900 dark:text-white">Problems per Week</Label>
-                    <span className="text-sm font-semibold text-gray-900 dark:text-white">{inputs.incidentsPerWeek}</span>
+                    <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Problems per Week</Label>
+                    <span className="text-sm font-semibold text-[#0F0F0F] dark:text-white">{inputs.incidentsPerWeek}</span>
                   </div>
                   <Slider
                     value={[inputs.incidentsPerWeek]}
@@ -177,15 +177,15 @@ export function ROICalculator() {
                     min={1}
                     max={20}
                     step={1}
-                    className="w-full focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-all"
+                    className="w-full focus-visible:ring-2 focus-visible:ring-[#00B8D9] focus-visible:ring-offset-2 transition-all"
                   />
                 </div>
 
                 {/* Manual Task Hours per Week */}
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <Label className="text-base font-medium text-gray-900 dark:text-white">Hours Spent on Repetitive Tasks</Label>
-                    <span className="text-sm font-semibold text-gray-900 dark:text-white">{inputs.manualHoursPerWeek}</span>
+                    <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Hours Spent on Repetitive Tasks</Label>
+                    <span className="text-sm font-semibold text-[#0F0F0F] dark:text-white">{inputs.manualHoursPerWeek}</span>
                   </div>
                   <Slider
                     value={[inputs.manualHoursPerWeek]}
@@ -193,13 +193,13 @@ export function ROICalculator() {
                     min={10}
                     max={400}
                     step={5}
-                    className="w-full focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-all"
+                    className="w-full focus-visible:ring-2 focus-visible:ring-[#00B8D9] focus-visible:ring-offset-2 transition-all"
                   />
                 </div>
 
                 {/* Hourly Rate */}
                 <div className="space-y-3">
-                  <Label className="text-base font-medium text-gray-900 dark:text-white">Average Hourly Wage</Label>
+                  <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Average Hourly Wage</Label>
                   <Input
                     type="number"
                     value={inputs.hourlyRate}
@@ -216,17 +216,17 @@ export function ROICalculator() {
                       }
                     }}
                     placeholder="e.g. 50"
-                    className="rounded-lg border-gray-300 dark:border-white/20 bg-transparent text-gray-900 dark:text-white focus:ring-[#00B8D9] dark:focus:ring-[#00E5FF] focus:ring-2"
+                    className="rounded-lg border-gray-300 dark:border-white/20 bg-[#FAFAFA] dark:bg-transparent text-[#0F0F0F] dark:text-white placeholder-gray-500 dark:placeholder-white/50 focus:border-[#00B8D9] dark:focus:border-[#00E5FF] focus:ring-[#00B8D9] dark:focus:ring-[#00E5FF] focus:ring-2"
                     min={20}
                     max={150}
                     step={1}
                   />
-                  <p className="text-xs text-gray-600 dark:text-white/60">Typical range: $20 - $150</p>
+                  <p className="text-xs text-[#333] dark:text-white/60">Typical range: $20 - $150</p>
                 </div>
 
                 {/* Average Problem Cost */}
                 <div className="space-y-3">
-                  <Label className="text-base font-medium text-gray-900 dark:text-white">Average Cost per Problem</Label>
+                  <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Average Cost per Problem</Label>
                   <Input
                     type="number"
                     value={inputs.incidentCost}
@@ -243,17 +243,17 @@ export function ROICalculator() {
                       }
                     }}
                     placeholder="e.g. 1000"
-                    className="rounded-lg border-gray-300 dark:border-white/20 bg-transparent text-gray-900 dark:text-white focus:ring-[#00B8D9] dark:focus:ring-[#00E5FF] focus:ring-2"
+                    className="rounded-lg border-gray-300 dark:border-white/20 bg-[#FAFAFA] dark:bg-transparent text-[#0F0F0F] dark:text-white placeholder-gray-500 dark:placeholder-white/50 focus:border-[#00B8D9] dark:focus:border-[#00E5FF] focus:ring-[#00B8D9] dark:focus:ring-[#00E5FF] focus:ring-2"
                     min={500}
                     max={5000}
                     step={100}
                   />
-                  <p className="text-xs text-gray-600 dark:text-white/60">Typical range: $500 - $5,000</p>
+                  <p className="text-xs text-[#333] dark:text-white/60">Typical range: $500 - $5,000</p>
                 </div>
 
                 {/* Setup Cost */}
                 <div className="space-y-3">
-                  <Label className="text-base font-medium text-gray-900 dark:text-white">Initial Setup Investment</Label>
+                  <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Initial Setup Investment</Label>
                   <Input
                     type="number"
                     value={inputs.setupCost}
@@ -270,19 +270,19 @@ export function ROICalculator() {
                       }
                     }}
                     placeholder="e.g. 10000"
-                    className="rounded-lg border-gray-300 dark:border-white/20 bg-transparent text-gray-900 dark:text-white focus:ring-[#00B8D9] dark:focus:ring-[#00E5FF] focus:ring-2"
+                    className="rounded-lg border-gray-300 dark:border-white/20 bg-[#FAFAFA] dark:bg-transparent text-[#0F0F0F] dark:text-white placeholder-gray-500 dark:placeholder-white/50 focus:border-[#00B8D9] dark:focus:border-[#00E5FF] focus:ring-[#00B8D9] dark:focus:ring-[#00E5FF] focus:ring-2"
                     min={1000}
                     max={100000}
                     step={1000}
                   />
-                  <p className="text-xs text-gray-600 dark:text-white/60">Typical range: $1,000 - $100,000</p>
+                  <p className="text-xs text-[#333] dark:text-white/60">Typical range: $1,000 - $100,000</p>
                 </div>
 
                 {/* Automation Efficiency */}
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <Label className="text-base font-medium text-gray-900 dark:text-white">Automation Efficiency (%)</Label>
-                    <span className="text-sm font-semibold text-gray-900 dark:text-white">{inputs.automationEfficiency}%</span>
+                    <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Automation Efficiency (%)</Label>
+                    <span className="text-sm font-semibold text-[#0F0F0F] dark:text-white">{inputs.automationEfficiency}%</span>
                   </div>
                   <Slider
                     value={[inputs.automationEfficiency]}
@@ -290,15 +290,15 @@ export function ROICalculator() {
                     min={30}
                     max={90}
                     step={1}
-                    className="w-full focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-all"
+                    className="w-full focus-visible:ring-2 focus-visible:ring-[#00B8D9] focus-visible:ring-offset-2 transition-all"
                   />
                 </div>
 
                 {/* Problem Reduction */}
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <Label className="text-base font-medium text-gray-900 dark:text-white">Problem Reduction (%)</Label>
-                    <span className="text-sm font-semibold text-gray-900 dark:text-white">{inputs.incidentReduction}%</span>
+                    <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Problem Reduction (%)</Label>
+                    <span className="text-sm font-semibold text-[#0F0F0F] dark:text-white">{inputs.incidentReduction}%</span>
                   </div>
                   <Slider
                     value={[inputs.incidentReduction]}
@@ -306,25 +306,25 @@ export function ROICalculator() {
                     min={40}
                     max={95}
                     step={1}
-                    className="w-full focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 transition-all"
+                    className="w-full focus-visible:ring-2 focus-visible:ring-[#00B8D9] focus-visible:ring-offset-2 transition-all"
                   />
                 </div>
 
                 {/* Calculate ROI Button - Enhanced dual-theme */}
                 <div className="pt-4">
-                  <p className="text-sm text-gray-700 dark:text-white/70 mb-4 text-center">
+                  <p className="text-sm text-[#333] dark:text-white/70 mb-4 text-center">
                     Get a realistic estimate of your time and cost savings with AI automation.
                   </p>
                   <Button
                     onClick={handleCalculate}
-                    className="w-full bg-[#00B8D9] hover:bg-[#009EB8] dark:bg-[#00E5FF] dark:hover:bg-[#00CCE5] text-white dark:text-gray-900 font-semibold py-6 text-lg btn-glow-cyan transition-all duration-300"
+                    className="w-full bg-[#7B61FF] hover:bg-[#6C55E0] dark:bg-[#8B5CF6] dark:hover:bg-[#7B4CF6] text-white font-semibold py-6 text-lg shadow-md hover:shadow-lg btn-glow-purple transition-all duration-300"
                     size="lg"
                     aria-label="Calculate ROI"
                   >
                     Calculate ROI
                   </Button>
                   {!hasCalculated && (
-                    <p className="text-gray-600 dark:text-white/60 text-sm mt-2 text-center">
+                    <p className="text-[#333] dark:text-white/60 text-sm mt-2 text-center">
                       Press Calculate to view your estimated savings.
                     </p>
                   )}
@@ -367,7 +367,7 @@ export function ROICalculator() {
                 transition={{ duration: 0.5, delay: 0.25 }}
                 className="text-center"
               >
-                <p className="text-sm text-gray-600 dark:text-white/60 italic">
+                <p className="text-sm text-[#333] dark:text-white/60 italic">
                   Typical automation ROI ranges 150–400% annually based on client results.
                 </p>
               </motion.div>
@@ -381,14 +381,14 @@ export function ROICalculator() {
               transition={{ duration: 0.5 }}
             >
               {/* Dual-theme result card */}
-              <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+              <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300">
                 <CardContent className="p-6">
-                  <Label className="text-sm font-medium text-gray-600 dark:text-white/60 mb-2 block">
+                  <Label className="text-sm font-medium text-[#333] dark:text-white/60 mb-2 block">
                     Manual Work Savings ($/yr)
                   </Label>
                   <AnimatedCurrencyValue
                     value={results.manualWorkSavings}
-                    className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white"
+                    className="text-3xl md:text-4xl font-bold text-[#0F0F0F] dark:text-white"
                   />
                 </CardContent>
               </Card>
@@ -401,14 +401,14 @@ export function ROICalculator() {
               transition={{ duration: 0.5, delay: 0.1 }}
             >
               {/* Dual-theme result card */}
-              <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+              <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300">
                 <CardContent className="p-6">
-                  <Label className="text-sm font-medium text-gray-600 dark:text-white/60 mb-2 block">
+                  <Label className="text-sm font-medium text-[#333] dark:text-white/60 mb-2 block">
                     Problem Cost Savings ($/yr)
                   </Label>
                   <AnimatedCurrencyValue
                     value={results.incidentCostSavings}
-                    className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white"
+                    className="text-3xl md:text-4xl font-bold text-[#0F0F0F] dark:text-white"
                   />
                 </CardContent>
               </Card>
@@ -421,15 +421,15 @@ export function ROICalculator() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               {/* Highlighted total savings card with dual-theme cyan accent */}
-              <Card className="rounded-2xl border-2 border-[#00B8D9]/30 dark:border-[#00E5FF]/50 shadow-lg hover:shadow-xl hover:shadow-[#00B8D9]/20 dark:hover:shadow-[#00E5FF]/20 hover:scale-105 transition-all duration-300 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 backdrop-blur-md">
+              <Card className="rounded-2xl border-2 border-[#00B8D9]/30 dark:border-[#00E5FF]/50 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 backdrop-blur-md">
                 <CardContent className="p-8 text-center">
-                  <Label className="text-sm font-medium text-gray-600 dark:text-white/60 mb-2 block">
+                  <Label className="text-sm font-medium text-[#333] dark:text-white/60 mb-2 block">
                     Total Annual Savings
                   </Label>
                   <div className="text-xs text-[#00B8D9] dark:text-[#00E5FF] font-semibold mb-2">💰 Savings per Year</div>
                   <AnimatedCurrencyValue
                     value={results.totalAnnualSavings}
-                    className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#00B8D9] to-[#7B61FF] dark:from-[#00E5FF] dark:to-[#8B5CF6] bg-clip-text text-transparent"
+                    className="text-5xl md:text-6xl font-bold text-[#0F0F0F] dark:bg-gradient-to-r dark:from-[#00E5FF] dark:to-[#8B5CF6] dark:bg-clip-text dark:text-transparent"
                   />
                 </CardContent>
               </Card>
@@ -442,14 +442,14 @@ export function ROICalculator() {
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               {/* Highlighted ROI card with dual-theme violet accent */}
-              <Card className="rounded-2xl border-2 border-[#7B61FF]/30 dark:border-[#8B5CF6]/50 shadow-lg hover:shadow-xl hover:shadow-[#7B61FF]/20 dark:hover:shadow-[#8B5CF6]/20 hover:scale-105 transition-all duration-300 bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30 backdrop-blur-md">
+              <Card className="rounded-2xl border-2 border-[#7B61FF]/30 dark:border-[#8B5CF6]/50 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30 backdrop-blur-md">
                 <CardContent className="p-8 text-center">
-                  <Label className="text-sm font-medium text-gray-600 dark:text-white/60 mb-2 block">
+                  <Label className="text-sm font-medium text-[#333] dark:text-white/60 mb-2 block">
                     Return on Investment
                   </Label>
                   <AnimatedROIValue
                     value={results.roi}
-                    className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#7B61FF] to-[#00B8D9] dark:from-[#8B5CF6] dark:to-[#00E5FF] bg-clip-text text-transparent"
+                    className="text-5xl md:text-6xl font-bold text-[#0F0F0F] dark:bg-gradient-to-r dark:from-[#8B5CF6] dark:to-[#00E5FF] dark:bg-clip-text dark:text-transparent"
                   />
                 </CardContent>
               </Card>
@@ -462,14 +462,14 @@ export function ROICalculator() {
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               {/* Dual-theme result card */}
-              <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+              <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300">
                 <CardContent className="p-6">
-                  <Label className="text-sm font-medium text-gray-600 dark:text-white/60 mb-2 block">
+                  <Label className="text-sm font-medium text-[#333] dark:text-white/60 mb-2 block">
                     Payback Period
                   </Label>
                   <AnimatedPaybackValue
                     value={results.paybackMonths}
-                    className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white"
+                    className="text-3xl md:text-4xl font-bold text-[#0F0F0F] dark:text-white"
                   />
                 </CardContent>
               </Card>
@@ -504,39 +504,39 @@ export function ROICalculator() {
                 transition={{ duration: 0.5, delay: 0.5 }}
               >
                 {/* Enhanced calculation breakdown with dual-theme */}
-                <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-md transition-colors duration-300">
+                <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-sm transition-colors duration-300">
                   <CardContent className="p-6 md:p-8 space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Calculation Breakdown</h3>
-                    <div className="space-y-2 text-sm text-gray-700 dark:text-white/70">
+                    <h3 className="text-lg font-semibold text-[#0F0F0F] dark:text-white mb-3">Calculation Breakdown</h3>
+                    <div className="space-y-2 text-sm text-[#333] dark:text-white/70">
                       <div className="flex justify-between">
                         <span>Annual Manual Hours:</span>
-                        <span className="font-medium text-gray-900 dark:text-white">
+                        <span className="font-medium text-[#0F0F0F] dark:text-white">
                           {formatNumber(inputs.teamSize * inputs.manualHoursPerWeek * 52)} hours
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span>Manual Savings:</span>
-                        <span className="font-medium text-gray-900 dark:text-white">
+                        <span className="font-medium text-[#0F0F0F] dark:text-white">
                           {formatCurrency(results.manualWorkSavings)}/year
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span>Problem Savings:</span>
-                        <span className="font-medium text-gray-900 dark:text-white">
+                        <span className="font-medium text-[#0F0F0F] dark:text-white">
                           {formatCurrency(results.incidentCostSavings)}/year
                         </span>
                       </div>
                       <div className="pt-2 border-t border-gray-300 dark:border-white/10">
                         <div className="flex justify-between text-base">
                           <span className="font-semibold">Total Annual Savings:</span>
-                          <span className="font-bold text-gray-900 dark:text-white">
+                          <span className="font-bold text-[#0F0F0F] dark:text-white">
                             {formatCurrency(results.totalAnnualSavings)}
                           </span>
                         </div>
                       </div>
                     </div>
                     <div className="pt-3 border-t border-gray-300 dark:border-white/10">
-                      <p className="text-xs text-gray-600 dark:text-white/60">
+                      <p className="text-xs text-[#333] dark:text-white/60">
                         <strong>Assumptions:</strong> 52 working weeks per year. Calculations use actual input values without rounding until final display.
                       </p>
                     </div>
@@ -556,8 +556,8 @@ export function ROICalculator() {
                 }}
               >
           {/* Enhanced chart card with dual-theme */}
-          <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-md p-6 mt-6 transition-colors duration-300">
-            <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">ROI vs Team Size</h3>
+          <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-sm p-6 mt-6 transition-colors duration-300">
+            <h3 className="text-xl font-bold mb-4 text-[#0F0F0F] dark:text-white">ROI vs Team Size</h3>
             <ResponsiveContainer width="100%" height={300}>
               <ComposedChart data={chartData} margin={{ top: 10, right: 30, left: 120, bottom: 10 }}>
                 <defs>

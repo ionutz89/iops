@@ -56,14 +56,16 @@ const config: Config = {
         light: {
           background: "#F7F8FA",
           surface: "#FFFFFF",
-          textPrimary: "#1E1E1E",
-          textSecondary: "#3A3A3A",
+          border: "#E5E7EB",
+          textPrimary: "#111827",
+          textSecondary: "#374151",
           accentCyan: "#00B8D9",
           accentViolet: "#7B61FF",
         },
         dark: {
           background: "#0B0C10",
           surface: "#121417",
+          border: "rgba(255,255,255,0.1)",
           textPrimary: "rgba(255,255,255,0.87)",
           textSecondary: "rgba(255,255,255,0.6)",
           accentCyan: "#00E5FF",

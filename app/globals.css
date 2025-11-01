@@ -126,7 +126,7 @@
   }
 
   .gradient-text {
-    background: linear-gradient(to right, #00E5FF, #8B5CF6, #00E5FF);
+    background: linear-gradient(90deg, #00B8D9, #7B61FF);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -225,9 +225,9 @@
     animation: scroll-pulse 2s ease-in-out infinite;
   }
 
-  /* Button glow on hover - dual theme support */
+  /* Button shadow on hover - dual theme support */
   .btn-glow-cyan:hover {
-    box-shadow: 0 0 30px rgba(0, 184, 217, 0.4), 0 0 60px rgba(0, 184, 217, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 184, 217, 0.3);
   }
 
   .dark .btn-glow-cyan:hover {
@@ -235,7 +235,7 @@
   }
 
   .btn-glow-purple:hover {
-    box-shadow: 0 0 30px rgba(123, 97, 255, 0.4), 0 0 60px rgba(123, 97, 255, 0.2);
+    box-shadow: 0 4px 20px rgba(123, 97, 255, 0.3);
   }
 
   .dark .btn-glow-purple:hover {
@@ -244,15 +244,24 @@
 
   /* Light mode shadow utilities */
   .light-shadow {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   }
 
   .light-shadow-md {
-    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
   }
 
   .light-shadow-lg {
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Light mode card shadow */
+  .shadow-light-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+  
+  .shadow-light-card-hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   }
 
   /* Focus visible for accessibility */
