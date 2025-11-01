@@ -19,7 +19,7 @@ const faqs = [
   {
     question: "What is Intelligent Operations?",
     answer:
-      "Intelligent Operations means combining automation, AI agents, and workflow orchestration to simplify business processes. We don't offer a SaaS platform — we consult, design, and implement solutions using tools like n8n, Dify AI, and Claude MCP. Our role is to connect your existing tools, remove repetitive work, and make operations smarter and faster inside your own systems.",
+      "Intelligent Operations means using AI agents and automation to make your business run smoother. We don't sell software. We analyze your processes, design automations, and implement them using tools like n8n, Dify AI, and Claude MCP. You end up with working workflows, AI assistants, and integrations that run inside your own tools — no new system to log into.",
   },
   {
     question: "How can AI automation help my business?",
@@ -44,7 +44,7 @@ const faqs = [
   {
     question: "What frameworks or tools do you use?",
     answer:
-      "We use n8n for workflow automation, Dify AI for chatbots and reasoning engines, and Claude MCP (Model Context Protocol) — an open-source framework from Anthropic for secure AI orchestration. These are open, flexible tools implemented and customized for each client, not hosted software.",
+      "We build automations using n8n (workflow orchestration), Dify AI (chatbots and AI reasoning), and Claude MCP, an open-source framework from Anthropic for managing AI agents securely. These tools let us create AI assistants, automated reports, and integrated workflows directly in your systems — all fully owned and controlled by you.",
   },
   {
     question: "What results should I expect?",
