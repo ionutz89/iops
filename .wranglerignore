@@ -22,10 +22,15 @@ node_modules
 **/*.spec.ts
 **/*.spec.tsx
 
-# Build artifacts source
+# Build artifacts source (exclude Next.js build, but KEEP .open-next for deployment)
 .next
-.open-next
 out
+
+# Exclude source maps from deployment (but allow them in .open-next if needed)
+# Note: Source maps in .open-next/assets might be needed for debugging
+# Uncomment below if you want to exclude ALL source maps including from assets:
+# **/*.map
+# **/*.map.gz
 
 # CI/CD
 .github
