@@ -27,25 +27,32 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 211 100% 50%;
+    /* Premium dark background - using #14161A (gray-950) */
+    --background: 220 13% 9%;
+    --foreground: 210 40% 89%;
+    /* Cards with backdrop blur effect */
+    --card: 220 13% 11%;
+    --card-foreground: 210 40% 89%;
+    --popover: 220 13% 11%;
+    --popover-foreground: 210 40% 89%;
+    /* Primary buttons - blue-600 with hover blue-500 */
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 75%;
+    /* Secondary elements */
+    --secondary: 220 13% 15%;
+    --secondary-foreground: 210 40% 89%;
+    /* Muted text - gray-400 for softer contrast */
+    --muted: 220 13% 15%;
+    --muted-foreground: 215 16% 65%;
     --accent: 239 84% 67%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 211 100% 50%;
+    /* Borders - gray-800 for subtle dividers */
+    --border: 220 13% 18%;
+    /* Inputs - gray-900 background with gray-700 border */
+    --input: 220 13% 18%;
+    --ring: 217 91% 60%;
   }
 }
 
@@ -54,7 +61,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 

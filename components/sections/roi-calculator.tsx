@@ -105,7 +105,7 @@ export function ROICalculator() {
 
 
   return (
-    <section id="roi-calculator" className="py-24 bg-slate-50 dark:bg-slate-900 scroll-mt-24">
+    <section id="roi-calculator" className="py-24 bg-slate-50 dark:bg-gray-950 scroll-mt-24 transition-colors duration-300">
       <div className="container px-4 md:px-6 max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -145,7 +145,7 @@ export function ROICalculator() {
               }}
               className={`space-y-6 ${hasCalculated ? 'w-full' : 'w-full max-w-2xl mx-auto'}`}
             >
-            <Card className="rounded-lg border border-slate-300 dark:border-slate-700 shadow-sm bg-card">
+            <Card className="rounded-lg border border-slate-300 dark:border-gray-800 shadow-sm bg-card transition-colors duration-300">
               <CardContent className="p-6 space-y-6">
                 {/* Team Size */}
                 <div className="space-y-3">
@@ -322,7 +322,7 @@ export function ROICalculator() {
                     Calculate ROI
                   </Button>
                   {!hasCalculated && (
-                    <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 text-center">
+                    <p className="text-muted-foreground text-sm mt-2 text-center">
                       Press Calculate to view your estimated savings.
                     </p>
                   )}
@@ -495,7 +495,7 @@ export function ROICalculator() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
               >
-                <Card className="rounded-lg border border-slate-300 dark:border-slate-700 shadow-sm bg-card">
+                <Card className="rounded-lg border border-slate-300 dark:border-gray-800 shadow-sm bg-card transition-colors duration-300">
                   <CardContent className="p-6 space-y-4">
                     <h3 className="text-lg font-semibold text-foreground mb-3">Calculation Breakdown</h3>
                     <div className="space-y-2 text-sm text-muted-foreground">
@@ -546,7 +546,7 @@ export function ROICalculator() {
                   ease: [0.4, 0, 0.2, 1],
                 }}
               >
-          <Card className="rounded-xl bg-white dark:bg-card shadow-md p-4 mt-6 border border-slate-300 dark:border-slate-700">
+          <Card className="rounded-xl bg-white dark:bg-gray-900/70 dark:backdrop-blur-md shadow-md p-4 mt-6 border border-slate-300 dark:border-gray-800 transition-colors duration-300">
             <h3 className="text-xl font-bold mb-4 text-foreground">ROI vs Team Size</h3>
             <ResponsiveContainer width="100%" height={300}>
               <ComposedChart data={chartData} margin={{ top: 10, right: 30, left: 120, bottom: 10 }}>
@@ -603,7 +603,7 @@ export function ROICalculator() {
                 />
               </ComposedChart>
             </ResponsiveContainer>
-            <p className="text-gray-600 dark:text-gray-400 text-sm mt-4 text-center">
+            <p className="text-muted-foreground text-sm mt-4 text-center">
               ROI estimates based on 2024 McKinsey & Gartner automation benchmarks.
               <br />
               Typical automation ROI: 150%–400% annually depending on process complexity.

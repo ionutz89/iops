@@ -61,10 +61,10 @@ export function Navigation() {
               key={item.href}
               href={item.href}
               className={cn(
-                "text-sm transition-colors relative",
+                "text-sm transition-colors duration-300 relative",
                 pathname === item.href
-                  ? "text-primary font-medium"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "text-primary font-medium dark:text-blue-400"
+                  : "text-muted-foreground hover:text-foreground dark:hover:text-gray-200"
               )}
             >
               {item.label}
@@ -107,10 +107,10 @@ export function Navigation() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "block w-full text-left text-base py-2 transition-colors",
+                      "block w-full text-left text-base py-2 transition-colors duration-300",
                       pathname === item.href
-                        ? "text-primary font-medium"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "text-primary font-medium dark:text-blue-400"
+                        : "text-muted-foreground hover:text-foreground dark:hover:text-gray-200"
                     )}
                   >
                     {item.label}

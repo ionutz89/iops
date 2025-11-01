@@ -272,7 +272,7 @@ export default function Contact() {
 
               <motion.p
                 variants={fadeUp}
-                className="text-base md:text-lg text-blue-600 dark:text-blue-400 font-medium max-w-xl mx-auto"
+                className="text-base md:text-lg text-blue-600 dark:text-blue-400 font-medium max-w-xl mx-auto transition-colors duration-300"
               >
                 Example: A logistics firm cut manual reporting by 45% using IOPS
                 automation.
@@ -446,7 +446,7 @@ export default function Contact() {
                           value={formData.message}
                           onChange={handleChange}
                           rows={5}
-                          className="mt-2 w-full rounded-xl border border-input bg-background/50 px-3 py-2 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-300"
+                          className="mt-2 w-full rounded-xl border border-input bg-background/50 px-3 py-2 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-300 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500"
                           placeholder="What challenges are slowing your business down?"
                         />
                       </motion.div>
@@ -491,7 +491,7 @@ export default function Contact() {
                           />
                         </Button>
 
-                        <span className="text-gray-500 text-sm">or</span>
+                        <span className="text-muted-foreground text-sm">or</span>
 
                         <motion.a
                           href="https://calendly.com/me-ionut/30min"

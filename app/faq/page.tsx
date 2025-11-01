@@ -125,7 +125,7 @@ export default function FAQ() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-center text-gray-400 dark:text-gray-500 mt-2 max-w-2xl mx-auto"
+            className="text-center text-muted-foreground mt-2 max-w-2xl mx-auto"
           >
             We focus on building AI workflows, agents, and chatbots tailored to your operations.
           </motion.p>
@@ -146,12 +146,12 @@ export default function FAQ() {
               >
                 <AccordionItem
                   value={`item-${index}`}
-                  className="border-b border-gray-200 dark:border-gray-800"
+                  className="border-b border-gray-200 dark:border-gray-800 transition-colors duration-300"
                 >
                   <AccordionTrigger
                     id={`faq-question-${index}`}
                     aria-controls={`faq-${index}`}
-                    className="text-left text-lg font-semibold text-foreground hover:no-underline py-6"
+                    className="text-left text-lg font-semibold text-foreground hover:no-underline py-6 transition-colors duration-300"
                     aria-label={faq.question}
                   >
                     {faq.question}

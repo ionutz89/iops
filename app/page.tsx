@@ -198,7 +198,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.05 }}
-              className="text-lg text-gray-400 dark:text-gray-500 mt-2"
+              className="text-lg text-muted-foreground mt-2"
             >
               We automate workflows, monitor systems, and reduce downtime — without replacing your team.
             </motion.p>
@@ -390,7 +390,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="italic text-gray-300 dark:text-gray-400 mt-4 text-lg md:text-xl max-w-3xl mx-auto"
+              className="italic text-muted-foreground mt-4 text-lg md:text-xl max-w-3xl mx-auto"
             >
               "We cut manual billing work by half in our first month." — Finance Lead, Logistics Company
             </motion.p>
@@ -399,7 +399,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.5 }}
-              className="italic text-gray-300 dark:text-gray-400 mt-2 text-lg md:text-xl max-w-3xl mx-auto"
+              className="italic text-muted-foreground mt-2 text-lg md:text-xl max-w-3xl mx-auto"
             >
               "Automating our reports saved 60+ hours weekly." — COO, SaaS Startup
             </motion.p>
@@ -434,7 +434,7 @@ export default function Home() {
       <TechEcosystemSection />
 
       {/* Final CTA Banner */}
-      <section className="py-24 bg-[#0f172a] relative overflow-hidden pb-32 md:pb-24">
+      <section className="py-24 bg-gray-950 dark:bg-gray-950 relative overflow-hidden pb-32 md:pb-24 transition-colors duration-300">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -442,10 +442,10 @@ export default function Home() {
           viewport={{ once: true }}
           className="container relative z-10 px-4 md:px-6 max-w-6xl mx-auto text-center"
         >
-          <h2 className="text-2xl md:text-4xl font-semibold text-white mb-6">
+          <h2 className="text-2xl md:text-4xl font-semibold text-white dark:text-gray-200 mb-6 transition-colors duration-300">
             Book 30-Minute Call
           </h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-200 dark:text-gray-400 mb-8 max-w-2xl mx-auto transition-colors duration-300">
             We'll review your current operations and show how automation can reduce your workload.
           </p>
           <Button
@@ -509,17 +509,17 @@ export default function Home() {
                   />
                 </li>
                 <li>
-                  <Link
-                    href="/contact"
-                    className="text-foreground hover:text-primary transition-colors"
-                  >
-                    Get in Touch
-                  </Link>
+              <Link
+                href="/contact"
+                className="text-foreground hover:text-primary dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300"
+              >
+                Get in Touch
+              </Link>
                 </li>
                 <li>
                   <Link
                     href="/privacy-policy"
-                    className="text-foreground hover:text-primary transition-colors"
+                    className="text-foreground hover:text-primary dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300"
                   >
                     Privacy Policy
                   </Link>

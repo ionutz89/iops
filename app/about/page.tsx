@@ -69,7 +69,7 @@ export default function About() {
                   href="https://www.linkedin.com/in/ionutiorgu/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-medium text-[#007AFF] hover:text-[#0051D5] transition-colors"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-[#007AFF] hover:text-[#0051D5] dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300"
                 >
                   <svg
                     className="w-5 h-5"
@@ -85,7 +85,7 @@ export default function About() {
                   href="https://ionut.vip"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-medium text-[#007AFF] hover:text-[#0051D5] transition-colors"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-[#007AFF] hover:text-[#0051D5] dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300"
                 >
                   <svg
                     className="w-5 h-5"
@@ -204,7 +204,7 @@ export default function About() {
                             href={member.link.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[#007AFF] hover:text-[#0051D5] font-medium underline transition-colors"
+                            className="text-[#007AFF] hover:text-[#0051D5] dark:text-blue-400 dark:hover:text-blue-300 font-medium underline transition-colors duration-300"
                           >
                             {member.link.text}
                           </a>

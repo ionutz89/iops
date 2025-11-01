@@ -110,7 +110,7 @@ export function TechEcosystemSection() {
               </div>
 
               {/* Tooltip - Hidden until hover */}
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-gray-800 dark:bg-gray-900 text-white text-xs rounded py-1 px-2 whitespace-nowrap pointer-events-none transition-opacity duration-200 shadow-lg z-10">
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-gray-800 dark:bg-gray-900 text-white dark:text-gray-200 text-xs rounded py-1 px-2 whitespace-nowrap pointer-events-none transition-opacity duration-200 shadow-lg z-10">
                 {logo.detailedTooltip || logo.tooltip}
               </div>
             </motion.div>

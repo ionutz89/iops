@@ -12,14 +12,14 @@ export function SocialProof() {
   ];
 
   return (
-    <section className="py-16 bg-gray-50 dark:bg-gray-900">
+    <section className="py-16 bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
       <div className="container px-6 md:px-12">
         <motion.h3
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center text-xl font-semibold text-gray-700 dark:text-gray-200 mb-8"
+          className="text-center text-xl font-semibold text-gray-700 dark:text-gray-100 mb-8 transition-colors duration-300"
         >
           Trusted by leading tech teams
         </motion.h3>

@@ -51,7 +51,7 @@ export function EmailReveal({ email, className }: EmailRevealProps) {
           e.stopPropagation();
         }}
         className={cn(
-          "text-foreground hover:text-primary transition-colors inline-flex items-center gap-2",
+          "text-foreground hover:text-primary dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300 inline-flex items-center gap-2",
           className
         )}
         aria-label={`Send email to ${email}`}
@@ -66,7 +66,7 @@ export function EmailReveal({ email, className }: EmailRevealProps) {
     <button
       onClick={handleClick}
       className={cn(
-        "text-foreground hover:text-primary transition-colors inline-flex items-center gap-2 cursor-pointer",
+        "text-foreground hover:text-primary dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300 inline-flex items-center gap-2 cursor-pointer",
         className
       )}
       aria-label="Click to reveal email address"
