@@ -20,14 +20,16 @@ const nodeLabels = [
   "ChatBot",
 ];
 
-// Calculate bubble size based on text length
-const getBubbleRadius = (label: string) => {
+// Calculate bubble size based on text length and screen width
+const getBubbleRadius = (label: string, isMobile: boolean) => {
   // Estimate width based on character count
-  // Longer text = bigger bubble
+  // Longer text = bigger bubble, but smaller on mobile
   const charCount = label.length;
-  if (charCount > 25) return 90; // Large bubble
-  if (charCount > 15) return 70; // Medium bubble
-  return 50; // Small bubble
+  const mobileScale = isMobile ? 0.65 : 1; // 35% smaller on mobile
+  
+  if (charCount > 25) return 90 * mobileScale; // Large bubble
+  if (charCount > 15) return 70 * mobileScale; // Medium bubble
+  return 50 * mobileScale; // Small bubble
 };
 
 // Function to check if two circles overlap with proper spacing
@@ -49,15 +51,20 @@ const checkOverlap = (
 
 export function AnimatedWorkflow() {
   const [containerSize, setContainerSize] = useState({ width: 800, height: 500 });
+  const [isMobile, setIsMobile] = useState(false);
   const [nodes, setNodes] = useState<Node[]>([]);
   const [connections, setConnections] = useState<[number, number][]>([]);
   const [nodePositions, setNodePositions] = useState<{ [key: string]: { x: number; y: number } }>({});
 
   useEffect(() => {
     const updateSize = () => {
-      const width = Math.min(900, window.innerWidth - 80);
-      const height = Math.min(500, window.innerHeight * 0.6);
+      const width = Math.min(900, window.innerWidth - 40);
+      const height = window.innerWidth < 768 
+        ? Math.min(600, window.innerHeight * 0.7) // Taller on mobile
+        : Math.min(500, window.innerHeight * 0.6);
+      const mobile = window.innerWidth < 768;
       setContainerSize({ width, height });
+      setIsMobile(mobile);
     };
     updateSize();
     window.addEventListener("resize", updateSize);
@@ -67,24 +74,25 @@ export function AnimatedWorkflow() {
   useEffect(() => {
     // Generate non-overlapping random positions for nodes with size-aware spacing
     const generatedNodes: Node[] = [];
-    const extraPadding = 50; // Extra space between bubbles
+    // More padding on mobile to prevent overlap
+    const extraPadding = isMobile ? 30 : 50;
 
     nodeLabels.forEach((label, i) => {
       let x: number, y: number;
       let attempts = 0;
-      const maxAttempts = 200; // More attempts for better positioning
-      const currentBubbleRadius = getBubbleRadius(label);
+      const maxAttempts = 300; // More attempts for better positioning
+      const currentBubbleRadius = getBubbleRadius(label, isMobile);
 
       do {
         // Use wider range but with margin from edges based on bubble size
-        const margin = (currentBubbleRadius / containerSize.width) * 100 + 5;
+        const margin = (currentBubbleRadius / containerSize.width) * 100 + (isMobile ? 8 : 5);
         x = Math.random() * (100 - 2 * margin) + margin;
         y = Math.random() * (100 - 2 * margin) + margin;
         attempts++;
       } while (
         attempts < maxAttempts &&
         generatedNodes.some((node) => {
-          const nodeBubbleRadius = getBubbleRadius(node.label);
+          const nodeBubbleRadius = getBubbleRadius(node.label, isMobile);
           return checkOverlap(
             (x / 100) * containerSize.width,
             (y / 100) * containerSize.height,
@@ -134,7 +142,7 @@ export function AnimatedWorkflow() {
       }
     });
     setConnections(generatedConnections);
-  }, [containerSize.width, containerSize.height]);
+  }, [containerSize.width, containerSize.height, isMobile]);
 
   const updateNodePosition = useCallback((nodeId: string, x: number, y: number) => {
     setNodePositions((prev) => ({
@@ -217,7 +225,8 @@ export function AnimatedWorkflow() {
           const baseY = (node.y / 100) * containerSize.height;
 
           // Very small, gentler floating animation to prevent overlap during motion
-          const floatRadius = 8; // Reduced to prevent any overlap during animation
+          // Even smaller on mobile to prevent any overlap
+          const floatRadius = isMobile ? 4 : 8;
           const duration = 6 + Math.random() * 2;
           const delay = index * 0.5;
 
