@@ -144,9 +144,9 @@ export function AnimatedWorkflow() {
   }, []);
 
   return (
-    <div className="w-full flex justify-center py-12 overflow-hidden">
+    <div className="w-full flex justify-center py-12 overflow-hidden px-4">
       <div
-        className="relative mx-auto"
+        className="relative mx-auto overflow-hidden"
         style={{
           width: containerSize.width,
           height: containerSize.height,
@@ -272,15 +272,19 @@ export function AnimatedWorkflow() {
               }}
             >
               <motion.div
-                className="relative bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6] text-white text-xs font-semibold shadow-xl rounded-full px-4 py-3 flex items-center justify-center text-center backdrop-blur-sm border border-white/20"
+                className="relative bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6] text-white text-xs md:text-sm font-semibold shadow-xl rounded-full px-4 py-3 flex items-center justify-center text-center backdrop-blur-sm border border-white/20"
                 style={{
                   maxWidth: "160px",
                   minWidth: "80px",
                   wordWrap: "break-word",
+                  overflow: "hidden",
                 }}
                 whileHover={{ scale: 1.1, boxShadow: "0 20px 40px rgba(59, 130, 246, 0.4)" }}
               >
-                <span className="leading-tight break-words">{node.label}</span>
+                {/* Improved text wrapping with responsive sizing and proper line breaks */}
+                <p className="break-words whitespace-normal leading-snug text-sm md:text-base">
+                  {node.label}
+                </p>
               </motion.div>
             </motion.div>
           );

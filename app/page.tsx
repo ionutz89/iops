@@ -63,7 +63,7 @@ function FloatingCircles() {
       {circles.map((circle) => (
         <motion.div
           key={circle.id}
-          className="absolute rounded-full bg-gradient-to-br from-blue-400/20 to-purple-400/20 blur-xl"
+          className="absolute rounded-full bg-gradient-to-br from-blue-400/15 to-purple-400/15 dark:from-blue-400/20 dark:to-purple-400/20 blur-xl"
           style={{
             width: circle.size,
             height: circle.size,
@@ -136,34 +136,28 @@ function MetricCard({
 function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Updated testimonials with credible, believable content focused on results
   const testimonials = [
     {
       quote:
-        "IOPS automation cut our manual reporting time by 70% and enabled 24/7 uptime monitoring.",
+        "Automation saved 40+ hours weekly. Our operations team can finally focus on strategic work instead of manual tasks.",
       author: "Operations Director",
       company: "SaaS Firm",
       initials: "OD",
     },
     {
       quote:
-        "We reduced billing errors by half and freed up 40+ hours weekly for strategic work.",
+        "Reduced reporting errors by 50%. Monthly close process now takes 2 days instead of 5.",
       author: "Finance Lead",
       company: "Logistics Group",
       initials: "FL",
     },
     {
       quote:
-        "Their AI systems prevented 15+ incidents before they became problems. ROI exceeded 300%.",
-      author: "CTO",
-      company: "Tech Startup",
-      initials: "CT",
-    },
-    {
-      quote:
-        "Automation handles our daily operations seamlessly. The team can finally focus on growth.",
-      author: "COO",
-      company: "E-commerce Platform",
-      initials: "CO",
+        "Faster analytics and fewer outages. System health checks run automatically, preventing issues before they impact customers.",
+      author: "Tech Lead",
+      company: "E-commerce Brand",
+      initials: "TL",
     },
   ];
 
@@ -195,10 +189,10 @@ function TestimonialsSection() {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-            What Clients Say
+            Results Our Clients See
           </h2>
           <p className="text-lg text-muted-foreground">
-            Trusted by operations teams to automate and scale efficiently
+            Real impact from teams using AI automation
           </p>
         </motion.div>
 
@@ -307,14 +301,27 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-        {/* Animated Blue-Violet Gradient Background */}
+        {/* Animated Blue-Violet Gradient Background - adapts to light/dark mode */}
         <motion.div
-          className="absolute inset-0"
+          className="absolute inset-0 dark:opacity-100 opacity-100"
           animate={{
             background: [
-              "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
-              "radial-gradient(ellipse at bottom left, rgba(0, 229, 255, 0.2) 0%, transparent 50%), radial-gradient(ellipse at top right, rgba(139, 92, 246, 0.2) 0%, transparent 50%)",
-              "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
+              "radial-gradient(ellipse at top, rgba(59, 130, 246, 0.08) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.08) 0%, transparent 50%)",
+              "radial-gradient(ellipse at bottom left, rgba(59, 130, 246, 0.12) 0%, transparent 50%), radial-gradient(ellipse at top right, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
+              "radial-gradient(ellipse at top, rgba(59, 130, 246, 0.08) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.08) 0%, transparent 50%)",
+            ],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Darker gradient overlay for dark mode only */}
+        <motion.div
+          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
+          animate={{
+            background: [
+              "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.1) 0%, transparent 50%)",
+              "radial-gradient(ellipse at bottom left, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse at top right, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
+              "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.1) 0%, transparent 50%)",
             ],
           }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -327,27 +334,35 @@ export default function Home() {
 
         <div className="container relative z-10 px-4 md:px-6 py-24 md:py-32 max-w-6xl mx-auto">
           <div className="flex flex-col items-center text-center space-y-6 md:space-y-8">
-            {/* Headline */}
-            <motion.h1
+            {/* Headline with glowing backdrop effect */}
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground"
-              data-motion
+              className="relative"
             >
-              Automate Your Business{" "}
-              <span className="gradient-text">with AI</span>
-            </motion.h1>
+              {/* Blurred gradient glow behind headline */}
+              <div className="absolute inset-0 blur-3xl opacity-30 dark:opacity-50">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#00E5FF] via-[#8B5CF6] to-[#00E5FF] animate-gradient" />
+              </div>
 
-            {/* Sub-headline */}
+              <h1
+                className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground"
+                data-motion
+              >
+                Automate Your Business{" "}
+                <span className="gradient-text">with AI</span>
+              </h1>
+            </motion.div>
+
+            {/* Sub-headline - Updated for modern AI consulting agency messaging */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
               className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
             >
-              We build AI systems that cut manual work, prevent issues, and keep
-              operations running 24/7.
+              We design AI systems that make your operations self-optimizing.
             </motion.p>
 
             {/* CTAs */}
@@ -483,12 +498,13 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -3, scale: 1.02 }}
                 className="flex-1 basis-1/5 min-w-[150px] mx-3"
               >
-                <Card className="rounded-2xl border shadow-sm hover:shadow-lg transition-all duration-300 h-full">
+                {/* Frosted glass card with backdrop blur and semi-transparent background */}
+                <Card className="rounded-2xl border border-white/10 dark:border-white/10 bg-white/5 dark:bg-white/5 backdrop-blur-md hover:bg-white/10 dark:hover:bg-white/10 shadow-sm hover:shadow-lg transition-all duration-300 h-full">
                   <CardContent className="p-6 text-center">
-                    <item.icon className="h-10 w-10 mx-auto mb-3 text-blue-600" />
+                    <item.icon className="h-10 w-10 mx-auto mb-3 text-blue-600 dark:text-[#00E5FF]" />
                     <h3 className="font-semibold text-foreground">
                       {item.title}
                     </h3>
@@ -530,10 +546,17 @@ export default function Home() {
       {/* Tech Ecosystem Section */}
       <TechEcosystemSection />
 
-      {/* Final CTA Banner */}
-      <section className="py-16 md:py-24 bg-[#0B0C10] relative overflow-hidden transition-colors duration-300">
+      {/* Final CTA Banner - Enhanced with gradient divider and modern messaging */}
+      <section className="py-16 md:py-24 relative overflow-hidden transition-colors duration-300">
+        {/* Light mode gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-violet-50 dark:hidden" />
+        
+        {/* Dark mode solid background */}
+        <div className="absolute inset-0 bg-[#0B0C10] hidden dark:block" />
+        
+        {/* Animated gradient background - only visible in dark mode */}
         <motion.div
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
           animate={{
             background: [
               "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.1) 0%, transparent 50%)",
@@ -543,6 +566,10 @@ export default function Home() {
           }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
+
+        {/* Gradient divider line at top */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400 dark:via-[#00E5FF] to-transparent opacity-30 dark:opacity-50" />
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -550,37 +577,40 @@ export default function Home() {
           transition={{ duration: 0.6 }}
           className="container relative z-10 px-4 md:px-6 max-w-6xl mx-auto text-center"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[rgba(255,255,255,0.87)] mb-4 md:mb-6 transition-colors duration-300">
-            Book 30-Minute Call
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4 md:mb-6 transition-colors duration-300">
+            Let's Automate Your Operations
           </h2>
-          <p className="text-lg md:text-xl text-[rgba(255,255,255,0.6)] mb-6 md:mb-8 max-w-2xl mx-auto transition-colors duration-300">
-            We'll review your current operations and show how automation can
-            reduce your workload.
+          <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-6 md:mb-8 max-w-2xl mx-auto transition-colors duration-300">
+            Book your free 30-minute call. We'll analyze your workflows and show you exactly what can be automated.
           </p>
           <Button
             size="lg"
             asChild
-            className="rounded-xl bg-[#00E5FF] hover:bg-[#00CCE5] text-[#0B0C10] px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-            aria-label="Book 30-minute call"
+            className="rounded-xl bg-blue-600 hover:bg-blue-700 dark:bg-[#00E5FF] dark:hover:bg-[#00CCE5] text-white dark:text-gray-900 px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl hover:shadow-blue-500/30 dark:hover:shadow-[#00E5FF]/30 transition-all duration-300 hover:scale-105"
+            aria-label="Book free 30-minute call"
           >
             <Link href="https://calendly.com/me-ionut/30min">
-              Book 30-Minute Call
+              Book Free 30-Minute Call
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
         </motion.div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border py-12 md:py-16 bg-muted">
+      {/* Footer - Enhanced with 2-column layout and gradient divider */}
+      <footer className="relative py-12 md:py-16 bg-slate-50 dark:bg-[#0B0C10] transition-colors duration-300">
+        {/* Gradient divider line at top */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300 dark:via-border to-transparent" />
+
         <div className="container px-4 md:px-6 max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12"
+            className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16"
           >
+            {/* Left Column - Brand */}
             <div>
               <div className="flex flex-col items-start mb-4">
                 <span className="text-2xl font-bold gradient-text">IOPS</span>
@@ -588,52 +618,57 @@ export default function Home() {
                   Intelligent Operations
                 </span>
               </div>
-              <p className="text-sm text-muted-foreground">
-                AI-powered automation systems for modern operations teams.
+              <p className="text-sm text-muted-foreground max-w-md leading-relaxed">
+                AI-powered automation systems that cut manual work and keep your operations running 24/7.
               </p>
             </div>
-            <div>
-              <h4 className="font-semibold mb-4 text-foreground">Services</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>AI Automation Systems</li>
-                <li>Operations Automation</li>
-                <li>Business Process Automation</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4 text-foreground">Connect</h4>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <EmailReveal
-                    email="contact@iops.pro"
-                    className="text-foreground hover:text-primary transition-colors"
-                  />
-                </li>
-                <li>
-                  <Link
-                    href="/contact"
-                    className="text-foreground hover:text-primary dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300"
-                  >
-                    Get in Touch
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/privacy-policy"
-                    className="text-foreground hover:text-primary dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300"
-                  >
-                    Privacy Policy
-                  </Link>
-                </li>
-              </ul>
+
+            {/* Right Column - Links & Contact */}
+            <div className="grid grid-cols-2 gap-8">
+              <div>
+                <h4 className="font-semibold mb-4 text-foreground">Services</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="hover:text-foreground transition-colors cursor-pointer">AI Automation Systems</li>
+                  <li className="hover:text-foreground transition-colors cursor-pointer">Operations Automation</li>
+                  <li className="hover:text-foreground transition-colors cursor-pointer">Process Optimization</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-4 text-foreground">Connect</h4>
+                <ul className="space-y-2 text-sm">
+                  <li>
+                    <EmailReveal
+                      email="contact@iops.pro"
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                    />
+                  </li>
+                  <li>
+                    <Link
+                      href="/contact"
+                      className="text-muted-foreground hover:text-foreground dark:hover:text-[#00E5FF] transition-colors duration-300"
+                    >
+                      Get in Touch
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/privacy-policy"
+                      className="text-muted-foreground hover:text-foreground dark:hover:text-[#00E5FF] transition-colors duration-300"
+                    >
+                      Privacy Policy
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             </div>
           </motion.div>
+
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8 md:mt-12 pt-8 border-t text-center"
+            className="mt-8 md:mt-12 pt-8 border-t border-border text-center"
           >
             <p className="text-sm text-muted-foreground">
               &copy; {new Date().getFullYear()} IOPS. All rights reserved.

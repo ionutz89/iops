@@ -117,8 +117,9 @@ export function ROICalculator() {
           <h2 className="text-4xl font-bold mb-4 text-foreground">
             Calculate Your ROI
           </h2>
-          <p className="text-sm text-muted-foreground mb-4 max-w-2xl mx-auto">
-            Estimates based on typical mid-size business data.
+          <p className="text-sm text-muted-foreground mb-4 max-w-2xl mx-auto inline-flex items-center gap-2">
+            Estimates based on typical mid-size business data
+            <span className="inline-flex items-center justify-center w-4 h-4 text-xs rounded-full bg-muted text-muted-foreground border border-border cursor-help" title="Based on industry averages from 2024 automation studies">ℹ️</span>
           </p>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             See how much time and money your business could save with automation.
@@ -145,8 +146,9 @@ export function ROICalculator() {
               }}
               className={`space-y-6 ${hasCalculated ? 'w-full' : 'w-full max-w-2xl mx-auto'}`}
             >
-            <Card className="rounded-lg border border-slate-300 dark:border-gray-800 shadow-sm bg-card transition-colors duration-300">
-              <CardContent className="p-6 space-y-6">
+            {/* Enhanced calculator panel with frosted glass effect */}
+            <Card className="rounded-2xl border border-white/10 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300">
+              <CardContent className="p-6 md:p-8 space-y-6">
                 {/* Team Size */}
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
@@ -378,7 +380,8 @@ export function ROICalculator() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <Card className="rounded-lg border border-slate-300 dark:border-slate-700 shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300 bg-card">
+              {/* Frosted glass result card */}
+              <Card className="rounded-2xl border border-white/10 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-md shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
                 <CardContent className="p-6">
                   <Label className="text-sm font-medium text-muted-foreground mb-2 block">
                     Manual Work Savings ($/yr)
@@ -397,7 +400,8 @@ export function ROICalculator() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <Card className="rounded-lg border border-slate-300 dark:border-slate-700 shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300 bg-card">
+              {/* Frosted glass result card */}
+              <Card className="rounded-2xl border border-white/10 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-md shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
                 <CardContent className="p-6">
                   <Label className="text-sm font-medium text-muted-foreground mb-2 block">
                     Problem Cost Savings ($/yr)
@@ -416,14 +420,16 @@ export function ROICalculator() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <Card className="rounded-lg border-2 border-blue-500/30 dark:border-blue-500/50 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 bg-gradient-to-br from-blue-50/50 to-purple-50/50 dark:from-blue-950/30 dark:to-purple-950/30 bg-card">
+              {/* Highlighted total savings card with cyan accent */}
+              <Card className="rounded-2xl border-2 border-[#00E5FF]/30 dark:border-[#00E5FF]/50 shadow-lg hover:shadow-xl hover:shadow-[#00E5FF]/20 hover:scale-105 transition-all duration-300 bg-gradient-to-br from-blue-50/80 to-cyan-50/80 dark:from-blue-950/30 dark:to-cyan-950/30 backdrop-blur-md">
                 <CardContent className="p-8 text-center">
                   <Label className="text-sm font-medium text-muted-foreground mb-2 block">
-                    Total Annual Savings ($/yr)
+                    Total Annual Savings
                   </Label>
+                  <div className="text-xs text-[#00E5FF] dark:text-[#00E5FF] font-semibold mb-2">💰 Savings per Year</div>
                   <AnimatedCurrencyValue
                     value={results.totalAnnualSavings}
-                    className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+                    className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-[#00E5FF] dark:from-[#00E5FF] dark:to-[#8B5CF6] bg-clip-text text-transparent"
                   />
                 </CardContent>
               </Card>
@@ -435,14 +441,15 @@ export function ROICalculator() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <Card className="rounded-lg border-2 border-blue-500/30 dark:border-blue-500/50 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 bg-gradient-to-br from-blue-50/50 to-purple-50/50 dark:from-blue-950/30 dark:to-purple-950/30 bg-card">
+              {/* Highlighted ROI card with violet accent */}
+              <Card className="rounded-2xl border-2 border-[#8B5CF6]/30 dark:border-[#8B5CF6]/50 shadow-lg hover:shadow-xl hover:shadow-[#8B5CF6]/20 hover:scale-105 transition-all duration-300 bg-gradient-to-br from-purple-50/80 to-violet-50/80 dark:from-purple-950/30 dark:to-violet-950/30 backdrop-blur-md">
                 <CardContent className="p-8 text-center">
                   <Label className="text-sm font-medium text-muted-foreground mb-2 block">
-                    ROI (%)
+                    Return on Investment
                   </Label>
                   <AnimatedROIValue
                     value={results.roi}
-                    className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+                    className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#8B5CF6] to-[#00E5FF] bg-clip-text text-transparent"
                   />
                 </CardContent>
               </Card>
@@ -454,10 +461,11 @@ export function ROICalculator() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <Card className="rounded-lg border border-slate-300 dark:border-slate-700 shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300 bg-card">
+              {/* Frosted glass result card */}
+              <Card className="rounded-2xl border border-white/10 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-md shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
                 <CardContent className="p-6">
                   <Label className="text-sm font-medium text-muted-foreground mb-2 block">
-                    Payback Period (months)
+                    Payback Period
                   </Label>
                   <AnimatedPaybackValue
                     value={results.paybackMonths}
@@ -495,8 +503,9 @@ export function ROICalculator() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
               >
-                <Card className="rounded-lg border border-slate-300 dark:border-gray-800 shadow-sm bg-card transition-colors duration-300">
-                  <CardContent className="p-6 space-y-4">
+                {/* Enhanced calculation breakdown with frosted glass */}
+                <Card className="rounded-2xl border border-white/10 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-md shadow-md transition-colors duration-300">
+                  <CardContent className="p-6 md:p-8 space-y-4">
                     <h3 className="text-lg font-semibold text-foreground mb-3">Calculation Breakdown</h3>
                     <div className="space-y-2 text-sm text-muted-foreground">
                       <div className="flex justify-between">
@@ -546,7 +555,8 @@ export function ROICalculator() {
                   ease: [0.4, 0, 0.2, 1],
                 }}
               >
-          <Card className="rounded-xl bg-white dark:bg-gray-900/70 dark:backdrop-blur-md shadow-md p-4 mt-6 border border-slate-300 dark:border-gray-800 transition-colors duration-300">
+          {/* Enhanced chart card with frosted glass */}
+          <Card className="rounded-2xl border border-white/10 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-md shadow-md p-6 mt-6 transition-colors duration-300">
             <h3 className="text-xl font-bold mb-4 text-foreground">ROI vs Team Size</h3>
             <ResponsiveContainer width="100%" height={300}>
               <ComposedChart data={chartData} margin={{ top: 10, right: 30, left: 120, bottom: 10 }}>

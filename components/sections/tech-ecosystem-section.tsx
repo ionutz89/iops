@@ -33,6 +33,7 @@ const logos = [
 export function TechEcosystemSection() {
   return (
     <>
+      {/* Custom CSS for red hover effect on logos */}
       <style dangerouslySetInnerHTML={{
         __html: `
           .tech-logo-group:hover img {
@@ -40,8 +41,10 @@ export function TechEcosystemSection() {
           }
         `
       }} />
-    <section className="py-20 bg-background">
-      <div className="container px-4 md:px-6 max-w-6xl mx-auto">
+    <section className="py-20 bg-background relative overflow-hidden">
+      {/* Subtle gradient strip background */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent opacity-50" />
+      <div className="container relative z-10 px-4 md:px-6 max-w-6xl mx-auto">
         {/* Title */}
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -97,15 +100,16 @@ export function TechEcosystemSection() {
                 index > 0 && index % 4 === 0 ? 'md:border-l md:border-slate-200 dark:md:border-slate-700 md:pl-6' : ''
               }`}
             >
-              {/* Logo Container */}
-              <div className="relative mb-3">
+              {/* Logo Container - Consistent height ~40px, grayscale with red hover */}
+              <div className="relative mb-3 transition-all duration-300">
                 <Image
                   src={logo.src}
                   alt={logo.name}
                   width={160}
-                  height={48}
-                  className="h-14 md:h-16 w-auto opacity-60 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300 dark:opacity-70 dark:invert dark:grayscale dark:group-hover:opacity-100 dark:group-hover:invert-0 dark:group-hover:grayscale-0"
+                  height={40}
+                  className="h-10 w-auto opacity-60 grayscale transition-all duration-300 dark:opacity-70 dark:invert dark:grayscale"
                   priority={index < 2}
+                  style={{ height: '40px', width: 'auto' }}
                 />
               </div>
 

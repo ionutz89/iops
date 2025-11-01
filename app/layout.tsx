@@ -57,7 +57,7 @@ const websiteSchema = {
 export const metadata: Metadata = {
   title: "IOPS | Intelligent Operations with AI",
   description:
-    "IOPS builds intelligent AI systems with Dify AI and AI automation workflows that automate, monitor, and scale business operations 24/7. Calculate your ROI and start automating today.",
+    "AI-powered automation systems that cut manual work and keep your operations running 24/7. Calculate your ROI and see how automation can transform your business.",
   keywords: [
     "AI automation",
     "business automation",
