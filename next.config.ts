@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Don't use "standalone" for Cloudflare Workers - OpenNext handles this
-  // output: "standalone", // Removed - not needed for Cloudflare Workers
+  // OpenNext Cloudflare REQUIRES standalone output mode
+  output: "standalone",
   images: {
     unoptimized: true, // Required for Cloudflare Workers
   },
