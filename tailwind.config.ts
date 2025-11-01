@@ -18,6 +18,7 @@ const config: Config = {
     },
     extend: {
       colors: {
+        // Enhanced dual-theme color system
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -50,6 +51,23 @@ const config: Config = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        // Custom theme colors for IOPS branding
+        light: {
+          background: "#F7F8FA",
+          surface: "#FFFFFF",
+          textPrimary: "#1E1E1E",
+          textSecondary: "#3A3A3A",
+          accentCyan: "#00B8D9",
+          accentViolet: "#7B61FF",
+        },
+        dark: {
+          background: "#0B0C10",
+          surface: "#121417",
+          textPrimary: "rgba(255,255,255,0.87)",
+          textSecondary: "rgba(255,255,255,0.6)",
+          accentCyan: "#00E5FF",
+          accentViolet: "#8B5CF6",
         },
       },
       borderRadius: {

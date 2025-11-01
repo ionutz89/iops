@@ -116,16 +116,18 @@ function MetricCard({
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay, ease: "easeOut" }}
     >
-      <Card className="rounded-2xl border-0 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+      {/* Enhanced frosted glass card with dual-theme support */}
+      <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:border-[#00B8D9] dark:hover:border-[#00E5FF]/30">
         <CardContent className="p-8 text-center">
-          <Icon className="h-12 w-12 mx-auto mb-4 text-blue-600" />
-          <div className="text-4xl md:text-5xl font-bold mb-2 text-foreground">
+          <Icon className="h-12 w-12 mx-auto mb-4 text-[#00B8D9] dark:text-[#00E5FF]" />
+          {/* Gradient text for metric value - Dual theme colors */}
+          <div className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-[#00B8D9] to-[#7B61FF] dark:from-[#00E5FF] dark:to-[#8B5CF6] bg-clip-text text-transparent">
             <span ref={ref}>{displayValue}</span>
           </div>
-          <h3 className="text-xl font-semibold mb-2 text-foreground">
+          <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
             {title}
           </h3>
-          <p className="text-muted-foreground">{description}</p>
+          <p className="text-gray-700 dark:text-white/70">{description}</p>
         </CardContent>
       </Card>
     </motion.div>
@@ -179,7 +181,7 @@ function TestimonialsSection() {
   };
 
   return (
-    <section className="py-24 bg-muted">
+    <section className="py-24 bg-gray-50 dark:bg-[#121417] transition-colors duration-300">
       <div className="container px-4 md:px-6 max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -188,10 +190,10 @@ function TestimonialsSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
             Results Our Clients See
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-gray-700 dark:text-white/70">
             Real impact from teams using AI automation
           </p>
         </motion.div>
@@ -205,29 +207,31 @@ function TestimonialsSection() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="bg-card rounded-2xl border border-border p-8 md:p-12 shadow-lg"
+              className="bg-white dark:bg-white/5 backdrop-blur-md rounded-2xl border border-gray-200 dark:border-white/10 p-8 md:p-12 shadow-lg relative"
             >
+              {/* Quote icon watermark */}
+              <div className="absolute top-6 right-6 text-6xl text-gray-200 dark:text-white/5 font-serif">"</div>
               <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-                {/* Company Logo Circle */}
+                {/* Company Logo Circle with dual-theme gradient */}
                 <div className="flex-shrink-0">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#00E5FF] to-[#8B5CF6] flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#00B8D9] to-[#7B61FF] dark:from-[#00E5FF] dark:to-[#8B5CF6] flex items-center justify-center text-white font-bold text-xl shadow-lg">
                     {testimonials[currentIndex].initials}
                   </div>
                 </div>
 
                 {/* Quote */}
-                <div className="flex-1">
-                  <blockquote className="text-lg md:text-xl text-foreground mb-4 leading-relaxed">
+                <div className="flex-1 relative z-10">
+                  <blockquote className="text-lg md:text-xl text-gray-900 dark:text-white mb-4 leading-relaxed">
                     "{testimonials[currentIndex].quote}"
                   </blockquote>
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                    <p className="font-semibold text-foreground">
+                    <p className="font-semibold text-gray-900 dark:text-white">
                       {testimonials[currentIndex].author}
                     </p>
-                    <span className="hidden sm:inline text-muted-foreground">
+                    <span className="hidden sm:inline text-gray-500 dark:text-white/60">
                       —
                     </span>
-                    <p className="text-muted-foreground">
+                    <p className="text-gray-700 dark:text-white/70">
                       {testimonials[currentIndex].company}
                     </p>
                   </div>
@@ -236,24 +240,24 @@ function TestimonialsSection() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Navigation Arrows */}
+          {/* Navigation Arrows - Dual theme support */}
           <button
             onClick={prevTestimonial}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 bg-card border border-border rounded-full p-2 hover:bg-muted transition-colors shadow-lg"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 bg-white dark:bg-[#121417] border border-gray-200 dark:border-white/10 rounded-full p-2 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors shadow-lg"
             aria-label="Previous testimonial"
           >
-            <ChevronLeft className="h-5 w-5 text-foreground" />
+            <ChevronLeft className="h-5 w-5 text-gray-900 dark:text-white" />
           </button>
           <button
             onClick={nextTestimonial}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 bg-card border border-border rounded-full p-2 hover:bg-muted transition-colors shadow-lg"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 bg-white dark:bg-[#121417] border border-gray-200 dark:border-white/10 rounded-full p-2 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors shadow-lg"
             aria-label="Next testimonial"
           >
-            <ChevronRight className="h-5 w-5 text-foreground" />
+            <ChevronRight className="h-5 w-5 text-gray-900 dark:text-white" />
           </button>
         </div>
 
-        {/* Dots Indicator */}
+        {/* Dots Indicator - Dual theme support */}
         <div className="flex justify-center gap-2 mt-8">
           {testimonials.map((_, index) => (
             <button
@@ -261,8 +265,8 @@ function TestimonialsSection() {
               onClick={() => setCurrentIndex(index)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
                 index === currentIndex
-                  ? "bg-[#00E5FF] w-8"
-                  : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                  ? "bg-[#00B8D9] dark:bg-[#00E5FF] w-8"
+                  : "bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500"
               }`}
               aria-label={`Go to testimonial ${index + 1}`}
             />
@@ -296,86 +300,113 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background dark:bg-[#0B0C10] transition-colors duration-300">
       <Navigation />
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-        {/* Animated Blue-Violet Gradient Background - adapts to light/dark mode */}
+      {/* Hero Section with Enhanced Dual-Theme Background */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-[#0B0C10] dark:via-[#121417] dark:to-[#0B0C10]">
+        {/* Light mode - Subtle animated gradient */}
         <motion.div
-          className="absolute inset-0 dark:opacity-100 opacity-100"
+          className="absolute inset-0 dark:opacity-0 opacity-100 pointer-events-none"
           animate={{
             background: [
-              "radial-gradient(ellipse at top, rgba(59, 130, 246, 0.08) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.08) 0%, transparent 50%)",
-              "radial-gradient(ellipse at bottom left, rgba(59, 130, 246, 0.12) 0%, transparent 50%), radial-gradient(ellipse at top right, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
-              "radial-gradient(ellipse at top, rgba(59, 130, 246, 0.08) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.08) 0%, transparent 50%)",
+              "radial-gradient(ellipse 800px 600px at 30% 40%, rgba(0, 184, 217, 0.12) 0%, transparent 60%), radial-gradient(ellipse 600px 800px at 70% 60%, rgba(123, 97, 255, 0.10) 0%, transparent 60%)",
+              "radial-gradient(ellipse 600px 800px at 70% 60%, rgba(0, 184, 217, 0.15) 0%, transparent 60%), radial-gradient(ellipse 800px 600px at 30% 40%, rgba(123, 97, 255, 0.12) 0%, transparent 60%)",
+              "radial-gradient(ellipse 800px 600px at 30% 40%, rgba(0, 184, 217, 0.12) 0%, transparent 60%), radial-gradient(ellipse 600px 800px at 70% 60%, rgba(123, 97, 255, 0.10) 0%, transparent 60%)",
             ],
           }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Darker gradient overlay for dark mode only */}
+        {/* Dark mode - Animated gradient background */}
+        <motion.div
+          className="absolute inset-0 opacity-0 dark:opacity-100"
+          animate={{
+            background: [
+              "linear-gradient(135deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
+              "linear-gradient(225deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
+              "linear-gradient(315deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
+              "linear-gradient(135deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
+            ],
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Dark mode - Cyan and Purple Glow Overlays */}
         <motion.div
           className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
           animate={{
             background: [
-              "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.1) 0%, transparent 50%)",
-              "radial-gradient(ellipse at bottom left, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse at top right, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
-              "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.1) 0%, transparent 50%)",
+              "radial-gradient(ellipse 800px 600px at 20% 30%, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse 600px 800px at 80% 70%, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
+              "radial-gradient(ellipse 600px 800px at 80% 70%, rgba(0, 229, 255, 0.18) 0%, transparent 50%), radial-gradient(ellipse 800px 600px at 20% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
+              "radial-gradient(ellipse 800px 600px at 20% 30%, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse 600px 800px at 80% 70%, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
             ],
           }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Floating Circles */}
+        {/* Floating Circles - Works for both themes */}
         <div className="absolute inset-0 overflow-hidden">
           <FloatingCircles />
         </div>
 
         <div className="container relative z-10 px-4 md:px-6 py-24 md:py-32 max-w-6xl mx-auto">
           <div className="flex flex-col items-center text-center space-y-6 md:space-y-8">
-            {/* Headline with glowing backdrop effect */}
+            {/* Headline with enhanced glowing backdrop effect */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="relative"
             >
-              {/* Blurred gradient glow behind headline */}
-              <div className="absolute inset-0 blur-3xl opacity-30 dark:opacity-50">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#00E5FF] via-[#8B5CF6] to-[#00E5FF] animate-gradient" />
+              {/* Enhanced blurred gradient glow behind headline */}
+              <div className="absolute inset-0 blur-3xl opacity-20 dark:opacity-60">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#00B8D9] via-[#7B61FF] to-[#00B8D9] dark:from-[#00E5FF] dark:via-[#8B5CF6] dark:to-[#00E5FF] animate-gradient" />
               </div>
 
               <h1
-                className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground"
+                className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white"
                 data-motion
               >
                 Automate Your Business{" "}
-                <span className="gradient-text">with AI</span>
+                <motion.span
+                  className="gradient-text"
+                  animate={{
+                    opacity: [0.7, 1, 0.7],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  with AI
+                </motion.span>
               </h1>
             </motion.div>
 
-            {/* Sub-headline - Updated for modern AI consulting agency messaging */}
+            {/* Sub-headline - Enhanced for both themes */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-              className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
+              className="text-lg sm:text-xl md:text-2xl text-gray-700 dark:text-white/80 max-w-3xl mx-auto leading-relaxed"
             >
               We design AI systems that make your operations self-optimizing.
             </motion.p>
 
-            {/* CTAs */}
+            {/* CTAs with enhanced dual-theme styling */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center justify-center"
             >
+              {/* Primary CTA - Cyan solid (light: solid, dark: solid with glow) */}
               <Button
                 size="lg"
                 asChild
-                className="rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-blue-500/50 hover:from-blue-600 hover:to-purple-700 w-full sm:w-auto"
+                className="rounded-2xl bg-[#00B8D9] hover:bg-[#009EB8] dark:bg-[#00E5FF] dark:hover:bg-[#00CCE5] text-white dark:text-gray-900 px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 btn-glow-cyan w-full sm:w-auto"
                 aria-label="Get free assessment"
               >
                 <Link href="/contact" className="flex items-center justify-center">
@@ -383,11 +414,12 @@ export default function Home() {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
+              {/* Secondary CTA - Violet (light: solid, dark: outline with glow) */}
               <Button
                 size="lg"
                 variant="outline"
                 asChild
-                className="rounded-2xl border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-6 text-base font-semibold transition-all duration-300 hover:scale-105 w-full sm:w-auto"
+                className="rounded-2xl border-2 border-[#7B61FF] dark:border-[#8B5CF6] text-[#7B61FF] dark:text-[#8B5CF6] hover:bg-[#7B61FF] hover:text-white dark:hover:bg-[#8B5CF6] dark:hover:text-white px-8 py-6 text-base font-semibold transition-all duration-300 hover:scale-105 btn-glow-purple w-full sm:w-auto"
                 aria-label="Calculate ROI"
               >
                 <Link href="#roi-calculator" className="flex items-center justify-center">
@@ -405,12 +437,37 @@ export default function Home() {
             >
               <AnimatedWorkflow />
             </motion.div>
+
+            {/* Scroll Indicator - Animated pulse with dual-theme support */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 1 }}
+              className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2"
+            >
+              <span className="text-xs text-gray-600 dark:text-white/60 font-medium">Scroll to explore</span>
+              <div className="animate-scroll-pulse">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-[#00B8D9] dark:text-[#00E5FF]"
+                >
+                  <path d="M12 5v14M19 12l-7 7-7-7" />
+                </svg>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Impact Highlights with Count-Up */}
-      <section className="py-16 md:py-24 bg-muted">
+      {/* Impact Highlights with Count-Up - Enhanced dual-theme background */}
+      <section className="py-16 md:py-24 bg-gray-50 dark:bg-[#121417] transition-colors duration-300">
         <div className="container px-4 md:px-6 max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -457,8 +514,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why Choose IOPS */}
-      <section className="py-16 md:py-24 bg-background">
+      {/* Why Choose IOPS - Enhanced with dual-theme support */}
+      <section className="py-16 md:py-24 bg-white dark:bg-[#0B0C10] transition-colors duration-300">
         <div className="container px-4 md:px-6 max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -467,13 +524,13 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12 md:mb-16"
           >
-            <p className="text-lg text-muted-foreground mb-4">
+            <p className="text-lg text-gray-600 dark:text-white/60 mb-4">
               Proven results across SaaS, logistics, and service companies.
             </p>
-            <h2 className="text-4xl font-bold mb-4 text-foreground">
+            <h2 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
               Why Businesses Choose IOPS
             </h2>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-lg text-gray-700 dark:text-white/70 max-w-2xl mx-auto">
               Businesses choose IOPS because it makes operations faster,
               cheaper, and more reliable.
             </p>
@@ -498,14 +555,14 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -3, scale: 1.02 }}
+                whileHover={{ y: -5, scale: 1.03 }}
                 className="flex-1 basis-1/5 min-w-[150px] mx-3"
               >
-                {/* Frosted glass card with backdrop blur and semi-transparent background */}
-                <Card className="rounded-2xl border border-white/10 dark:border-white/10 bg-white/5 dark:bg-white/5 backdrop-blur-md hover:bg-white/10 dark:hover:bg-white/10 shadow-sm hover:shadow-lg transition-all duration-300 h-full">
+                {/* Enhanced frosted glass card with dual-theme support */}
+                <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md hover:bg-gray-50 dark:hover:bg-white/10 shadow-md hover:shadow-xl hover:shadow-[#00B8D9]/10 dark:hover:shadow-[#00E5FF]/20 transition-all duration-300 h-full hover:border-[#00B8D9] dark:hover:border-[#00E5FF]/30">
                   <CardContent className="p-6 text-center">
-                    <item.icon className="h-10 w-10 mx-auto mb-3 text-blue-600 dark:text-[#00E5FF]" />
-                    <h3 className="font-semibold text-foreground">
+                    <item.icon className="h-10 w-10 mx-auto mb-3 text-[#00B8D9] dark:text-[#00E5FF] transition-transform duration-300" />
+                    <h3 className="font-semibold text-gray-900 dark:text-white">
                       {item.title}
                     </h3>
                   </CardContent>
@@ -519,8 +576,8 @@ export default function Home() {
       {/* Testimonials Section - Redesigned with Carousel */}
       <TestimonialsSection />
 
-      {/* Use Case Section */}
-      <section className="py-16 md:py-24 bg-background">
+      {/* Use Case Section - Enhanced with dual-theme support */}
+      <section className="py-16 md:py-24 bg-white dark:bg-[#0B0C10] transition-colors duration-300">
         <div className="container px-4 md:px-6 max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -529,10 +586,10 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <h2 className="text-3xl font-bold mb-4 text-foreground">
+            <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
               Real Example
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-gray-700 dark:text-white/70 max-w-2xl mx-auto">
               A SaaS company saved 80 hours per month by automating reports and
               system checks with IOPS.
             </p>
@@ -546,14 +603,8 @@ export default function Home() {
       {/* Tech Ecosystem Section */}
       <TechEcosystemSection />
 
-      {/* Final CTA Banner - Enhanced with gradient divider and modern messaging */}
-      <section className="py-16 md:py-24 relative overflow-hidden transition-colors duration-300">
-        {/* Light mode gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-violet-50 dark:hidden" />
-        
-        {/* Dark mode solid background */}
-        <div className="absolute inset-0 bg-[#0B0C10] hidden dark:block" />
-        
+      {/* Final CTA Banner - Enhanced with dual-theme gradient divider */}
+      <section className="py-16 md:py-24 relative overflow-hidden bg-gradient-to-br from-blue-50 via-gray-50 to-violet-50 dark:from-[#0B0C10] dark:via-[#121417] dark:to-[#0B0C10] transition-colors duration-300">
         {/* Animated gradient background - only visible in dark mode */}
         <motion.div
           className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
@@ -567,8 +618,8 @@ export default function Home() {
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Gradient divider line at top */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400 dark:via-[#00E5FF] to-transparent opacity-30 dark:opacity-50" />
+        {/* Gradient divider line at top - Dual theme support */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00B8D9] dark:via-[#00E5FF] to-transparent opacity-40 dark:opacity-50" />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -577,19 +628,19 @@ export default function Home() {
           transition={{ duration: 0.6 }}
           className="container relative z-10 px-4 md:px-6 max-w-6xl mx-auto text-center"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4 md:mb-6 transition-colors duration-300">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-4 md:mb-6">
             Let's Automate Your Operations
           </h2>
-          <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-6 md:mb-8 max-w-2xl mx-auto transition-colors duration-300">
+          <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-6 md:mb-8 max-w-2xl mx-auto">
             Book your free 30-minute call. We'll analyze your workflows and show you exactly what can be automated.
           </p>
           <Button
             size="lg"
             asChild
-            className="rounded-xl bg-blue-600 hover:bg-blue-700 dark:bg-[#00E5FF] dark:hover:bg-[#00CCE5] text-white dark:text-gray-900 px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl hover:shadow-blue-500/30 dark:hover:shadow-[#00E5FF]/30 transition-all duration-300 hover:scale-105"
+            className="rounded-2xl bg-[#00B8D9] hover:bg-[#009EB8] dark:bg-[#00E5FF] dark:hover:bg-[#00CCE5] text-white dark:text-gray-900 px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl hover:shadow-[#00B8D9]/30 dark:hover:shadow-[#00E5FF]/30 transition-all duration-300 hover:scale-105 btn-glow-cyan"
             aria-label="Book free 30-minute call"
           >
-            <Link href="https://calendly.com/me-ionut/30min">
+            <Link href="https://calendly.com/me-ionut/30min" className="flex items-center justify-center">
               Book Free 30-Minute Call
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
@@ -597,12 +648,24 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Footer - Enhanced with 2-column layout and gradient divider */}
-      <footer className="relative py-12 md:py-16 bg-slate-50 dark:bg-[#0B0C10] transition-colors duration-300">
-        {/* Gradient divider line at top */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300 dark:via-border to-transparent" />
+      {/* Footer - Enhanced with dual-theme, 2-column layout, gradient divider */}
+      <footer className="relative py-12 md:py-16 bg-gray-100 dark:bg-[#0B0C10] transition-colors duration-300">
+        {/* Grid pattern background for footer - Dual theme */}
+        <div 
+          className="absolute inset-0 opacity-30 dark:opacity-100" 
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: '40px 40px'
+          }}
+        />
+        
+        {/* Gradient divider line at top - Dual theme support */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00B8D9] dark:via-[#00E5FF]/50 to-transparent opacity-50" />
 
-        <div className="container px-4 md:px-6 max-w-6xl mx-auto">
+        <div className="container relative z-10 px-4 md:px-6 max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -614,11 +677,11 @@ export default function Home() {
             <div>
               <div className="flex flex-col items-start mb-4">
                 <span className="text-2xl font-bold gradient-text">IOPS</span>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-gray-600 dark:text-white/60">
                   Intelligent Operations
                 </span>
               </div>
-              <p className="text-sm text-muted-foreground max-w-md leading-relaxed">
+              <p className="text-sm text-gray-700 dark:text-white/70 max-w-md leading-relaxed">
                 AI-powered automation systems that cut manual work and keep your operations running 24/7.
               </p>
             </div>
@@ -626,26 +689,26 @@ export default function Home() {
             {/* Right Column - Links & Contact */}
             <div className="grid grid-cols-2 gap-8">
               <div>
-                <h4 className="font-semibold mb-4 text-foreground">Services</h4>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="hover:text-foreground transition-colors cursor-pointer">AI Automation Systems</li>
-                  <li className="hover:text-foreground transition-colors cursor-pointer">Operations Automation</li>
-                  <li className="hover:text-foreground transition-colors cursor-pointer">Process Optimization</li>
+                <h4 className="font-semibold mb-4 text-gray-900 dark:text-white">Services</h4>
+                <ul className="space-y-2 text-sm text-gray-700 dark:text-white/70">
+                  <li className="hover:text-[#00B8D9] dark:hover:text-[#00E5FF] transition-colors cursor-pointer">AI Automation Systems</li>
+                  <li className="hover:text-[#00B8D9] dark:hover:text-[#00E5FF] transition-colors cursor-pointer">Operations Automation</li>
+                  <li className="hover:text-[#00B8D9] dark:hover:text-[#00E5FF] transition-colors cursor-pointer">Process Optimization</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-4 text-foreground">Connect</h4>
+                <h4 className="font-semibold mb-4 text-gray-900 dark:text-white">Connect</h4>
                 <ul className="space-y-2 text-sm">
                   <li>
                     <EmailReveal
                       email="contact@iops.pro"
-                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      className="text-gray-700 dark:text-white/70 hover:text-[#00B8D9] dark:hover:text-[#00E5FF] transition-colors"
                     />
                   </li>
                   <li>
                     <Link
                       href="/contact"
-                      className="text-muted-foreground hover:text-foreground dark:hover:text-[#00E5FF] transition-colors duration-300"
+                      className="text-gray-700 dark:text-white/70 hover:text-[#00B8D9] dark:hover:text-[#00E5FF] transition-colors duration-300"
                     >
                       Get in Touch
                     </Link>
@@ -653,7 +716,7 @@ export default function Home() {
                   <li>
                     <Link
                       href="/privacy-policy"
-                      className="text-muted-foreground hover:text-foreground dark:hover:text-[#00E5FF] transition-colors duration-300"
+                      className="text-gray-700 dark:text-white/70 hover:text-[#00B8D9] dark:hover:text-[#00E5FF] transition-colors duration-300"
                     >
                       Privacy Policy
                     </Link>
@@ -668,9 +731,9 @@ export default function Home() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8 md:mt-12 pt-8 border-t border-border text-center"
+            className="mt-8 md:mt-12 pt-8 border-t border-gray-300 dark:border-white/10 text-center"
           >
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-600 dark:text-white/60">
               &copy; {new Date().getFullYear()} IOPS. All rights reserved.
             </p>
           </motion.div>

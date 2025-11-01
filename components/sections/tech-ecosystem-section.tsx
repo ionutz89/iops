@@ -38,12 +38,13 @@ export function TechEcosystemSection() {
         __html: `
           .tech-logo-group:hover img {
             filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%) !important;
+            opacity: 1 !important;
           }
         `
       }} />
-    <section className="py-20 bg-background relative overflow-hidden">
-      {/* Subtle gradient strip background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent opacity-50" />
+    <section className="py-20 bg-gray-50 dark:bg-[#0B0C10] relative overflow-hidden transition-colors duration-300">
+      {/* Enhanced gradient strip background with cyan accent - Dual theme */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#00B8D9]/5 dark:via-[#00E5FF]/10 to-transparent opacity-60" />
       <div className="container relative z-10 px-4 md:px-6 max-w-6xl mx-auto">
         {/* Title */}
         <motion.h2
@@ -54,7 +55,7 @@ export function TechEcosystemSection() {
             duration: 0.5,
             ease: [0.4, 0, 0.2, 1],
           }}
-          className="text-center text-3xl md:text-4xl font-bold text-foreground mb-4"
+          className="text-center text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
         >
           Trusted Platforms We Build On
         </motion.h2>
@@ -65,7 +66,7 @@ export function TechEcosystemSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-center text-lg text-muted-foreground mb-12 max-w-2xl mx-auto"
+          className="text-center text-lg text-gray-700 dark:text-white/70 mb-12 max-w-2xl mx-auto"
         >
           Our intelligent automation systems leverage trusted technologies for reliability, scalability, and performance.
         </motion.p>
@@ -100,21 +101,21 @@ export function TechEcosystemSection() {
                 index > 0 && index % 4 === 0 ? 'md:border-l md:border-slate-200 dark:md:border-slate-700 md:pl-6' : ''
               }`}
             >
-              {/* Logo Container - Consistent height ~40px, grayscale with red hover */}
-              <div className="relative mb-3 transition-all duration-300">
+              {/* Logo Container - Consistent height, grayscale with cyan glow on hover */}
+              <div className="relative mb-3 transition-all duration-300 group-hover:drop-shadow-[0_0_15px_rgba(0,184,217,0.6)] dark:group-hover:drop-shadow-[0_0_20px_rgba(0,229,255,0.6)]">
                 <Image
                   src={logo.src}
                   alt={logo.name}
                   width={160}
-                  height={40}
-                  className="h-10 w-auto opacity-60 grayscale transition-all duration-300 dark:opacity-70 dark:invert dark:grayscale"
+                  height={45}
+                  className="h-11 w-auto opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300 dark:opacity-50 dark:invert dark:grayscale dark:group-hover:opacity-100"
                   priority={index < 2}
-                  style={{ height: '40px', width: 'auto' }}
+                  style={{ height: '45px', width: 'auto', objectFit: 'contain' }}
                 />
               </div>
 
-              {/* Tooltip - Hidden until hover */}
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-gray-800 dark:bg-gray-900 text-white dark:text-gray-200 text-xs rounded py-1 px-2 whitespace-nowrap pointer-events-none transition-opacity duration-200 shadow-lg z-10">
+              {/* Tooltip - Enhanced with dual-theme support */}
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 bg-gray-900 dark:bg-[#121417] text-white text-xs rounded-lg py-2 px-3 whitespace-nowrap pointer-events-none transition-opacity duration-200 shadow-xl border border-gray-700 dark:border-white/10 z-10">
                 {logo.detailedTooltip || logo.tooltip}
               </div>
             </motion.div>

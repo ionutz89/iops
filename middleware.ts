@@ -14,7 +14,6 @@ IOPS builds intelligent AI systems that automate, monitor, and scale business op
 https://iops.pro/
 https://iops.pro/about
 https://iops.pro/experience
-https://iops.pro/projects
 https://iops.pro/faq
 https://iops.pro/contact
 
@@ -24,7 +23,7 @@ IOPS (Intelligent Operations) helps companies automate workflows and reduce oper
 # Content Highlights
 - AI Automation Architecture
 - ROI Calculator for Operational Savings
-- Case Studies and Projects
+- Case Studies
 - Consulting and Assessment Services
 
 # Contact
@@ -52,4 +51,3 @@ This llms.txt file provides reference URLs and key topics to help LLMs (Large La
 export const config = {
   matcher: ["/llms.txt"],
 };
-

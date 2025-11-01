@@ -70,7 +70,7 @@ export function AnimatedWorkflow() {
     const extraPadding = 50; // Extra space between bubbles
 
     nodeLabels.forEach((label, i) => {
-      let x, y;
+      let x: number, y: number;
       let attempts = 0;
       const maxAttempts = 200; // More attempts for better positioning
       const currentBubbleRadius = getBubbleRadius(label);
@@ -145,8 +145,9 @@ export function AnimatedWorkflow() {
 
   return (
     <div className="w-full flex justify-center py-12 overflow-hidden px-4">
+      {/* Enhanced container with overflow handling */}
       <div
-        className="relative mx-auto overflow-hidden"
+        className="relative mx-auto overflow-hidden rounded-2xl"
         style={{
           width: containerSize.width,
           height: containerSize.height,
@@ -185,7 +186,7 @@ export function AnimatedWorkflow() {
                   y1: fromPos.y,
                   x2: toPos.x,
                   y2: toPos.y,
-                  opacity: 0.7,
+                  opacity: 0.6,
                 }}
                 initial={{
                   x1: fromPos.x,
@@ -194,9 +195,10 @@ export function AnimatedWorkflow() {
                   y2: toPos.y,
                   opacity: 0,
                 }}
-                stroke="url(#connectionGradient)"
-                strokeWidth="2.5"
+                stroke="rgba(0, 184, 217, 0.4)"
+                strokeWidth="2"
                 strokeLinecap="round"
+                className="dark:stroke-[rgba(0,229,255,0.4)]"
                 transition={{
                   opacity: { duration: 1.5, delay: i * 0.2 + 0.5 },
                   x1: { type: "spring", stiffness: 100, damping: 20 },
@@ -271,18 +273,24 @@ export function AnimatedWorkflow() {
                 }
               }}
             >
+              {/* Enhanced bubble with dual-theme frosted glass effect and proper overflow handling */}
               <motion.div
-                className="relative bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6] text-white text-xs md:text-sm font-semibold shadow-xl rounded-full px-4 py-3 flex items-center justify-center text-center backdrop-blur-sm border border-white/20"
+                className="relative bg-white/90 dark:bg-[#1C1E22] text-gray-800 dark:text-gray-200 text-xs md:text-sm font-semibold shadow-lg dark:shadow-xl rounded-full px-4 py-3 flex items-center justify-center text-center backdrop-blur-md border border-gray-200 dark:border-white/10"
                 style={{
                   maxWidth: "160px",
                   minWidth: "80px",
                   wordWrap: "break-word",
                   overflow: "hidden",
                 }}
-                whileHover={{ scale: 1.1, boxShadow: "0 20px 40px rgba(59, 130, 246, 0.4)" }}
+                whileHover={{ 
+                  scale: 1.05, 
+                  boxShadow: "0 0 30px rgba(0, 184, 217, 0.4)",
+                  borderColor: "rgba(0, 184, 217, 0.3)"
+                }}
+                transition={{ duration: 0.2 }}
               >
                 {/* Improved text wrapping with responsive sizing and proper line breaks */}
-                <p className="break-words whitespace-normal leading-snug text-sm md:text-base">
+                <p className="break-words whitespace-normal leading-tight text-xs md:text-sm p-1">
                   {node.label}
                 </p>
               </motion.div>
