@@ -515,8 +515,9 @@ export default function PrivacyPolicy() {
               </h2>
               <p className="text-muted-foreground leading-relaxed">
                 We do not target or collect data from anyone under 16. If a
-                child submits data, contact privacy@iops.pro and we will delete
-                it.
+                child submits data, contact{" "}
+                <EmailReveal email="privacy@iops.pro" className="font-medium" />{" "}
+                and we will delete it.
               </p>
             </section>
 
