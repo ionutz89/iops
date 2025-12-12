@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Script from "next/script";
-import { GdprConsent } from "@/components/GdprConsent";
+import { GdprBanner } from "@/components/gdpr-banner";
 import { AnalyticsLoader } from "@/components/analytics-loader";
 import "./globals.css";
 
@@ -192,7 +192,7 @@ export default function RootLayout({
           forcedTheme={undefined}
         >
           {children}
-          <GdprConsent />
+          <GdprBanner />
           <AnalyticsLoader />
         </ThemeProvider>
       </body>

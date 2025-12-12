@@ -1,112 +1,150 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useState, useEffect, useMemo } from "react";
-import { calculateROI, formatCurrency, formatNumber, type ROIInputs } from "@/lib/roi-calculations";
-import {
-  ComposedChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  ReferenceLine,
-} from "recharts";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { cn } from "@/lib/utils";
 
-export function ROICalculator() {
-  const defaults = {
-    teamSize: 10,
-    incidentsPerWeek: 5,
-    manualHoursPerWeek: 80,
-    hourlyRate: 50,
-    incidentCost: 1500,
-    setupCost: 100000,
-    automationEfficiency: 70,
-    incidentReduction: 80,
-  };
+// Constants
+const WEEKS_PER_YEAR = 52;
+const AUTOMATION_EFFICIENCY = 0.95; // 95% of manual work eliminated
 
-  const [inputs, setInputs] = useState<ROIInputs>(defaults);
-  const [hasCalculated, setHasCalculated] = useState(false);
-  const [showResults, setShowResults] = useState(false);
+// Currency formatter for Euros
+const formatCurrency = (amount: number): string => {
+  return new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+};
 
-  const results = useMemo(() => calculateROI(inputs), [inputs]);
+// Format hours with proper pluralization
+const formatHours = (hours: number): string => {
+  return `${hours} ${hours === 1 ? "hour" : "hours"}`;
+};
 
-  const handleCalculate = () => {
-    calculateROI(inputs);
-    setHasCalculated(true);
+// The actual ROI calculation formula
+interface ROICalculation {
+  weeklyCost: number;
+  annualLaborCost: number;
+  automatedCost: number;
+  totalSaved: number;
+  errorCostSaved: number;
+  totalWithErrorSavings: number;
+}
 
-    // Add delay before showing results for natural feel
-    setTimeout(() => {
-      setShowResults(true);
-      // Smooth scroll to results section
-      setTimeout(() => {
-        const el = document.getElementById("roi-result");
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 400);
-    }, 300);
-  };
+function calculateSavings(
+  hoursPerWeek: number,
+  hourlyCost: number,
+  errorRate: number
+): ROICalculation {
+  // Core calculation: What you're spending now on manual work
+  const weeklyCost = hoursPerWeek * hourlyCost;
+  const annualLaborCost = weeklyCost * WEEKS_PER_YEAR;
 
-  // Generate chart data for ROI vs Team Size based on actual calculations
-  const chartData = useMemo(() => {
-    // Generate chart data for team sizes 1-30, calculating actual ROI for each
-    return Array.from({ length: 30 }, (_, i) => {
-      const teamSize = i + 1;
-      const testInputs = { ...inputs, teamSize };
-      const testResults = calculateROI(testInputs);
+  // After automation: Only 5% of the cost remains (95% efficiency)
+  const automatedCost = annualLaborCost * (1 - AUTOMATION_EFFICIENCY);
+
+  // Labor savings
+  const totalSaved = annualLaborCost - automatedCost;
+
+  // Error cost savings (errors cost money - automation reduces them)
+  // Assume each error costs 2x the hourly rate to fix, and automation reduces errors by 90%
+  const weeklyErrors = hoursPerWeek * (errorRate / 100);
+  const errorCostPerWeek = weeklyErrors * hourlyCost * 2;
+  const annualErrorCost = errorCostPerWeek * WEEKS_PER_YEAR;
+  const errorCostSaved = annualErrorCost * 0.9; // 90% error reduction
+
       return {
-        teamSize,
-        roi: testResults.roi,
-      };
-    });
-  }, [inputs]);
-
-  const updateInput = (field: keyof ROIInputs, value: number | number[]) => {
-    const numValue = Array.isArray(value) ? value[0] : value;
-
-    // Validate and clamp values based on field with realistic business ranges
-    let clampedValue = numValue;
-    switch (field) {
-      case "teamSize":
-        clampedValue = Math.max(1, Math.min(50, numValue));
-        break;
-      case "incidentsPerWeek":
-        clampedValue = Math.max(1, Math.min(20, numValue));
-        break;
-      case "manualHoursPerWeek":
-        clampedValue = Math.max(10, Math.min(400, numValue));
-        break;
-      case "hourlyRate":
-        clampedValue = Math.max(20, Math.min(150, numValue));
-        break;
-      case "incidentCost":
-        clampedValue = Math.max(500, Math.min(5000, numValue));
-        break;
-      case "setupCost":
-        clampedValue = Math.max(1000, Math.min(100000, numValue));
-        break;
-      case "automationEfficiency":
-        clampedValue = Math.max(30, Math.min(90, numValue));
-        break;
-      case "incidentReduction":
-        clampedValue = Math.max(40, Math.min(95, numValue));
-        break;
-    }
-
-    setInputs((prev) => ({ ...prev, [field]: clampedValue }));
+    weeklyCost,
+    annualLaborCost,
+    automatedCost,
+    totalSaved,
+    errorCostSaved,
+    totalWithErrorSavings: totalSaved + errorCostSaved,
   };
+}
 
+// Animated number component with smooth counting
+function AnimatedValue({
+  value,
+  formatter,
+  className,
+}: {
+  value: number;
+  formatter: (n: number) => string;
+  className?: string;
+}) {
+  const [displayValue, setDisplayValue] = useState(value);
+  const previousValue = useRef(value);
+  const animationRef = useRef<number>();
+
+  useEffect(() => {
+    const startValue = previousValue.current;
+    const endValue = value;
+    const duration = 600; // ms
+    const startTime = performance.now();
+
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Easing function: easeOutExpo
+      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+
+      const currentValue = startValue + (endValue - startValue) * eased;
+      setDisplayValue(currentValue);
+
+      if (progress < 1) {
+        animationRef.current = requestAnimationFrame(animate);
+      } else {
+        previousValue.current = endValue;
+      }
+    };
+
+    animationRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [value]);
 
   return (
-    <section id="roi-calculator" className="py-16 md:py-24 bg-[#F9FAFB] dark:bg-[#0B0C10] scroll-mt-24 transition-colors duration-300">
-      <div className="container px-4 md:px-6 max-w-6xl mx-auto">
+    <span className={className}>{formatter(Math.round(displayValue))}</span>
+  );
+}
+
+export function ROICalculator() {
+  // State for the three main inputs
+  const [hoursPerWeek, setHoursPerWeek] = useState(10);
+  const [hourlyCost, setHourlyCost] = useState(25);
+  const [errorRate, setErrorRate] = useState(5);
+
+  // Calculate results in real-time
+  const results = calculateSavings(hoursPerWeek, hourlyCost, errorRate);
+
+  // Determine savings tier for visual feedback
+  const getSavingsTier = useCallback((amount: number) => {
+    if (amount >= 50000) return "exceptional";
+    if (amount >= 25000) return "excellent";
+    if (amount >= 10000) return "good";
+    return "starter";
+  }, []);
+
+  const savingsTier = getSavingsTier(results.totalWithErrorSavings);
+
+  return (
+    <section
+      id="roi-calculator"
+      className="py-16 md:py-24 bg-[#F9FAFB] dark:bg-[#0B0C10] scroll-mt-24 transition-colors duration-300"
+    >
+      <div className="container px-4 md:px-6 max-w-5xl mx-auto">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -115,664 +153,349 @@ export function ROICalculator() {
           className="text-center mb-12 md:mb-16"
         >
           <h2 className="text-4xl font-bold mb-4 text-[#0F0F0F] dark:text-white">
-            Calculate Your ROI
+            Calculate Your Automation ROI
           </h2>
-          <p className="text-sm text-[#333] dark:text-white/60 mb-4 max-w-2xl mx-auto inline-flex items-center gap-2">
-            Estimates based on typical mid-size business data
-            <span className="inline-flex items-center justify-center w-4 h-4 text-xs rounded-full bg-[#00B8D9]/10 dark:bg-white/10 text-[#00B8D9] dark:text-white/70 border border-[#00B8D9]/30 dark:border-white/20 cursor-help" title="Based on industry averages from 2024 automation studies">ℹ️</span>
-          </p>
           <p className="text-lg text-[#333] dark:text-white/70 max-w-2xl mx-auto">
-            See how much time and money your business could save with automation.
+            See exactly how much you&apos;re burning on manual work—and what
+            automation can save you.
           </p>
         </motion.div>
 
-        <div className="relative max-w-6xl mx-auto min-h-[600px]">
-          <div className={`relative ${hasCalculated ? 'lg:grid lg:grid-cols-2' : 'flex justify-center'} gap-8 transition-all duration-500 ease-in-out`}>
-            {/* Calculator Panel - Centered initially, slides left after calculation */}
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
+          {/* Input Panel */}
             <motion.div
-              layout
-              initial={{ opacity: 0, y: 20 }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{
-                layout: {
-                  duration: 0.6,
-                  ease: [0.4, 0, 0.2, 1],
-                },
-                opacity: { duration: 0.5 },
-                y: { duration: 0.5 },
-              }}
-              className={`space-y-6 ${hasCalculated ? 'w-full' : 'w-full max-w-2xl mx-auto'}`}
-            >
-            {/* Enhanced calculator panel with dual-theme frosted glass effect */}
-            <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300">
-              <CardContent className="p-6 md:p-8 space-y-6">
-                {/* Team Size */}
-                <div className="space-y-3">
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-lg">
+              <CardContent className="p-6 md:p-8 space-y-8">
+                {/* Hours per Week Slider */}
+                <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Your Team Size</Label>
-                    <span className="text-sm font-semibold text-[#0F0F0F] dark:text-white">{inputs.teamSize}</span>
+                    <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">
+                      Hours Spent on Manual Tasks
+                      <span className="block text-sm font-normal text-[#666] dark:text-white/50 mt-1">
+                        Weekly repetitive work per person
+                      </span>
+                    </Label>
+                    <div className="text-right">
+                      <span className="text-2xl font-bold text-[#0F0F0F] dark:text-white tabular-nums">
+                        {hoursPerWeek}
+                      </span>
+                      <span className="text-sm text-[#666] dark:text-white/60 ml-1">
+                        hrs/week
+                      </span>
+                    </div>
                   </div>
                   <Slider
-                    value={[inputs.teamSize]}
-                    onValueChange={(value) => updateInput("teamSize", value)}
-                    min={1}
-                    max={50}
+                    value={[hoursPerWeek]}
+                    onValueChange={(value) => setHoursPerWeek(value[0])}
+                    min={0}
+                    max={100}
                     step={1}
-                    className="w-full focus-visible:ring-2 focus-visible:ring-[#00B8D9] focus-visible:ring-offset-2 transition-all"
+                    className="w-full"
                   />
+                  <div className="flex justify-between text-xs text-[#999] dark:text-white/40">
+                    <span>0 hours</span>
+                    <span>100 hours</span>
+                  </div>
                 </div>
 
-                {/* Incidents per Week */}
-                <div className="space-y-3">
+                {/* Hourly Cost Slider */}
+                <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Problems per Week</Label>
-                    <span className="text-sm font-semibold text-[#0F0F0F] dark:text-white">{inputs.incidentsPerWeek}</span>
+                    <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">
+                      Hourly Labor Cost
+                      <span className="block text-sm font-normal text-[#666] dark:text-white/50 mt-1">
+                        Fully loaded employee cost
+                      </span>
+                    </Label>
+                    <div className="text-right">
+                      <span className="text-2xl font-bold text-[#0F0F0F] dark:text-white tabular-nums">
+                        €{hourlyCost}
+                      </span>
+                      <span className="text-sm text-[#666] dark:text-white/60 ml-1">
+                        /hour
+                      </span>
+                    </div>
                   </div>
                   <Slider
-                    value={[inputs.incidentsPerWeek]}
-                    onValueChange={(value) => updateInput("incidentsPerWeek", value)}
-                    min={1}
+                    value={[hourlyCost]}
+                    onValueChange={(value) => setHourlyCost(value[0])}
+                    min={0}
+                    max={100}
+                    step={1}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-xs text-[#999] dark:text-white/40">
+                    <span>€0</span>
+                    <span>€100</span>
+                </div>
+                </div>
+
+                {/* Error Rate Slider */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">
+                      Error Rate
+                      <span className="block text-sm font-normal text-[#666] dark:text-white/50 mt-1">
+                        Mistakes requiring rework
+                      </span>
+                    </Label>
+                    <div className="text-right">
+                      <span className="text-2xl font-bold text-[#0F0F0F] dark:text-white tabular-nums">
+                        {errorRate}%
+                      </span>
+                    </div>
+                  </div>
+                  <Slider
+                    value={[errorRate]}
+                    onValueChange={(value) => setErrorRate(value[0])}
+                    min={0}
                     max={20}
                     step={1}
-                    className="w-full focus-visible:ring-2 focus-visible:ring-[#00B8D9] focus-visible:ring-offset-2 transition-all"
+                    className="w-full"
                   />
-                </div>
-
-                {/* Manual Task Hours per Week */}
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Hours Spent on Repetitive Tasks</Label>
-                    <span className="text-sm font-semibold text-[#0F0F0F] dark:text-white">{inputs.manualHoursPerWeek}</span>
+                  <div className="flex justify-between text-xs text-[#999] dark:text-white/40">
+                    <span>0%</span>
+                    <span>20%</span>
                   </div>
-                  <Slider
-                    value={[inputs.manualHoursPerWeek]}
-                    onValueChange={(value) => updateInput("manualHoursPerWeek", value)}
-                    min={10}
-                    max={400}
-                    step={5}
-                    className="w-full focus-visible:ring-2 focus-visible:ring-[#00B8D9] focus-visible:ring-offset-2 transition-all"
-                  />
                 </div>
 
-                {/* Hourly Rate */}
-                <div className="space-y-3">
-                  <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Average Hourly Wage</Label>
-                  <Input
-                    type="number"
-                    value={inputs.hourlyRate}
-                    onChange={(e) => {
-                      const value = parseFloat(e.target.value) || 0;
-                      const clampedValue = Math.max(20, Math.min(150, value));
-                      updateInput("hourlyRate", clampedValue);
-                    }}
-                    onBlur={(e) => {
-                      const value = parseFloat(e.target.value) || 50;
-                      const clampedValue = Math.max(20, Math.min(150, value));
-                      if (value !== clampedValue) {
-                        updateInput("hourlyRate", clampedValue);
-                      }
-                    }}
-                    placeholder="e.g. 50"
-                    className="rounded-lg border-gray-300 dark:border-white/20 bg-[#FAFAFA] dark:bg-transparent text-[#0F0F0F] dark:text-white placeholder-gray-500 dark:placeholder-white/50 focus:border-[#00B8D9] dark:focus:border-[#00E5FF] focus:ring-[#00B8D9] dark:focus:ring-[#00E5FF] focus:ring-2"
-                    min={20}
-                    max={150}
-                    step={1}
-                  />
-                  <p className="text-xs text-[#333] dark:text-white/60">Typical range: $20 - $150</p>
-                </div>
-
-                {/* Average Problem Cost */}
-                <div className="space-y-3">
-                  <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Average Cost per Problem</Label>
-                  <Input
-                    type="number"
-                    value={inputs.incidentCost}
-                    onChange={(e) => {
-                      const value = parseFloat(e.target.value) || 0;
-                      const clampedValue = Math.max(500, Math.min(5000, value));
-                      updateInput("incidentCost", clampedValue);
-                    }}
-                    onBlur={(e) => {
-                      const value = parseFloat(e.target.value) || 1500;
-                      const clampedValue = Math.max(500, Math.min(5000, value));
-                      if (value !== clampedValue) {
-                        updateInput("incidentCost", clampedValue);
-                      }
-                    }}
-                    placeholder="e.g. 1000"
-                    className="rounded-lg border-gray-300 dark:border-white/20 bg-[#FAFAFA] dark:bg-transparent text-[#0F0F0F] dark:text-white placeholder-gray-500 dark:placeholder-white/50 focus:border-[#00B8D9] dark:focus:border-[#00E5FF] focus:ring-[#00B8D9] dark:focus:ring-[#00E5FF] focus:ring-2"
-                    min={500}
-                    max={5000}
-                    step={100}
-                  />
-                  <p className="text-xs text-[#333] dark:text-white/60">Typical range: $500 - $5,000</p>
-                </div>
-
-                {/* Setup Cost */}
-                <div className="space-y-3">
-                  <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Initial Setup Investment</Label>
-                  <Input
-                    type="number"
-                    value={inputs.setupCost}
-                    onChange={(e) => {
-                      const value = parseFloat(e.target.value) || 0;
-                      const clampedValue = Math.max(1000, Math.min(100000, value));
-                      updateInput("setupCost", clampedValue);
-                    }}
-                    onBlur={(e) => {
-                      const value = parseFloat(e.target.value) || 25000;
-                      const clampedValue = Math.max(1000, Math.min(100000, value));
-                      if (value !== clampedValue) {
-                        updateInput("setupCost", clampedValue);
-                      }
-                    }}
-                    placeholder="e.g. 10000"
-                    className="rounded-lg border-gray-300 dark:border-white/20 bg-[#FAFAFA] dark:bg-transparent text-[#0F0F0F] dark:text-white placeholder-gray-500 dark:placeholder-white/50 focus:border-[#00B8D9] dark:focus:border-[#00E5FF] focus:ring-[#00B8D9] dark:focus:ring-[#00E5FF] focus:ring-2"
-                    min={1000}
-                    max={100000}
-                    step={1000}
-                  />
-                  <p className="text-xs text-[#333] dark:text-white/60">Typical range: $1,000 - $100,000</p>
-                </div>
-
-                {/* Automation Efficiency */}
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Automation Efficiency (%)</Label>
-                    <span className="text-sm font-semibold text-[#0F0F0F] dark:text-white">{inputs.automationEfficiency}%</span>
-                  </div>
-                  <Slider
-                    value={[inputs.automationEfficiency]}
-                    onValueChange={(value) => updateInput("automationEfficiency", value)}
-                    min={30}
-                    max={90}
-                    step={1}
-                    className="w-full focus-visible:ring-2 focus-visible:ring-[#00B8D9] focus-visible:ring-offset-2 transition-all"
-                  />
-                </div>
-
-                {/* Problem Reduction */}
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-base font-medium text-[#0F0F0F] dark:text-white">Problem Reduction (%)</Label>
-                    <span className="text-sm font-semibold text-[#0F0F0F] dark:text-white">{inputs.incidentReduction}%</span>
-                  </div>
-                  <Slider
-                    value={[inputs.incidentReduction]}
-                    onValueChange={(value) => updateInput("incidentReduction", value)}
-                    min={40}
-                    max={95}
-                    step={1}
-                    className="w-full focus-visible:ring-2 focus-visible:ring-[#00B8D9] focus-visible:ring-offset-2 transition-all"
-                  />
-                </div>
-
-                {/* Calculate ROI Button - Enhanced dual-theme */}
-                <div className="pt-4">
-                  <p className="text-sm text-[#333] dark:text-white/70 mb-4 text-center">
-                    Get a realistic estimate of your time and cost savings with AI automation.
+                {/* Quick insight */}
+                <div className="pt-4 border-t border-gray-200 dark:border-white/10">
+                  <p className="text-sm text-[#666] dark:text-white/60">
+                    <span className="font-medium text-[#0F0F0F] dark:text-white">
+                      Current weekly cost:
+                    </span>{" "}
+                    <AnimatedValue
+                      value={results.weeklyCost}
+                      formatter={formatCurrency}
+                      className="font-semibold text-[#0F0F0F] dark:text-white"
+                    />{" "}
+                    × 52 weeks ={" "}
+                    <AnimatedValue
+                      value={results.annualLaborCost}
+                      formatter={formatCurrency}
+                      className="font-semibold text-amber-600 dark:text-amber-400"
+                    />
+                    /year
                   </p>
-                  <Button
-                    onClick={handleCalculate}
-                    className="w-full bg-[#7B61FF] hover:bg-[#6C55E0] dark:bg-[#8B5CF6] dark:hover:bg-[#7B4CF6] text-white font-semibold py-6 text-lg shadow-md hover:shadow-lg btn-glow-purple transition-all duration-300"
-                    size="lg"
-                    aria-label="Calculate ROI"
-                  >
-                    Calculate ROI
-                  </Button>
-                  {!hasCalculated && (
-                    <p className="text-[#333] dark:text-white/60 text-sm mt-2 text-center">
-                      Press Calculate to view your estimated savings.
-                    </p>
-                  )}
                 </div>
-
               </CardContent>
             </Card>
           </motion.div>
 
-          {/* Right Column - Outputs - Only render when showResults is true */}
-          <AnimatePresence>
-            {showResults && (
+          {/* Results Panel */}
               <motion.div
-                layout
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 40 }}
-                transition={{
-                  layout: {
-                    duration: 0.6,
-                    ease: [0.4, 0, 0.2, 1],
-                  },
-                  opacity: {
-                    duration: 0.35,
-                    delay: 0.3,
-                    ease: [0.4, 0, 0.2, 1],
-                  },
-                  x: {
-                    duration: 0.35,
-                    delay: 0.3,
-                    ease: [0.4, 0, 0.2, 1],
-                  },
-                }}
-                className="space-y-6 w-full"
-              >
-              {/* ROI Context Line - Dual theme */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.25 }}
-                className="text-center"
-              >
-                <p className="text-sm text-[#333] dark:text-white/60 italic">
-                  Typical automation ROI ranges 150–400% annually based on client results.
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="space-y-6"
+          >
+            {/* Main Savings Card - The Hero */}
+            <Card
+              className={cn(
+                "rounded-2xl border-2 shadow-xl transition-all duration-500",
+                "bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50",
+                "dark:from-emerald-950/40 dark:via-green-950/30 dark:to-teal-950/40",
+                savingsTier === "exceptional" &&
+                  "border-emerald-500 dark:border-emerald-400 shadow-emerald-200 dark:shadow-emerald-900/50",
+                savingsTier === "excellent" &&
+                  "border-green-500 dark:border-green-400 shadow-green-200 dark:shadow-green-900/50",
+                savingsTier === "good" &&
+                  "border-teal-500 dark:border-teal-400 shadow-teal-200 dark:shadow-teal-900/50",
+                savingsTier === "starter" &&
+                  "border-gray-300 dark:border-white/20 shadow-gray-200 dark:shadow-none"
+              )}
+            >
+              <CardContent className="p-8 text-center">
+                <div className="mb-2">
+                  <span className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                      />
+                    </svg>
+                    Estimated Annual Savings
+                  </span>
+                </div>
+
+                <div className="py-4">
+                  <AnimatedValue
+                    value={results.totalWithErrorSavings}
+                    formatter={formatCurrency}
+                    className={cn(
+                      "text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight",
+                      "text-emerald-600 dark:text-emerald-400"
+                    )}
+                  />
+                </div>
+
+                <p className="text-sm text-emerald-700/70 dark:text-emerald-400/60 mt-2">
+                  Based on 95% automation efficiency
                 </p>
-              </motion.div>
 
-              {/* Results Grid */}
-              <div id="roi-result" className="grid grid-cols-1 gap-6">
-              {/* Manual Work Savings */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              {/* Dual-theme result card */}
-              <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300">
-                <CardContent className="p-6">
-                  <Label className="text-sm font-medium text-[#333] dark:text-white/60 mb-2 block">
-                    Manual Work Savings ($/yr)
-                  </Label>
-                  <AnimatedCurrencyValue
-                    value={results.manualWorkSavings}
-                    className="text-3xl md:text-4xl font-bold text-[#0F0F0F] dark:text-white"
+                {/* Savings breakdown */}
+                <div className="mt-6 pt-6 border-t border-emerald-200 dark:border-emerald-800/50 grid grid-cols-2 gap-4 text-left">
+                  <div>
+                    <p className="text-xs text-[#666] dark:text-white/50 uppercase tracking-wide mb-1">
+                      Labor Savings
+                    </p>
+                    <AnimatedValue
+                      value={results.totalSaved}
+                      formatter={formatCurrency}
+                      className="text-lg font-bold text-[#0F0F0F] dark:text-white"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-xs text-[#666] dark:text-white/50 uppercase tracking-wide mb-1">
+                      Error Reduction
+                    </p>
+                    <AnimatedValue
+                      value={results.errorCostSaved}
+                      formatter={formatCurrency}
+                      className="text-lg font-bold text-[#0F0F0F] dark:text-white"
+                    />
+                  </div>
+                </div>
+                </CardContent>
+              </Card>
+
+            {/* Supporting metrics */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Hours Saved */}
+              <Card className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md">
+                <CardContent className="p-5">
+                  <p className="text-xs text-[#666] dark:text-white/50 uppercase tracking-wide mb-2">
+                    Hours Freed Up
+                  </p>
+                  <div className="flex items-baseline gap-1">
+                    <AnimatedValue
+                      value={hoursPerWeek * AUTOMATION_EFFICIENCY * WEEKS_PER_YEAR}
+                      formatter={(n) => Math.round(n).toLocaleString("de-DE")}
+                      className="text-2xl font-bold text-[#0F0F0F] dark:text-white"
+                    />
+                    <span className="text-sm text-[#666] dark:text-white/60">
+                      /year
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Monthly Savings */}
+              <Card className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md">
+                <CardContent className="p-5">
+                  <p className="text-xs text-[#666] dark:text-white/50 uppercase tracking-wide mb-2">
+                    Monthly Savings
+                  </p>
+                  <AnimatedValue
+                    value={results.totalWithErrorSavings / 12}
+                    formatter={formatCurrency}
+                    className="text-2xl font-bold text-[#0F0F0F] dark:text-white"
                   />
                 </CardContent>
               </Card>
-            </motion.div>
-
-            {/* Problem Cost Savings */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              {/* Dual-theme result card */}
-              <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300">
-                <CardContent className="p-6">
-                  <Label className="text-sm font-medium text-[#333] dark:text-white/60 mb-2 block">
-                    Problem Cost Savings ($/yr)
-                  </Label>
-                  <AnimatedCurrencyValue
-                    value={results.incidentCostSavings}
-                    className="text-3xl md:text-4xl font-bold text-[#0F0F0F] dark:text-white"
-                  />
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Total Annual Savings */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              {/* Highlighted total savings card with dual-theme cyan accent */}
-              <Card className="rounded-2xl border-2 border-[#00B8D9]/30 dark:border-[#00E5FF]/50 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 backdrop-blur-md">
-                <CardContent className="p-8 text-center">
-                  <Label className="text-sm font-medium text-[#333] dark:text-white/60 mb-2 block">
-                    Total Annual Savings
-                  </Label>
-                  <div className="text-xs text-[#00B8D9] dark:text-[#00E5FF] font-semibold mb-2">💰 Savings per Year</div>
-                  <AnimatedCurrencyValue
-                    value={results.totalAnnualSavings}
-                    className="text-5xl md:text-6xl font-bold text-[#0F0F0F] dark:bg-gradient-to-r dark:from-[#00E5FF] dark:to-[#8B5CF6] dark:bg-clip-text dark:text-transparent"
-                  />
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* ROI */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              {/* Highlighted ROI card with dual-theme violet accent */}
-              <Card className="rounded-2xl border-2 border-[#7B61FF]/30 dark:border-[#8B5CF6]/50 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30 backdrop-blur-md">
-                <CardContent className="p-8 text-center">
-                  <Label className="text-sm font-medium text-[#333] dark:text-white/60 mb-2 block">
-                    Return on Investment
-                  </Label>
-                  <AnimatedROIValue
-                    value={results.roi}
-                    className="text-5xl md:text-6xl font-bold text-[#0F0F0F] dark:bg-gradient-to-r dark:from-[#8B5CF6] dark:to-[#00E5FF] dark:bg-clip-text dark:text-transparent"
-                  />
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Payback Period */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              {/* Dual-theme result card */}
-              <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300">
-                <CardContent className="p-6">
-                  <Label className="text-sm font-medium text-[#333] dark:text-white/60 mb-2 block">
-                    Payback Period
-                  </Label>
-                  <AnimatedPaybackValue
-                    value={results.paybackMonths}
-                    className="text-3xl md:text-4xl font-bold text-[#0F0F0F] dark:text-white"
-                  />
-                </CardContent>
-              </Card>
-            </motion.div>
-
               </div>
 
-              </motion.div>
-            )}
-          </AnimatePresence>
-          </div>
-        </div>
-
-        {/* Calculation Breakdown and Chart - Only show after calculate, appear below */}
-        <AnimatePresence>
-          {showResults && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{
-                duration: 0.5,
-                delay: 0.5,
-                ease: [0.4, 0, 0.2, 1],
-              }}
-              className="mt-12 space-y-6"
-            >
-              {/* Calculation Breakdown */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-              >
-                {/* Enhanced calculation breakdown with dual-theme */}
-                <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-sm transition-colors duration-300">
-                  <CardContent className="p-6 md:p-8 space-y-4">
-                    <h3 className="text-lg font-semibold text-[#0F0F0F] dark:text-white mb-3">Calculation Breakdown</h3>
-                    <div className="space-y-2 text-sm text-[#333] dark:text-white/70">
+            {/* The Formula Explanation */}
+            <Card className="rounded-xl border border-gray-200 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-sm">
+              <CardContent className="p-5">
+                <h4 className="text-sm font-semibold text-[#0F0F0F] dark:text-white mb-3 flex items-center gap-2">
+                  <svg
+                    className="w-4 h-4 text-[#00B8D9]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    />
+                  </svg>
+                  How We Calculate
+                </h4>
+                <div className="space-y-2 text-sm text-[#666] dark:text-white/60">
                       <div className="flex justify-between">
-                        <span>Annual Manual Hours:</span>
-                        <span className="font-medium text-[#0F0F0F] dark:text-white">
-                          {formatNumber(inputs.teamSize * inputs.manualHoursPerWeek * 52)} hours
+                    <span>Weekly manual cost:</span>
+                    <span className="font-mono text-[#0F0F0F] dark:text-white">
+                      {hoursPerWeek}h × €{hourlyCost} ={" "}
+                      {formatCurrency(results.weeklyCost)}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span>Manual Savings:</span>
-                        <span className="font-medium text-[#0F0F0F] dark:text-white">
-                          {formatCurrency(results.manualWorkSavings)}/year
+                    <span>Annual manual cost:</span>
+                    <span className="font-mono text-[#0F0F0F] dark:text-white">
+                      {formatCurrency(results.weeklyCost)} × 52 ={" "}
+                      {formatCurrency(results.annualLaborCost)}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span>Problem Savings:</span>
-                        <span className="font-medium text-[#0F0F0F] dark:text-white">
-                          {formatCurrency(results.incidentCostSavings)}/year
+                    <span>After automation (5%):</span>
+                    <span className="font-mono text-[#0F0F0F] dark:text-white">
+                      {formatCurrency(results.automatedCost)}
                         </span>
                       </div>
-                      <div className="pt-2 border-t border-gray-300 dark:border-white/10">
-                        <div className="flex justify-between text-base">
-                          <span className="font-semibold">Total Annual Savings:</span>
-                          <span className="font-bold text-[#0F0F0F] dark:text-white">
-                            {formatCurrency(results.totalAnnualSavings)}
+                  <div className="pt-2 border-t border-gray-200 dark:border-white/10 flex justify-between font-semibold">
+                    <span className="text-[#0F0F0F] dark:text-white">
+                      You save:
+                    </span>
+                    <span className="font-mono text-emerald-600 dark:text-emerald-400">
+                      {formatCurrency(results.totalSaved)}
                           </span>
                         </div>
-                      </div>
-                    </div>
-                    <div className="pt-3 border-t border-gray-300 dark:border-white/10">
-                      <p className="text-xs text-[#333] dark:text-white/60">
-                        <strong>Assumptions:</strong> 52 working weeks per year. Calculations use actual input values without rounding until final display.
-                      </p>
                     </div>
                   </CardContent>
                 </Card>
               </motion.div>
+        </div>
 
-              {/* ROI vs Team Size Chart */}
+        {/* Bottom CTA */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{
-                  duration: 0.5,
-                  delay: 0.6,
-                  ease: [0.4, 0, 0.2, 1],
-                }}
-              >
-          {/* Enhanced chart card with dual-theme */}
-          <Card className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md shadow-sm p-6 mt-6 transition-colors duration-300">
-            <h3 className="text-xl font-bold mb-4 text-[#0F0F0F] dark:text-white">ROI vs Team Size</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <ComposedChart data={chartData} margin={{ top: 10, right: 30, left: 120, bottom: 10 }}>
-                <defs>
-                  <linearGradient id="roiGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#10b981" stopOpacity={0.9} />
-                    <stop offset="100%" stopColor="#10b981" stopOpacity={0.2} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis
-                  dataKey="teamSize"
-                  tick={{ fontSize: 12 }}
-                  stroke="#64748b"
-                />
-                <YAxis
-                  tickFormatter={(v) => `${v}%`}
-                  tick={{ fontSize: 12 }}
-                  stroke="#64748b"
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "rgba(255, 255, 255, 0.95)",
-                    border: "1px solid #e2e8f0",
-                    borderRadius: "8px",
-                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                  }}
-                  formatter={(v: number) => [`${v.toFixed(1)}% ROI`, "ROI"]}
-                  labelFormatter={(label) => `Team size: ${label}`}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="roi"
-                  stroke="#059669"
-                  fill="url(#roiGradient)"
-                  strokeWidth={3}
-                  dot={false}
-                  isAnimationActive={true}
-                  animationDuration={1000}
-                />
-                <ReferenceLine
-                  y={400}
-                  stroke="#f59e0b"
-                  strokeDasharray="3 3"
-                  label={{
-                    value: "Strong ROI Zone",
-                    position: "left",
-                    fill: "#f59e0b",
-                    fontSize: 13,
-                    fontWeight: 600,
-                    dy: -5,
-                    dx: 10
-                  }}
-                />
-              </ComposedChart>
-            </ResponsiveContainer>
-            <p className="text-muted-foreground text-sm mt-4 text-center">
-              ROI estimates based on 2024 McKinsey & Gartner automation benchmarks.
-              <br />
-              Typical automation ROI: 150%–400% annually depending on process complexity.
-            </p>
-          </Card>
-              </motion.div>
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mt-12 text-center"
+        >
+          <p className="text-sm text-[#666] dark:text-white/50 mb-4">
+            These estimates are based on 95% automation efficiency—a realistic
+            benchmark for n8n and AI workflows.
+          </p>
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#7B61FF] hover:bg-[#6C55E0] dark:bg-[#8B5CF6] dark:hover:bg-[#7B4CF6] text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300"
+          >
+            Get Your Custom Assessment
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              />
+            </svg>
+          </a>
             </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </section>
-  );
-}
-
-// Animated Currency Value Component
-function AnimatedCurrencyValue({
-  value,
-  className,
-}: {
-  value: number;
-  className?: string;
-}) {
-  const [displayValue, setDisplayValue] = useState(0);
-
-  useEffect(() => {
-    setDisplayValue(0);
-    const duration = 1500;
-    const steps = 60;
-    const stepDuration = duration / steps;
-    const stepValue = value / steps;
-    let currentStep = 0;
-
-    const timer = setInterval(() => {
-      currentStep++;
-      const newValue = Math.min(stepValue * currentStep, value);
-      setDisplayValue(newValue);
-
-      if (currentStep >= steps) {
-        setDisplayValue(value);
-        clearInterval(timer);
-      }
-    }, stepDuration);
-
-    return () => clearInterval(timer);
-  }, [value]);
-
-  return (
-    <motion.span
-      className={className}
-      key={value}
-      initial={{ scale: 1.1, opacity: 0.8 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.3 }}
-    >
-      {formatCurrency(Math.round(displayValue))}
-    </motion.span>
-  );
-}
-
-// Animated ROI Value Component
-function AnimatedROIValue({
-  value,
-  className,
-}: {
-  value: number;
-  className?: string;
-}) {
-  const [displayValue, setDisplayValue] = useState(0);
-
-  useEffect(() => {
-    setDisplayValue(0);
-    const duration = 1500;
-    const steps = 60;
-    const stepDuration = duration / steps;
-    const stepValue = Math.abs(value) / steps;
-    let currentStep = 0;
-
-    const timer = setInterval(() => {
-      currentStep++;
-      const newValue = Math.min(stepValue * currentStep, Math.abs(value));
-      setDisplayValue(newValue);
-
-      if (currentStep >= steps) {
-        setDisplayValue(Math.abs(value));
-        clearInterval(timer);
-      }
-    }, stepDuration);
-
-    return () => clearInterval(timer);
-  }, [value]);
-
-  const isNegative = value < 0;
-  const roundedValue = Math.round(displayValue * 10) / 10;
-
-  return (
-    <motion.span
-      className={className}
-      key={value}
-      initial={{ scale: 1.1, opacity: 0.8 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.3 }}
-    >
-      {isNegative && "-"}
-      {roundedValue.toFixed(1)}%
-    </motion.span>
-  );
-}
-
-// Animated Payback Value Component
-function AnimatedPaybackValue({
-  value,
-  className,
-}: {
-  value: number;
-  className?: string;
-}) {
-  const [displayValue, setDisplayValue] = useState(0);
-
-  useEffect(() => {
-    setDisplayValue(0);
-    if (value === Infinity || isNaN(value)) {
-      setDisplayValue(Infinity);
-      return;
-    }
-    const duration = 1500;
-    const steps = 60;
-    const stepDuration = duration / steps;
-    const stepValue = value / steps;
-    let currentStep = 0;
-
-    const timer = setInterval(() => {
-      currentStep++;
-      const newValue = Math.min(stepValue * currentStep, value);
-      setDisplayValue(newValue);
-
-      if (currentStep >= steps) {
-        setDisplayValue(value);
-        clearInterval(timer);
-      }
-    }, stepDuration);
-
-    return () => clearInterval(timer);
-  }, [value]);
-
-  const roundedValue = Math.round(displayValue * 10) / 10;
-  const paybackText =
-    displayValue === Infinity || isNaN(displayValue)
-      ? "Never (no savings)"
-      : `${roundedValue.toFixed(1)} months`;
-
-  return (
-    <motion.span
-      className={className}
-      key={value}
-      initial={{ scale: 1.1, opacity: 0.8 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.3 }}
-    >
-      {paybackText}
-    </motion.span>
   );
 }

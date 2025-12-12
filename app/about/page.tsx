@@ -293,10 +293,10 @@ export default function About() {
                 },
               },
               {
-                name: "Daniel",
-                title: "Workflow & AI Integration Engineer",
+                name: "Filip",
+                title: "General Manager",
                 description:
-                  "Builds n8n automation workflows for complex operations. Specializes in RAG and intelligent chatbot integrations.",
+                  "Ensuring operational excellence and strategic growth.",
                 link: null,
               },
             ].map((member, index) => (
@@ -364,7 +364,7 @@ export default function About() {
             </p>
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto mt-4">
               Our automations run 24/7, catch issues early, and scale without
-              extra headcount. That's not a promise—it's how we work.
+              extra headcount. That's not a promise — it's how we work.
             </p>
           </motion.div>
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -10,70 +11,65 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, Star } from "lucide-react";
+import { Check, Star, Info } from "lucide-react";
 
 const pricingTiers = [
   {
     name: "Starter",
-    price: "From $XX,XXX+",
-    description: "Automate first critical workflow",
+    headline: "Workflow Automation",
+    price: "€2,500",
+    priceSuffix: "one-time",
+    description: "Perfect for automating a single critical manual process.",
     popular: false,
     features: [
-      "Single workflow automation",
-      "n8n or Dify AI implementation",
-      "Basic AI automation workflows",
-      "2 weeks implementation",
-      "Documentation & training",
-      "1 month support",
+      "1 Custom AI Agent (e.g., Lead Qual, Email Triage)",
+      "n8n Workflow Implementation",
+      "Integration with CRM/Slack/Email",
+      "Standard Error Handling Setup",
+      "3 Days Post-Launch Support",
     ],
-    cta: "Get Custom Quote",
+    cta: "Get Started",
+    ctaSubtext: "Free assessment included",
   },
   {
     name: "Scale",
-    price: "From $XX,XXX+",
-    description: "Full AI DevOps deployment",
+    headline: "Multi-Agent System",
+    price: "€7,500",
+    priceSuffix: "one-time",
+    description: "End-to-end autonomous systems for complex operations.",
     popular: true,
     features: [
-      "Full multi-agent system",
-      "Dify AI + n8n orchestration",
-      "Kubernetes automation",
-      "ArgoCD GitOps workflows",
-      "Monitoring & observability",
-      "5 weeks implementation",
-      "Comprehensive documentation",
-      "3 months premium support",
-      "Quarterly optimization reviews",
+      "Orchestrated Multi-Agent Team (3-5 Agents)",
+      "Advanced RAG (Chat with your company data)",
+      "Complex Decision-Making Logic",
+      "Dify / LangChain Integration",
+      "Comprehensive Testing & Prompt Engineering",
+      "7 Days Dedicated Support & Handover",
     ],
     cta: "Get Custom Quote",
+    ctaSubtext: "Most popular choice",
   },
   {
     name: "Enterprise",
-    price: "Custom quote after assessment",
-    description: "Custom solutions for large teams",
+    headline: "Custom Architecture",
+    price: "Custom Pricing",
+    priceSuffix: "",
+    description: "Secure, private AI infrastructure for large organizations.",
     popular: false,
     features: [
-      "Everything in Scale, plus:",
-      "Custom AI model integration",
-      "Multi-cloud orchestration",
-      "Advanced security & compliance",
-      "Dedicated success manager",
-      "Priority 24/7 support",
-      "Ongoing optimization",
-      "Custom SLAs",
-      "Executive reporting",
+      "Private LLM Deployment (Local/VPC)",
+      "Unlimited Workflow Volume",
+      "Enterprise Security & SSO",
+      "Custom SLA & Priority Support",
+      "Dedicated Account Manager",
+      "Full Staff Training & Handover",
     ],
     cta: "Contact Sales",
+    ctaSubtext: "Discuss your requirements",
   },
 ];
 
 export function Pricing() {
-  const scrollToContact = () => {
-    const element = document.getElementById("contact");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <section
       id="pricing"
@@ -88,11 +84,11 @@ export function Pricing() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Pricing
+            Transparent Pricing
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Fixed-price engagements with clear deliverables and guaranteed
-            results
+            results. No hidden fees.
           </p>
         </motion.div>
 
@@ -123,9 +119,17 @@ export function Pricing() {
                   </div>
                 )}
                 <CardHeader className={tier.popular ? "pt-8" : ""}>
-                  <CardTitle className="text-2xl">{tier.name}</CardTitle>
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                      {tier.name}
+                    </p>
+                    <CardTitle className="text-2xl">{tier.headline}</CardTitle>
+                  </div>
                   <div className="mt-4">
-                    <span className="text-4xl font-bold">{tier.price}</span>
+                    <span className="text-3xl md:text-4xl font-bold">{tier.price}</span>
+                    <span className="text-sm text-muted-foreground ml-2">
+                      {tier.priceSuffix}
+                    </span>
                   </div>
                   <CardDescription className="mt-4">
                     {tier.description}
@@ -140,36 +144,50 @@ export function Pricing() {
                       </li>
                     ))}
                   </ul>
-                  <Button
-                    className={`w-full ${
-                      tier.popular
-                        ? "rounded-xl bg-[#007AFF] text-white px-6 py-3 hover:bg-[#0056CC] transition"
-                        : ""
-                    }`}
-                    variant={tier.popular ? "default" : "outline"}
-                    size="lg"
-                    onClick={() => {
-                      scrollToContact();
-                    }}
-                    aria-label={`Select ${tier.name} pricing plan`}
-                  >
-                    {tier.cta}
-                  </Button>
+                  <div className="space-y-2">
+                    <Button
+                      className={`w-full ${
+                        tier.popular
+                          ? "rounded-xl bg-[#007AFF] text-white px-6 py-3 hover:bg-[#0056CC] transition"
+                          : ""
+                      }`}
+                      variant={tier.popular ? "default" : "outline"}
+                      size="lg"
+                      asChild
+                    >
+                      <Link
+                        href="/contact"
+                        aria-label={`Select ${tier.name} pricing plan`}
+                      >
+                        {tier.cta}
+                      </Link>
+                    </Button>
+                    <p className="text-xs text-center text-muted-foreground">
+                      {tier.ctaSubtext}
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
           ))}
         </div>
 
+        {/* Pricing Transparency Note */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-12 text-center"
+          className="mt-12 text-center space-y-4"
         >
-          <p className="text-lg font-semibold text-[#007AFF]">
-            ROI achieved in under 4 months
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-sm font-medium">
+            <Check className="h-4 w-4" />
+            <span>Average ROI achieved in under 4 months</span>
+          </div>
+
+          <p className="text-sm text-muted-foreground flex items-center justify-center gap-1">
+            <Info className="h-4 w-4" />
+            Need ongoing optimization? Monthly maintenance retainers are available upon request.
           </p>
         </motion.div>
 
@@ -183,21 +201,23 @@ export function Pricing() {
           <Card className="max-w-3xl mx-auto bg-primary/5 border-primary/20">
             <CardContent className="pt-6">
               <h3 className="text-xl font-semibold mb-3">
-                Not sure which plan is right for you?
+                Not sure which plan fits your needs?
               </h3>
               <p className="text-muted-foreground mb-6">
-                Book a free assessment to discuss your specific needs and get a
-                custom recommendation.
+                Book a free 30-minute assessment. We'll analyze your workflows and
+                provide a detailed scope with exact pricing—no obligation.
               </p>
               <Button
                 variant="outline"
                 size="lg"
-                onClick={() => {
-                  scrollToContact();
-                }}
-                aria-label="Schedule a free consultation"
+                asChild
               >
-                Book Free Assessment
+                <Link
+                  href="/contact"
+                  aria-label="Schedule a free consultation"
+                >
+                  Book Free Assessment
+                </Link>
               </Button>
             </CardContent>
           </Card>

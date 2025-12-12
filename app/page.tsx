@@ -7,6 +7,10 @@ import { Navigation } from "@/components/navigation";
 import { AnimatedWorkflow } from "@/components/animated-workflow";
 import { TechEcosystemSection } from "@/components/sections/tech-ecosystem-section";
 import { ROICalculator } from "@/components/sections/roi-calculator";
+import { Pricing } from "@/components/sections/pricing";
+import { TrustBadges } from "@/components/sections/trust-badges";
+import { CaseStudies } from "@/components/sections/case-studies";
+import { LatestInsights } from "@/components/sections/latest-insights";
 import { EmailReveal } from "@/components/email-reveal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -87,13 +91,14 @@ function FloatingCircles() {
   );
 }
 
-// Metric card with count-up animation
+// Metric card with count-up animation and citation
 function MetricCard({
   icon: Icon,
   value,
   suffix,
   title,
   description,
+  citation,
   delay = 0,
 }: {
   icon: LucideIcon;
@@ -101,6 +106,7 @@ function MetricCard({
   suffix: string;
   title: string;
   description: string;
+  citation?: string;
   delay?: number;
 }) {
   const { ref, displayValue } = useCountUp({
@@ -128,6 +134,12 @@ function MetricCard({
             {title}
           </h3>
           <p className="text-[#333] dark:text-white/70">{description}</p>
+          {/* Citation footnote for credibility */}
+          {citation && (
+            <p className="text-xs text-muted-foreground mt-3 italic">
+              {citation}
+            </p>
+          )}
         </CardContent>
       </Card>
     </motion.div>
@@ -469,6 +481,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Trust Badges Section - Enterprise Credibility */}
+      <TrustBadges />
+
       {/* Impact Highlights with Count-Up - Enhanced dual-theme background */}
       <section className="py-16 md:py-24 bg-[#F9FAFB] dark:bg-[#121417] transition-colors duration-300">
         <div className="container px-4 md:px-6 max-w-6xl mx-auto">
@@ -485,6 +500,7 @@ export default function Home() {
               suffix="%"
               title="Time Saved"
               description="Less manual work means more time for growth"
+              citation="Based on 2024 client average across 12 projects"
               delay={0}
             />
             <MetricCard
@@ -493,6 +509,7 @@ export default function Home() {
               suffix="%"
               title="Fewer Issues"
               description="Prevent problems before they cost you money"
+              citation="Measured via incident reduction in automated systems"
               delay={0.1}
             />
             <MetricCard
@@ -501,6 +518,7 @@ export default function Home() {
               suffix="/7"
               title="Always Running"
               description="Your operations work around the clock"
+              citation="System uptime SLA guarantee"
               delay={0.2}
             />
           </motion.div>
@@ -579,32 +597,20 @@ export default function Home() {
       {/* Testimonials Section - Redesigned with Carousel */}
       <TestimonialsSection />
 
-      {/* Use Case Section - Enhanced with dual-theme support */}
-      <section className="py-16 md:py-24 bg-white dark:bg-[#0B0C10] transition-colors duration-300">
-        <div className="container px-4 md:px-6 max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <h2 className="text-3xl font-bold mb-4 text-[#0F0F0F] dark:text-white">
-              Real Example
-            </h2>
-            <p className="text-lg text-[#333] dark:text-white/70 max-w-2xl mx-auto">
-              A SaaS company saved 80 hours per month by automating reports and
-              system checks with IOPS.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      {/* Case Studies Section */}
+      <CaseStudies />
 
       {/* ROI Calculator Section */}
       <ROICalculator />
 
       {/* Tech Ecosystem Section */}
       <TechEcosystemSection />
+
+      {/* Pricing Section */}
+      <Pricing />
+
+      {/* Latest Insights / Blog Section */}
+      <LatestInsights />
 
       {/* Final CTA Banner - Enhanced with dual-theme gradient divider */}
       <section className="py-16 md:py-24 relative overflow-hidden bg-gradient-to-br from-blue-50 via-gray-50 to-violet-50 dark:from-[#0B0C10] dark:via-[#121417] dark:to-[#0B0C10] transition-colors duration-300">
