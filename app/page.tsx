@@ -361,7 +361,7 @@ export default function Home() {
         />
 
         {/* Floating Circles - Works for both themes */}
-        <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <FloatingCircles />
         </div>
 

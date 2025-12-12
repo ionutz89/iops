@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -103,27 +104,30 @@ export function Navigation() {
               </SheetHeader>
               <nav className="mt-8 space-y-4">
                 {navItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={cn(
-                      "block w-full text-left text-base py-2 transition-colors duration-300",
-                      pathname === item.href
-                        ? "text-[#7B61FF] dark:text-[#00E5FF] font-medium"
-                        : "text-gray-800 dark:text-gray-300 hover:text-[#7B61FF] dark:hover:text-[#00E5FF]"
-                    )}
-                  >
-                    {item.label}
-                  </Link>
+                  <SheetClose asChild key={item.href}>
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        "block w-full text-left text-base py-2 transition-colors duration-300",
+                        pathname === item.href
+                          ? "text-[#7B61FF] dark:text-[#00E5FF] font-medium"
+                          : "text-gray-800 dark:text-gray-300 hover:text-[#7B61FF] dark:hover:text-[#00E5FF]"
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  </SheetClose>
                 ))}
-                <Button
-                  asChild
-                  className="w-full mt-6 bg-[#7B61FF] dark:bg-[#8B5CF6] text-white hover:bg-[#6C55E0] dark:hover:bg-[#7B4CF6] shadow-sm hover:shadow-md"
-                >
-                  <Link href="/contact">
-                    Book Free Assessment
-                  </Link>
-                </Button>
+                <SheetClose asChild>
+                  <Button
+                    asChild
+                    className="w-full mt-6 bg-[#7B61FF] dark:bg-[#8B5CF6] text-white hover:bg-[#6C55E0] dark:hover:bg-[#7B4CF6] shadow-sm hover:shadow-md"
+                  >
+                    <Link href="/contact">
+                      Book Free Assessment
+                    </Link>
+                  </Button>
+                </SheetClose>
               </nav>
             </SheetContent>
           </Sheet>
