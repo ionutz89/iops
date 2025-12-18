@@ -149,10 +149,16 @@ export default function ExperiencePage() {
         <Navigation />
 
         {/* Hero Section with Enhanced Dual-Theme Background */}
-        <section className="relative text-center py-16 pt-32 overflow-hidden" style={{ background: "radial-gradient(circle at 50% 30%, #EAF6FF 0%, #F8F9FC 60%)" }}>
+        <section
+          className="relative text-center py-16 pt-32 overflow-hidden"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 30%, #EAF6FF 0%, #F8F9FC 60%)",
+          }}
+        >
           {/* Light mode - Subtle animated gradient overlay */}
           <motion.div
-            className="absolute inset-0 dark:hidden opacity-100 pointer-events-none"
+            className="absolute inset-0 dark:hidden opacity-100 pointer-events-none -z-10"
             animate={{
               background: [
                 "radial-gradient(ellipse 800px 600px at 30% 40%, rgba(0, 184, 217, 0.08) 0%, transparent 60%), radial-gradient(ellipse 600px 800px at 70% 60%, rgba(123, 97, 255, 0.06) 0%, transparent 60%)",
@@ -164,11 +170,11 @@ export default function ExperiencePage() {
           />
 
           {/* Dark mode background */}
-          <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10] pointer-events-none" />
+          <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10] pointer-events-none -z-10" />
 
           {/* Dark mode - Animated gradient background */}
           <motion.div
-            className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
+            className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none -z-10"
             animate={{
               background: [
                 "linear-gradient(135deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
@@ -182,7 +188,7 @@ export default function ExperiencePage() {
 
           {/* Dark mode - Cyan and Purple Glow Overlays */}
           <motion.div
-            className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
+            className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none -z-10"
             animate={{
               background: [
                 "radial-gradient(ellipse 800px 600px at 20% 30%, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse 600px 800px at 80% 70%, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
@@ -209,7 +215,8 @@ export default function ExperiencePage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg text-gray-700 dark:text-white/80 mt-3 max-w-3xl mx-auto"
             >
-              10+ years designing AI, DevOps, and automation systems connecting models, data, and infrastructure for measurable business results.
+              10+ years designing AI, DevOps, and automation systems connecting
+              models, data, and infrastructure for measurable business results.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -217,10 +224,16 @@ export default function ExperiencePage() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="mt-6 flex justify-center gap-4"
             >
-              <Link href="#case-studies" className="px-5 py-3 bg-[#00B8D9] dark:bg-[#00E5FF] text-white dark:text-gray-900 rounded-lg hover:bg-[#00A8C5] dark:hover:bg-[#00CCE5] transition">
+              <Link
+                href="#case-studies"
+                className="px-5 py-3 bg-[#00B8D9] dark:bg-[#00E5FF] text-white dark:text-gray-900 rounded-lg hover:bg-[#00A8C5] dark:hover:bg-[#00CCE5] transition"
+              >
                 View Case Studies
               </Link>
-              <Link href="/contact" className="px-5 py-3 border-2 border-[#7B61FF] dark:border-[#8B5CF6] text-[#7B61FF] dark:text-[#8B5CF6] rounded-lg hover:bg-[#F2EEFF] dark:hover:bg-[#8B5CF6] hover:text-[#7B61FF] dark:hover:text-white transition">
+              <Link
+                href="/contact"
+                className="px-5 py-3 border-2 border-[#7B61FF] dark:border-[#8B5CF6] text-[#7B61FF] dark:text-[#8B5CF6] rounded-lg hover:bg-[#F2EEFF] dark:hover:bg-[#8B5CF6] hover:text-[#7B61FF] dark:hover:text-white transition"
+              >
                 Book Consultation
               </Link>
             </motion.div>
@@ -251,15 +264,22 @@ export default function ExperiencePage() {
                       transition={{ duration: 0.5, delay: toolIndex * 0.05 }}
                     >
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-[#0F0F0F] dark:text-white">{tool.name}</span>
-                        <span className="text-[#333] dark:text-white/70">{tool.level}%</span>
+                        <span className="text-[#0F0F0F] dark:text-white">
+                          {tool.name}
+                        </span>
+                        <span className="text-[#333] dark:text-white/70">
+                          {tool.level}%
+                        </span>
                       </div>
                       <div className="w-full bg-gray-200 dark:bg-white/10 rounded-lg h-2 overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}
                           whileInView={{ width: `${tool.level}%` }}
                           viewport={{ once: true }}
-                          transition={{ duration: 0.8, delay: toolIndex * 0.05 }}
+                          transition={{
+                            duration: 0.8,
+                            delay: toolIndex * 0.05,
+                          }}
                           className="h-full bg-[#00B8D9] dark:bg-[#00E5FF] rounded-lg"
                         />
                       </div>
@@ -271,7 +291,10 @@ export default function ExperiencePage() {
           </div>
         </section>
 
-        <section id="case-studies" className="py-16 bg-[#F7F8FA] dark:bg-[#121417] transition-colors duration-300">
+        <section
+          id="case-studies"
+          className="py-16 bg-[#F7F8FA] dark:bg-[#121417] transition-colors duration-300"
+        >
           <div className="max-w-5xl mx-auto px-6 md:px-16">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -293,8 +316,12 @@ export default function ExperiencePage() {
                   whileHover={{ scale: 1.03 }}
                   className="bg-white dark:bg-white/5 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-white/10 hover:shadow-xl transition-all duration-300"
                 >
-                  <h3 className="text-xl font-semibold text-[#0F0F0F] dark:text-white mb-2">{c.title}</h3>
-                  <p className="text-[#333] dark:text-white/70 mb-3">{c.desc}</p>
+                  <h3 className="text-xl font-semibold text-[#0F0F0F] dark:text-white mb-2">
+                    {c.title}
+                  </h3>
+                  <p className="text-[#333] dark:text-white/70 mb-3">
+                    {c.desc}
+                  </p>
                   <div className="flex flex-wrap gap-2">
                     {c.tags.map((tag) => (
                       <span
@@ -314,7 +341,7 @@ export default function ExperiencePage() {
         <section className="py-16 relative overflow-hidden bg-gradient-to-br from-blue-50 via-gray-50 to-violet-50 dark:from-[#0B0C10] dark:via-[#121417] dark:to-[#0B0C10] transition-colors duration-300">
           {/* Animated gradient background */}
           <motion.div
-            className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
+            className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none -z-10"
             animate={{
               background: [
                 "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
@@ -341,7 +368,8 @@ export default function ExperiencePage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg text-[#333] dark:text-white/80 max-w-2xl mx-auto mb-6"
             >
-              Projects are delivered as one-time AI automation implementations with optional optimization audits.
+              Projects are delivered as one-time AI automation implementations
+              with optional optimization audits.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -349,7 +377,10 @@ export default function ExperiencePage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <Link href="/contact" className="px-6 py-3 bg-[#00B8D9] dark:bg-[#00E5FF] text-white dark:text-gray-900 rounded-lg hover:bg-[#00A8C5] dark:hover:bg-[#00CCE5] transition shadow-md hover:shadow-lg">
+              <Link
+                href="/contact"
+                className="px-6 py-3 bg-[#00B8D9] dark:bg-[#00E5FF] text-white dark:text-gray-900 rounded-lg hover:bg-[#00A8C5] dark:hover:bg-[#00CCE5] transition shadow-md hover:shadow-lg"
+              >
                 Schedule Audit
               </Link>
             </motion.div>

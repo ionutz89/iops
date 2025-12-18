@@ -128,7 +128,12 @@ function MetricCard({
           <Icon className="h-12 w-12 mx-auto mb-4 text-[#7B61FF] dark:text-[#00E5FF]" />
           {/* Solid text for metric value in light mode, gradient in dark */}
           <div className="text-4xl md:text-5xl font-bold mb-2">
-            <span ref={ref} className="text-[#0F0F0F] dark:bg-gradient-to-r dark:from-[#00E5FF] dark:to-[#8B5CF6] dark:bg-clip-text dark:text-transparent">{displayValue}</span>
+            <span
+              ref={ref}
+              className="text-[#0F0F0F] dark:bg-gradient-to-r dark:from-[#00E5FF] dark:to-[#8B5CF6] dark:bg-clip-text dark:text-transparent"
+            >
+              {displayValue}
+            </span>
           </div>
           <h3 className="text-xl font-semibold mb-2 text-[#0F0F0F] dark:text-white">
             {title}
@@ -222,7 +227,9 @@ function TestimonialsSection() {
               className="bg-white dark:bg-white/5 backdrop-blur-md rounded-2xl border border-gray-200 dark:border-white/10 p-8 md:p-12 shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:shadow-lg relative"
             >
               {/* Quote icon watermark */}
-              <div className="absolute top-6 right-6 text-6xl text-[#7B61FF]/10 dark:text-white/5 font-serif">"</div>
+              <div className="absolute top-6 right-6 text-6xl text-[#7B61FF]/10 dark:text-white/5 font-serif">
+                "
+              </div>
               <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
                 {/* Company Logo Circle with dual-theme gradient */}
                 <div className="flex-shrink-0">
@@ -316,10 +323,16 @@ export default function Home() {
       <Navigation />
 
       {/* Hero Section with Enhanced Dual-Theme Background */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16" style={{ background: "radial-gradient(circle at 50% 30%, #EAF6FF 0%, #F8F9FC 60%)" }}>
+      <section
+        className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 30%, #EAF6FF 0%, #F8F9FC 60%)",
+        }}
+      >
         {/* Light mode - Subtle animated gradient overlay */}
         <motion.div
-          className="absolute inset-0 dark:hidden opacity-100 pointer-events-none"
+          className="absolute inset-0 dark:hidden opacity-100 pointer-events-none -z-10"
           animate={{
             background: [
               "radial-gradient(ellipse 800px 600px at 30% 40%, rgba(0, 184, 217, 0.08) 0%, transparent 60%), radial-gradient(ellipse 600px 800px at 70% 60%, rgba(123, 97, 255, 0.06) 0%, transparent 60%)",
@@ -331,11 +344,11 @@ export default function Home() {
         />
 
         {/* Dark mode background */}
-        <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10] pointer-events-none" />
+        <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10] pointer-events-none -z-10" />
 
         {/* Dark mode - Animated gradient background */}
         <motion.div
-          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
+          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none -z-10"
           animate={{
             background: [
               "linear-gradient(135deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
@@ -349,7 +362,7 @@ export default function Home() {
 
         {/* Dark mode - Cyan and Purple Glow Overlays */}
         <motion.div
-          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
+          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none -z-10"
           animate={{
             background: [
               "radial-gradient(ellipse 800px 600px at 20% 30%, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse 600px 800px at 80% 70%, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
@@ -361,7 +374,7 @@ export default function Home() {
         />
 
         {/* Floating Circles - Works for both themes */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
           <FloatingCircles />
         </div>
 
@@ -424,7 +437,10 @@ export default function Home() {
                 className="rounded-2xl bg-[#00B8D9] hover:bg-[#00A8C5] dark:bg-[#00E5FF] dark:hover:bg-[#00CCE5] text-white dark:text-gray-900 px-8 py-6 text-base font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 btn-glow-cyan w-full sm:w-auto"
                 aria-label="Get free assessment"
               >
-                <Link href="/contact" className="flex items-center justify-center">
+                <Link
+                  href="/contact"
+                  className="flex items-center justify-center"
+                >
                   Get Free Assessment
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
@@ -437,7 +453,10 @@ export default function Home() {
                 className="rounded-2xl border-2 border-[#7B61FF] dark:border-[#8B5CF6] text-[#7B61FF] dark:text-[#8B5CF6] hover:bg-[#F2EEFF] dark:hover:bg-[#8B5CF6] hover:text-[#7B61FF] dark:hover:text-white px-8 py-6 text-base font-semibold shadow-sm transition-all duration-300 hover:scale-105 btn-glow-purple w-full sm:w-auto"
                 aria-label="Calculate ROI"
               >
-                <Link href="#roi-calculator" className="flex items-center justify-center">
+                <Link
+                  href="#roi-calculator"
+                  className="flex items-center justify-center"
+                >
                   Calculate ROI
                 </Link>
               </Button>
@@ -460,7 +479,9 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 1 }}
               className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2"
             >
-              <span className="text-xs text-gray-700 dark:text-white/60 font-medium">Scroll to explore</span>
+              <span className="text-xs text-gray-700 dark:text-white/60 font-medium">
+                Scroll to explore
+              </span>
               <div className="animate-scroll-pulse">
                 <svg
                   width="24"
@@ -616,7 +637,7 @@ export default function Home() {
       <section className="py-16 md:py-24 relative overflow-hidden bg-gradient-to-br from-blue-50 via-gray-50 to-violet-50 dark:from-[#0B0C10] dark:via-[#121417] dark:to-[#0B0C10] transition-colors duration-300">
         {/* Animated gradient background - only visible in dark mode */}
         <motion.div
-          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
+          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none -z-10"
           animate={{
             background: [
               "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.1) 0%, transparent 50%)",
@@ -641,7 +662,8 @@ export default function Home() {
             Let's Automate Your Operations
           </h2>
           <p className="text-lg md:text-xl text-[#333] dark:text-gray-300 mb-6 md:mb-8 max-w-2xl mx-auto">
-            Book your free 30-minute call. We'll analyze your workflows and show you exactly what can be automated.
+            Book your free 30-minute call. We'll analyze your workflows and show
+            you exactly what can be automated.
           </p>
           <Button
             size="lg"
@@ -649,7 +671,10 @@ export default function Home() {
             className="rounded-2xl bg-[#00B8D9] hover:bg-[#00A8C5] dark:bg-[#00E5FF] dark:hover:bg-[#00CCE5] text-white dark:text-gray-900 px-8 py-6 text-base font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 btn-glow-cyan"
             aria-label="Book free 30-minute call"
           >
-            <Link href="https://calendly.com/me-ionut/30min" className="flex items-center justify-center">
+            <Link
+              href="https://calendly.com/me-ionut/30min"
+              className="flex items-center justify-center"
+            >
               Book Free 30-Minute Call
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
@@ -667,7 +692,7 @@ export default function Home() {
               linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
               linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px)
             `,
-            backgroundSize: '40px 40px'
+            backgroundSize: "40px 40px",
           }}
         />
 
@@ -691,22 +716,33 @@ export default function Home() {
                 </span>
               </div>
               <p className="text-sm text-[#1E1E1E] dark:text-white/70 max-w-md leading-relaxed">
-                AI-powered automation systems that cut manual work and keep your operations running 24/7.
+                AI-powered automation systems that cut manual work and keep your
+                operations running 24/7.
               </p>
             </div>
 
             {/* Right Column - Links & Contact */}
             <div className="grid grid-cols-2 gap-8">
               <div>
-                <h4 className="font-semibold mb-4 text-[#0F0F0F] dark:text-white">Services</h4>
+                <h4 className="font-semibold mb-4 text-[#0F0F0F] dark:text-white">
+                  Services
+                </h4>
                 <ul className="space-y-2 text-sm text-[#1E1E1E] dark:text-white/70">
-                  <li className="hover:text-[#7B61FF] dark:hover:text-[#00E5FF] transition-colors cursor-pointer">AI Automation Systems</li>
-                  <li className="hover:text-[#7B61FF] dark:hover:text-[#00E5FF] transition-colors cursor-pointer">Operations Automation</li>
-                  <li className="hover:text-[#7B61FF] dark:hover:text-[#00E5FF] transition-colors cursor-pointer">Process Optimization</li>
+                  <li className="hover:text-[#7B61FF] dark:hover:text-[#00E5FF] transition-colors cursor-pointer">
+                    AI Automation Systems
+                  </li>
+                  <li className="hover:text-[#7B61FF] dark:hover:text-[#00E5FF] transition-colors cursor-pointer">
+                    Operations Automation
+                  </li>
+                  <li className="hover:text-[#7B61FF] dark:hover:text-[#00E5FF] transition-colors cursor-pointer">
+                    Process Optimization
+                  </li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-4 text-[#0F0F0F] dark:text-white">Connect</h4>
+                <h4 className="font-semibold mb-4 text-[#0F0F0F] dark:text-white">
+                  Connect
+                </h4>
                 <ul className="space-y-2 text-sm">
                   <li>
                     <EmailReveal

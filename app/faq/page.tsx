@@ -46,7 +46,8 @@ const faqs = [
       "We build automations using n8n (workflow orchestration), Dify AI (chatbots and AI reasoning), and Claude MCP, an open-source framework from Anthropic for managing AI agents securely. These tools let us create AI assistants, automated reports, and integrated workflows directly in your systems — all fully owned and controlled by you.",
   },
   {
-    question: "Can you build AI chatbots that use our company's data or documents?",
+    question:
+      "Can you build AI chatbots that use our company's data or documents?",
     answer:
       "Yes. We create chatbots and AI assistants that understand and respond using your own documentation, reports, or internal files. This is done using RAG (Retrieval-Augmented Generation), which allows the AI to reference your data instead of relying only on public models. We build these assistants using tools like n8n, Dify AI, or Flowise, depending on your setup. They can connect to your website, CRM, or internal systems, giving your team or customers instant answers from your verified content. All chatbot data stays within your environment for full privacy control.",
   },
@@ -153,221 +154,233 @@ export default function FAQ() {
       <main className="min-h-screen bg-[#F7F8FA] dark:bg-[#0B0C10] transition-colors duration-300">
         <Navigation />
 
-      {/* Hero Section - Matching About page gradient background */}
-      <motion.section
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="relative py-16 px-6 overflow-hidden text-center"
-        style={{ background: "radial-gradient(circle at 50% 30%, #F2F6FF 0%, #FFFFFF 80%)" }}
-      >
-        {/* Light mode - Subtle animated gradient overlay */}
-        <motion.div
-          className="absolute inset-0 dark:hidden opacity-100 pointer-events-none"
-          animate={{
-            background: [
-              "radial-gradient(ellipse 800px 600px at 30% 40%, rgba(0, 184, 217, 0.08) 0%, transparent 60%), radial-gradient(ellipse 600px 800px at 70% 60%, rgba(123, 97, 255, 0.06) 0%, transparent 60%)",
-              "radial-gradient(ellipse 600px 800px at 70% 60%, rgba(0, 184, 217, 0.10) 0%, transparent 60%), radial-gradient(ellipse 800px 600px at 30% 40%, rgba(123, 97, 255, 0.08) 0%, transparent 60%)",
-              "radial-gradient(ellipse 800px 600px at 30% 40%, rgba(0, 184, 217, 0.08) 0%, transparent 60%), radial-gradient(ellipse 600px 800px at 70% 60%, rgba(123, 97, 255, 0.06) 0%, transparent 60%)",
-            ],
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Dark mode background */}
-        <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10] pointer-events-none" />
-
-        {/* Dark mode - Animated gradient background */}
-        <motion.div
-          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
-          animate={{
-            background: [
-              "linear-gradient(135deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
-              "linear-gradient(225deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
-              "linear-gradient(315deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
-              "linear-gradient(135deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
-            ],
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Dark mode - Cyan and Purple Glow Overlays */}
-        <motion.div
-          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
-          animate={{
-            background: [
-              "radial-gradient(ellipse 800px 600px at 20% 30%, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse 600px 800px at 80% 70%, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
-              "radial-gradient(ellipse 600px 800px at 80% 70%, rgba(0, 229, 255, 0.18) 0%, transparent 50%), radial-gradient(ellipse 800px 600px at 20% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
-              "radial-gradient(ellipse 800px 600px at 20% 30%, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse 600px 800px at 80% 70%, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
-            ],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        <div className="container relative z-10 px-4 md:px-6 max-w-6xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold text-[#111827] dark:text-white mb-4">
-            Frequently Asked Questions
-          </h1>
-          <p className="text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
-            Everything you need to know about how we design and implement AI automation for your company.
-          </p>
-        </div>
-      </motion.section>
-
-      {/* FAQ Accordion - Card-based design */}
-      <motion.section
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="py-12 bg-[#F7F8FA] dark:bg-[#0B0C10]"
-      >
-        <div className="container px-4 md:px-6 max-w-4xl mx-auto">
-          <div className="space-y-4">
-            <Accordion type="single" collapsible className="w-full">
-              {faqs.map((faq, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05, duration: 0.4 }}
-                >
-                  <AccordionItem
-                    value={`item-${index}`}
-                    className="border-0 mb-4"
-                  >
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      transition={{ duration: 0.2 }}
-                      className="bg-white dark:bg-[#121417] border border-gray-200 dark:border-white/10 rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.05)] dark:shadow-none hover:shadow-[0_6px_20px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_0_20px_rgba(0,229,255,0.1)] transition-all duration-300"
-                    >
-                      <AccordionTrigger
-                        id={`faq-question-${index}`}
-                        aria-controls={`faq-${index}`}
-                        className="text-left text-lg font-medium text-[#111827] dark:text-white hover:text-red-500 dark:hover:text-red-500 hover:no-underline py-5 px-5 transition-colors duration-300"
-                        aria-label={faq.question}
-                      >
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent
-                        id={`faq-${index}`}
-                        role="region"
-                        aria-labelledby={`faq-question-${index}`}
-                        className="text-gray-700 dark:text-gray-300 pb-6 px-5 leading-relaxed data-[state=open]:animate-fadeIn"
-                      >
-                        <p>{faq.answer}</p>
-                      </AccordionContent>
-                    </motion.div>
-                  </AccordionItem>
-                </motion.div>
-              ))}
-            </Accordion>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* CTA Section - Enhanced gradient with depth */}
-      <motion.section
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="py-16 bg-[#F7F8FA] dark:bg-[#0B0C10]"
-      >
-        <div className="container px-4 md:px-6 max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="bg-gradient-to-r from-[#7B61FF] to-[#00B8D9] dark:from-[#8B5CF6] dark:to-[#00E5FF] text-white text-center py-16 px-8 rounded-2xl shadow-lg my-12"
-          >
-            <h3 className="text-3xl font-bold mb-4">Didn't find your question?</h3>
-            <p className="mb-6 opacity-90">
-              Message us and we'll answer any questions you have.
-            </p>
-            <Link
-              href="/contact"
-              className="inline-block bg-white text-[#7B61FF] dark:text-[#8B5CF6] font-semibold py-3 px-6 rounded-xl hover:bg-gray-100 transition"
-            >
-              Message Us
-            </Link>
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* Footer - Enhanced with consistent styling */}
-      <footer className="relative py-12 md:py-16 bg-[#F4F5F7] dark:bg-[#0B0C10] text-[#1E1E1E] dark:text-gray-300 border-t border-gray-200 dark:border-white/10 transition-colors duration-300 mt-12">
-        {/* Grid pattern background for footer - Dual theme */}
-        <div
-          className="absolute inset-0 opacity-20 dark:opacity-100"
+        {/* Hero Section - Matching About page gradient background */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="relative py-16 px-6 overflow-hidden text-center"
           style={{
-            backgroundImage: `
+            background:
+              "radial-gradient(circle at 50% 30%, #F2F6FF 0%, #FFFFFF 80%)",
+          }}
+        >
+          {/* Light mode - Subtle animated gradient overlay */}
+          <motion.div
+            className="absolute inset-0 dark:hidden opacity-100 pointer-events-none -z-10"
+            animate={{
+              background: [
+                "radial-gradient(ellipse 800px 600px at 30% 40%, rgba(0, 184, 217, 0.08) 0%, transparent 60%), radial-gradient(ellipse 600px 800px at 70% 60%, rgba(123, 97, 255, 0.06) 0%, transparent 60%)",
+                "radial-gradient(ellipse 600px 800px at 70% 60%, rgba(0, 184, 217, 0.10) 0%, transparent 60%), radial-gradient(ellipse 800px 600px at 30% 40%, rgba(123, 97, 255, 0.08) 0%, transparent 60%)",
+                "radial-gradient(ellipse 800px 600px at 30% 40%, rgba(0, 184, 217, 0.08) 0%, transparent 60%), radial-gradient(ellipse 600px 800px at 70% 60%, rgba(123, 97, 255, 0.06) 0%, transparent 60%)",
+              ],
+            }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          {/* Dark mode background */}
+          <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10] pointer-events-none -z-10" />
+
+          {/* Dark mode - Animated gradient background */}
+          <motion.div
+            className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none -z-10"
+            animate={{
+              background: [
+                "linear-gradient(135deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
+                "linear-gradient(225deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
+                "linear-gradient(315deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
+                "linear-gradient(135deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
+              ],
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          {/* Dark mode - Cyan and Purple Glow Overlays */}
+          <motion.div
+            className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none -z-10"
+            animate={{
+              background: [
+                "radial-gradient(ellipse 800px 600px at 20% 30%, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse 600px 800px at 80% 70%, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
+                "radial-gradient(ellipse 600px 800px at 80% 70%, rgba(0, 229, 255, 0.18) 0%, transparent 50%), radial-gradient(ellipse 800px 600px at 20% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
+                "radial-gradient(ellipse 800px 600px at 20% 30%, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse 600px 800px at 80% 70%, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
+              ],
+            }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          <div className="container relative z-10 px-4 md:px-6 max-w-6xl mx-auto">
+            <h1 className="text-4xl md:text-5xl font-bold text-[#111827] dark:text-white mb-4">
+              Frequently Asked Questions
+            </h1>
+            <p className="text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
+              Everything you need to know about how we design and implement AI
+              automation for your company.
+            </p>
+          </div>
+        </motion.section>
+
+        {/* FAQ Accordion - Card-based design */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="py-12 bg-[#F7F8FA] dark:bg-[#0B0C10]"
+        >
+          <div className="container px-4 md:px-6 max-w-4xl mx-auto">
+            <div className="space-y-4">
+              <Accordion type="single" collapsible className="w-full">
+                {faqs.map((faq, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.05, duration: 0.4 }}
+                  >
+                    <AccordionItem
+                      value={`item-${index}`}
+                      className="border-0 mb-4"
+                    >
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ duration: 0.2 }}
+                        className="bg-white dark:bg-[#121417] border border-gray-200 dark:border-white/10 rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.05)] dark:shadow-none hover:shadow-[0_6px_20px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_0_20px_rgba(0,229,255,0.1)] transition-all duration-300"
+                      >
+                        <AccordionTrigger
+                          id={`faq-question-${index}`}
+                          aria-controls={`faq-${index}`}
+                          className="text-left text-lg font-medium text-[#111827] dark:text-white hover:text-red-500 dark:hover:text-red-500 hover:no-underline py-5 px-5 transition-colors duration-300"
+                          aria-label={faq.question}
+                        >
+                          {faq.question}
+                        </AccordionTrigger>
+                        <AccordionContent
+                          id={`faq-${index}`}
+                          role="region"
+                          aria-labelledby={`faq-question-${index}`}
+                          className="text-gray-700 dark:text-gray-300 pb-6 px-5 leading-relaxed data-[state=open]:animate-fadeIn"
+                        >
+                          <p>{faq.answer}</p>
+                        </AccordionContent>
+                      </motion.div>
+                    </AccordionItem>
+                  </motion.div>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* CTA Section - Enhanced gradient with depth */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="py-16 bg-[#F7F8FA] dark:bg-[#0B0C10]"
+        >
+          <div className="container px-4 md:px-6 max-w-5xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="bg-gradient-to-r from-[#7B61FF] to-[#00B8D9] dark:from-[#8B5CF6] dark:to-[#00E5FF] text-white text-center py-16 px-8 rounded-2xl shadow-lg my-12"
+            >
+              <h3 className="text-3xl font-bold mb-4">
+                Didn't find your question?
+              </h3>
+              <p className="mb-6 opacity-90">
+                Message us and we'll answer any questions you have.
+              </p>
+              <Link
+                href="/contact"
+                className="inline-block bg-white text-[#7B61FF] dark:text-[#8B5CF6] font-semibold py-3 px-6 rounded-xl hover:bg-gray-100 transition"
+              >
+                Message Us
+              </Link>
+            </motion.div>
+          </div>
+        </motion.section>
+
+        {/* Footer - Enhanced with consistent styling */}
+        <footer className="relative py-12 md:py-16 bg-[#F4F5F7] dark:bg-[#0B0C10] text-[#1E1E1E] dark:text-gray-300 border-t border-gray-200 dark:border-white/10 transition-colors duration-300 mt-12">
+          {/* Grid pattern background for footer - Dual theme */}
+          <div
+            className="absolute inset-0 opacity-20 dark:opacity-100"
+            style={{
+              backgroundImage: `
               linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
               linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px)
             `,
-            backgroundSize: '40px 40px'
-          }}
-        />
+              backgroundSize: "40px 40px",
+            }}
+          />
 
-        {/* Gradient divider line at top - Dual theme support */}
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-cyan-500/10 to-violet-500/10 dark:from-[#00E5FF]/50 dark:to-[#8B5CF6]/50" />
+          {/* Gradient divider line at top - Dual theme support */}
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-cyan-500/10 to-violet-500/10 dark:from-[#00E5FF]/50 dark:to-[#8B5CF6]/50" />
 
-        <div className="container relative z-10 px-4 md:px-6 max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 py-8"
-          >
-            {/* Column 1 - IOPS */}
-            <div>
-              <h4 className="font-semibold mb-2 text-[#1E1E1E] dark:text-gray-300">IOPS</h4>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">
-                AI-powered automation systems that cut manual work and keep your operations running 24/7.
+          <div className="container relative z-10 px-4 md:px-6 max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-6 py-8"
+            >
+              {/* Column 1 - IOPS */}
+              <div>
+                <h4 className="font-semibold mb-2 text-[#1E1E1E] dark:text-gray-300">
+                  IOPS
+                </h4>
+                <p className="text-gray-600 dark:text-gray-400 text-sm">
+                  AI-powered automation systems that cut manual work and keep
+                  your operations running 24/7.
+                </p>
+              </div>
+
+              {/* Column 2 - Services */}
+              <div>
+                <h4 className="font-semibold mb-2 text-[#1E1E1E] dark:text-gray-300">
+                  Services
+                </h4>
+                <ul className="space-y-1 text-sm text-[#1E1E1E] dark:text-gray-300">
+                  <li>AI Automation Systems</li>
+                  <li>Operations Automation</li>
+                  <li>Process Optimization</li>
+                </ul>
+              </div>
+
+              {/* Column 3 - Connect */}
+              <div>
+                <h4 className="font-semibold mb-2 text-[#1E1E1E] dark:text-gray-300">
+                  Connect
+                </h4>
+                <Link
+                  href="/contact"
+                  className="text-[#7B61FF] dark:text-[#8B5CF6] hover:text-[#5A47CC] dark:hover:text-[#7B4CF6] text-sm transition-colors duration-300"
+                >
+                  Get in Touch
+                </Link>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="mt-8 md:mt-12 pt-8 border-t border-gray-200 dark:border-white/10 text-center"
+            >
+              <p className="text-xs text-[#1E1E1E] dark:text-gray-300 opacity-70">
+                © {new Date().getFullYear()} IOPS. All rights reserved.
               </p>
-            </div>
-
-            {/* Column 2 - Services */}
-            <div>
-              <h4 className="font-semibold mb-2 text-[#1E1E1E] dark:text-gray-300">Services</h4>
-              <ul className="space-y-1 text-sm text-[#1E1E1E] dark:text-gray-300">
-                <li>AI Automation Systems</li>
-                <li>Operations Automation</li>
-                <li>Process Optimization</li>
-              </ul>
-            </div>
-
-            {/* Column 3 - Connect */}
-            <div>
-              <h4 className="font-semibold mb-2 text-[#1E1E1E] dark:text-gray-300">Connect</h4>
-              <Link
-                href="/contact"
-                className="text-[#7B61FF] dark:text-[#8B5CF6] hover:text-[#5A47CC] dark:hover:text-[#7B4CF6] text-sm transition-colors duration-300"
-              >
-                Get in Touch
-              </Link>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8 md:mt-12 pt-8 border-t border-gray-200 dark:border-white/10 text-center"
-          >
-            <p className="text-xs text-[#1E1E1E] dark:text-gray-300 opacity-70">
-              © {new Date().getFullYear()} IOPS. All rights reserved.
-            </p>
-          </motion.div>
-        </div>
-      </footer>
+            </motion.div>
+          </div>
+        </footer>
       </main>
     </>
   );
 }
-

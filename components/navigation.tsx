@@ -43,26 +43,29 @@ export function Navigation() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        "fixed top-0 left-0 right-0 z-[100] transition-all duration-300 transform-gpu isolate",
         scrolled
           ? "bg-white/80 dark:bg-[#0B0C10]/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 shadow-sm"
           : "bg-white/80 dark:bg-transparent backdrop-blur-xl border-b border-gray-200 dark:border-transparent"
       )}
+      style={{ WebkitTransform: "translate3d(0,0,0)" }}
     >
-      <div className="container flex h-16 items-center justify-between px-4 md:px-6 max-w-6xl mx-auto">
+      <div className="container flex h-16 items-center justify-between px-4 md:px-6 max-w-6xl mx-auto relative z-50">
         <Link href="/" className="flex flex-col items-start">
           <span className="text-2xl font-bold gradient-text">IOPS</span>
-          <span className="text-xs text-gray-800 dark:text-gray-400">Intelligent Operations</span>
+          <span className="text-xs text-gray-800 dark:text-gray-400">
+            Intelligent Operations
+          </span>
         </Link>
 
         {/* Desktop Navigation - Enhanced light mode contrast */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-6 relative z-50">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "text-sm transition-colors duration-300 relative font-medium",
+                "text-sm transition-colors duration-300 relative z-50 font-medium",
                 pathname === item.href
                   ? "text-[#7B61FF] dark:text-[#00E5FF]"
                   : "text-gray-800 dark:text-gray-300 hover:text-[#7B61FF] dark:hover:text-[#00E5FF]"
@@ -98,9 +101,14 @@ export function Navigation() {
                 <Menu className="h-6 w-6" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full sm:max-w-sm bg-white dark:bg-[#121417]">
+            <SheetContent
+              side="right"
+              className="w-full sm:max-w-sm bg-white dark:bg-[#121417]"
+            >
               <SheetHeader>
-                <SheetTitle className="text-left text-gray-900 dark:text-white">Menu</SheetTitle>
+                <SheetTitle className="text-left text-gray-900 dark:text-white">
+                  Menu
+                </SheetTitle>
               </SheetHeader>
               <nav className="mt-8 space-y-4">
                 {navItems.map((item) => (
@@ -123,9 +131,7 @@ export function Navigation() {
                     asChild
                     className="w-full mt-6 bg-[#7B61FF] dark:bg-[#8B5CF6] text-white hover:bg-[#6C55E0] dark:hover:bg-[#7B4CF6] shadow-sm hover:shadow-md"
                   >
-                    <Link href="/contact">
-                      Book Free Assessment
-                    </Link>
+                    <Link href="/contact">Book Free Assessment</Link>
                   </Button>
                 </SheetClose>
               </nav>
@@ -136,4 +142,3 @@ export function Navigation() {
     </motion.header>
   );
 }
-

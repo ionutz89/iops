@@ -13,7 +13,7 @@ const codeSnippets = [
 
 export function FloatingCodeElements() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
       {codeSnippets.map((snippet, index) => (
         <motion.div
           key={index}

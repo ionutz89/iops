@@ -52,7 +52,8 @@ const articles: ArticleCard[] = [
   },
   {
     id: "rag-vs-finetuning",
-    title: "RAG vs. Fine-tuning: Which one does your internal chatbot actually need?",
+    title:
+      "RAG vs. Fine-tuning: Which one does your internal chatbot actually need?",
     excerpt:
       "Stop overthinking your AI strategy. This decision tree will help you pick the right approach based on your data, budget, and use case.",
     icon: Bot,
@@ -63,7 +64,13 @@ const articles: ArticleCard[] = [
   },
 ];
 
-function ArticleCardComponent({ article, index }: { article: ArticleCard; index: number }) {
+function ArticleCardComponent({
+  article,
+  index,
+}: {
+  article: ArticleCard;
+  index: number;
+}) {
   const IconComponent = article.icon;
 
   return (
@@ -151,7 +158,7 @@ export default function BlogPage() {
       >
         {/* Light mode - Subtle animated gradient overlay */}
         <motion.div
-          className="absolute inset-0 dark:hidden opacity-100 pointer-events-none"
+          className="absolute inset-0 dark:hidden opacity-100 pointer-events-none -z-10"
           animate={{
             background: [
               "radial-gradient(ellipse 800px 600px at 30% 40%, rgba(0, 184, 217, 0.08) 0%, transparent 60%), radial-gradient(ellipse 600px 800px at 70% 60%, rgba(123, 97, 255, 0.06) 0%, transparent 60%)",
@@ -163,11 +170,11 @@ export default function BlogPage() {
         />
 
         {/* Dark mode background */}
-        <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10] pointer-events-none" />
+        <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10] pointer-events-none -z-10" />
 
         {/* Dark mode - Animated gradient background */}
         <motion.div
-          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
+          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none -z-10"
           animate={{
             background: [
               "linear-gradient(135deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
@@ -181,7 +188,7 @@ export default function BlogPage() {
 
         {/* Dark mode - Cyan and Purple Glow Overlays */}
         <motion.div
-          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
+          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none -z-10"
           animate={{
             background: [
               "radial-gradient(ellipse 800px 600px at 20% 30%, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse 600px 800px at 80% 70%, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
@@ -211,8 +218,7 @@ export default function BlogPage() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#0F0F0F] dark:text-white mb-6"
           >
-            Operational{" "}
-            <span className="gradient-text">Intelligence</span>
+            Operational <span className="gradient-text">Intelligence</span>
           </motion.h1>
 
           {/* Subtitle */}
@@ -274,8 +280,8 @@ export default function BlogPage() {
               Ready to automate your operations?
             </h3>
             <p className="mb-6 opacity-90 max-w-xl mx-auto">
-              Let&apos;s discuss how AI and automation can transform your business
-              workflows. Free assessment, no obligations.
+              Let&apos;s discuss how AI and automation can transform your
+              business workflows. Free assessment, no obligations.
             </p>
             <Link
               href="/contact"
@@ -354,4 +360,3 @@ export default function BlogPage() {
     </main>
   );
 }
-
