@@ -424,4 +424,59 @@
   .text-readable {
     max-width: 70ch;
   }
+
+  /* ================================================================
+   * MOBILE SAFARI PERFORMANCE FIXES
+   * ================================================================ */
+
+  /* Slow pulse animation for decorative orbs - GPU accelerated */
+  @keyframes pulse-slow {
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 8s ease-in-out infinite;
+  }
+
+  /* Mobile Safari: Force hardware acceleration on form containers */
+  @supports (-webkit-touch-callout: none) {
+    /* iOS Safari specific */
+    .mobile-gpu-layer {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    /* Prevent text disappearing during rubber-band scroll */
+    input,
+    textarea,
+    select,
+    button {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+  }
+
+  /* Dynamic viewport height for mobile (Safari address bar fix) */
+  .min-h-dvh {
+    min-height: 100dvh;
+  }
+
+  /* Font rendering optimization */
+  .font-smoothing {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Mobile Safari: Touch scrolling optimization */
+  .touch-scroll {
+    -webkit-overflow-scrolling: touch;
+  }
 }
