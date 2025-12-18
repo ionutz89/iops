@@ -323,16 +323,10 @@ export default function Home() {
       <Navigation />
 
       {/* Hero Section with Enhanced Dual-Theme Background */}
-      <section
-        className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16"
-        style={{
-          background:
-            "radial-gradient(circle at 50% 30%, #EAF6FF 0%, #F8F9FC 60%)",
-        }}
-      >
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 bg-[radial-gradient(circle_at_50%_30%,#EAF6FF_0%,#F8F9FC_60%)] dark:bg-none">
         {/* Light mode - Subtle animated gradient overlay */}
         <motion.div
-          className="absolute inset-0 dark:hidden opacity-100 pointer-events-none -z-10"
+          className="absolute inset-0 dark:hidden opacity-100 pointer-events-none"
           animate={{
             background: [
               "radial-gradient(ellipse 800px 600px at 30% 40%, rgba(0, 184, 217, 0.08) 0%, transparent 60%), radial-gradient(ellipse 600px 800px at 70% 60%, rgba(123, 97, 255, 0.06) 0%, transparent 60%)",
@@ -344,11 +338,11 @@ export default function Home() {
         />
 
         {/* Dark mode background */}
-        <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10] pointer-events-none -z-10" />
+        <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10] pointer-events-none" />
 
         {/* Dark mode - Animated gradient background */}
         <motion.div
-          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none -z-10"
+          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
           animate={{
             background: [
               "linear-gradient(135deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
@@ -362,7 +356,7 @@ export default function Home() {
 
         {/* Dark mode - Cyan and Purple Glow Overlays */}
         <motion.div
-          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none -z-10"
+          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
           animate={{
             background: [
               "radial-gradient(ellipse 800px 600px at 20% 30%, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse 600px 800px at 80% 70%, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
@@ -374,7 +368,7 @@ export default function Home() {
         />
 
         {/* Floating Circles - Works for both themes */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <FloatingCircles />
         </div>
 
@@ -637,7 +631,7 @@ export default function Home() {
       <section className="py-16 md:py-24 relative overflow-hidden bg-gradient-to-br from-blue-50 via-gray-50 to-violet-50 dark:from-[#0B0C10] dark:via-[#121417] dark:to-[#0B0C10] transition-colors duration-300">
         {/* Animated gradient background - only visible in dark mode */}
         <motion.div
-          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none -z-10"
+          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
           animate={{
             background: [
               "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.1) 0%, transparent 50%)",

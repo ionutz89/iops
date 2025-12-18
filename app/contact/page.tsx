@@ -229,10 +229,10 @@ export default function Contact() {
         <Navigation />
 
         {/* Animated Gradient Background - matching homepage */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-background to-purple-50 dark:from-blue-950/20 dark:via-background dark:to-purple-950/20 -z-10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-background to-purple-50 dark:from-blue-950/20 dark:via-background dark:to-purple-950/20" />
 
         {/* Floating gradient orbs - matching homepage style */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
           <motion.div
             className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl"
             animate={{
@@ -262,7 +262,7 @@ export default function Contact() {
 
         {/* Subtle gradient overlay - matching homepage */}
         <motion.div
-          className="absolute inset-0 opacity-40 pointer-events-none -z-10"
+          className="absolute inset-0 opacity-40 pointer-events-none"
           animate={{
             background: [
               "radial-gradient(circle at 20% 50%, rgba(0, 122, 255, 0.1) 0%, transparent 50%)",
