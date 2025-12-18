@@ -131,11 +131,11 @@ export default function About() {
         />
 
         {/* Dark mode background */}
-        <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10]" />
+        <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10] pointer-events-none" />
 
         {/* Dark mode - Animated gradient background */}
         <motion.div
-          className="absolute inset-0 opacity-0 dark:opacity-100"
+          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
           animate={{
             background: [
               "linear-gradient(135deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",

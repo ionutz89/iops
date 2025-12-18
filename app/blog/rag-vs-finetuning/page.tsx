@@ -36,7 +36,7 @@ export default function RAGVsFinetuningArticle() {
         />
 
         {/* Dark mode background */}
-        <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10]" />
+        <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10] pointer-events-none" />
 
         {/* Dark mode glow */}
         <motion.div
@@ -403,4 +403,5 @@ export default function RAGVsFinetuningArticle() {
     </main>
   );
 }
+
 
