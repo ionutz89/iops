@@ -17,19 +17,35 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
+      className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
     >
-      {/* Grid Background */}
-      <div className="absolute inset-0 grid-background opacity-50" />
+      {/* Decorative Background Layer - pointer-events-none */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none select-none"
+        style={{
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      >
+        {/* Grid Background */}
+        <div className="absolute inset-0 grid-background opacity-50 pointer-events-none" />
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background pointer-events-none" />
 
-      {/* Floating Code Elements */}
-      <FloatingCodeElements />
+        {/* Floating Code Elements */}
+        <FloatingCodeElements />
+      </div>
 
-      {/* Content */}
-      <div className="container relative z-10 px-4 md:px-6 py-24 md:py-32">
+      {/* Content Layer */}
+      <div
+        className="container relative px-4 md:px-6 py-24 md:py-32"
+        style={{
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
         <div className="flex flex-col items-center text-center space-y-8 max-w-5xl mx-auto">
           {/* Headline */}
           <motion.h1
@@ -128,8 +144,15 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Bottom Fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
+      {/* Bottom Fade - decorative layer */}
+      <div
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none"
+        style={{
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
     </section>
   );
 }

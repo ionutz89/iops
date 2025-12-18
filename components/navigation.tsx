@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -39,18 +38,22 @@ export function Navigation() {
   }, []);
 
   return (
-    <motion.header
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
+    <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-[100] transition-all duration-300 transform-gpu isolate",
+        "fixed top-0 left-0 right-0 transition-all duration-300",
         scrolled
-          ? "bg-white/80 dark:bg-[#0B0C10]/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 shadow-sm"
-          : "bg-white/80 dark:bg-transparent backdrop-blur-xl border-b border-gray-200 dark:border-transparent"
+          ? "bg-white/95 dark:bg-[#0B0C10]/95 border-b border-gray-200 dark:border-white/10 shadow-sm"
+          : "bg-white/95 dark:bg-[#0B0C10]/80 border-b border-gray-200 dark:border-transparent"
       )}
-      style={{ WebkitTransform: "translate3d(0,0,0)" }}
+      style={{
+        /* Safari fix - explicit position and z-index, NO backdrop-filter */
+        position: "fixed" as const,
+        zIndex: 9999,
+        pointerEvents: "auto",
+        /* Removed backdrop-blur to fix Safari click issues */
+      }}
     >
-      <div className="container flex h-16 items-center justify-between px-4 md:px-6 max-w-6xl mx-auto relative z-50">
+      <div className="container flex h-16 items-center justify-between px-4 md:px-6 max-w-6xl mx-auto relative">
         <Link href="/" className="flex flex-col items-start">
           <span className="text-2xl font-bold gradient-text">IOPS</span>
           <span className="text-xs text-gray-800 dark:text-gray-400">
@@ -58,29 +61,21 @@ export function Navigation() {
           </span>
         </Link>
 
-        {/* Desktop Navigation - Enhanced light mode contrast */}
-        <nav className="hidden md:flex items-center gap-6 relative z-50">
+        {/* Desktop Navigation - Native anchors for Safari compatibility */}
+        <nav className="hidden md:flex items-center gap-6">
           {navItems.map((item) => (
-            <Link
+            <a
               key={item.href}
               href={item.href}
               className={cn(
-                "text-sm transition-colors duration-300 relative z-50 font-medium",
+                "text-sm transition-colors duration-300 font-medium py-1 border-b-2",
                 pathname === item.href
-                  ? "text-[#7B61FF] dark:text-[#00E5FF]"
-                  : "text-gray-800 dark:text-gray-300 hover:text-[#7B61FF] dark:hover:text-[#00E5FF]"
+                  ? "text-[#7B61FF] dark:text-[#00E5FF] border-[#7B61FF] dark:border-[#00E5FF]"
+                  : "text-gray-800 dark:text-gray-300 hover:text-[#7B61FF] dark:hover:text-[#00E5FF] border-transparent"
               )}
             >
               {item.label}
-              {pathname === item.href && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#7B61FF] dark:bg-[#00E5FF]"
-                  initial={false}
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
-            </Link>
+            </a>
           ))}
         </nav>
 
@@ -139,6 +134,6 @@ export function Navigation() {
           </Sheet>
         </div>
       </div>
-    </motion.header>
+    </header>
   );
 }

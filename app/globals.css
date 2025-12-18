@@ -72,14 +72,23 @@
   }
 
   /* Headings use Space Grotesk, bold 700 */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-heading), system-ui, sans-serif;
     font-weight: 700;
     line-height: 1.6;
   }
 
   /* Body text uses Inter, regular 400-500 */
-  p, span, div, li, a {
+  p,
+  span,
+  div,
+  li,
+  a {
     font-family: var(--font-sans), system-ui, sans-serif;
     font-weight: 400;
     line-height: 1.6;
@@ -95,22 +104,21 @@
     @apply opacity-100;
   }
 
-  /* Fallback for motion components */
-  @media (prefers-reduced-motion: no-preference) {
-    [data-motion] {
-      animation: fadeIn 0.5s ease-out;
-    }
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* Safari/Webkit fix: Ensure motion elements start visible */
+  /* Framer Motion may fail to animate in some cases */
+  section,
+  article,
+  main,
+  div,
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    opacity: 1;
+    visibility: visible;
   }
 }
 
@@ -126,7 +134,7 @@
   }
 
   .gradient-text {
-    background: linear-gradient(90deg, #00B8D9, #7B61FF);
+    background: linear-gradient(90deg, #00b8d9, #7b61ff);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -136,7 +144,7 @@
   }
 
   .dark .gradient-text {
-    background: linear-gradient(to right, #00E5FF, #8B5CF6, #00E5FF);
+    background: linear-gradient(to right, #00e5ff, #8b5cf6, #00e5ff);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -197,7 +205,8 @@
 
   /* Floating animation for bubbles and elements */
   @keyframes float {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateY(0px);
     }
     50% {
@@ -211,7 +220,8 @@
 
   /* Scroll indicator pulse animation */
   @keyframes scroll-pulse {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 0.4;
       transform: translateY(0);
     }
@@ -239,7 +249,8 @@
   }
 
   .dark .btn-glow-purple:hover {
-    box-shadow: 0 0 30px rgba(139, 92, 246, 0.5), 0 0 60px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.5),
+      0 0 60px rgba(139, 92, 246, 0.3);
   }
 
   /* Light mode shadow utilities */
@@ -254,12 +265,12 @@
   .light-shadow-lg {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   }
-  
+
   /* Light mode card shadow */
   .shadow-light-card {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   }
-  
+
   .shadow-light-card-hover {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   }
@@ -270,10 +281,97 @@
     outline-offset: 2px;
   }
 
+  /* ================================================================
+   * SAFARI WEBKIT STACKING CONTEXT FIXES
+   * ================================================================ */
+
+  /* Safari stacking context fix - creates new stacking context */
+  .isolate {
+    isolation: isolate;
+  }
+
+  /* Decorative backgrounds - never capture pointer events */
+  .pointer-events-none {
+    pointer-events: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+
+  /* User select none utility - Safari compatible */
+  .select-none {
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
+  }
+
+  /* Safari: Prevent aria-hidden elements from capturing events */
+  [aria-hidden="true"] {
+    pointer-events: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
+  }
+
+  [aria-hidden="true"] * {
+    pointer-events: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+
+  /* CRITICAL: Header must ALWAYS capture pointer events */
+  header {
+    pointer-events: auto !important;
+    z-index: 9999 !important;
+  }
+
+  header * {
+    pointer-events: auto !important;
+  }
+
+  header a,
+  header button {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    position: relative !important;
+  }
+
+  /* Interactive elements - ensure clickability with proper stacking */
+  header {
+    /* Force GPU compositing layer in Safari */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    /* Ensure header captures events */
+    pointer-events: auto;
+  }
+
+  /* Navigation links and buttons - relative positioning for stacking */
+  nav a,
+  nav button,
+  header a,
+  header button {
+    position: relative;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* General interactive elements - proper tap behavior */
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  [role="button"],
+  [tabindex]:not([tabindex="-1"]) {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   /* Grid pattern background for footer */
   .grid-pattern {
-    background-image: 
-      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    background-image: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.03) 1px,
+        transparent 1px
+      ),
       linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
   }
@@ -289,7 +387,7 @@
 
   /* Text gradient animations */
   .gradient-text-animated {
-    background: linear-gradient(90deg, #00E5FF, #8B5CF6, #00E5FF);
+    background: linear-gradient(90deg, #00e5ff, #8b5cf6, #00e5ff);
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;

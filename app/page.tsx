@@ -28,62 +28,31 @@ import {
 } from "lucide-react";
 import { useCountUp } from "@/lib/count-up";
 
-// Floating circles component for hero background
+// Floating circles component for hero background - CSS animations for Safari compatibility
 function FloatingCircles() {
-  const [circles, setCircles] = useState<
-    Array<{
-      id: number;
-      size: number;
-      left: number;
-      top: number;
-      xOffset: number;
-      yOffset: number;
-      duration: number;
-    }>
-  >([]);
-
-  useEffect(() => {
-    // Generate random values only on client to avoid hydration mismatch
-    setCircles(
-      Array.from({ length: 6 }, (_, idx) => ({
-        id: idx,
-        size: Math.random() * 200 + 100,
-        left: Math.random() * 100,
-        top: Math.random() * 100,
-        xOffset: Math.random() * 100 - 50,
-        yOffset: Math.random() * 100 - 50,
-        duration: 10 + Math.random() * 10,
-      }))
-    );
-  }, []);
-
-  // Don't render until circles are generated (client-side only)
-  if (circles.length === 0) {
-    return null;
-  }
+  // Static circles - no JavaScript animations to prevent Safari freezing
+  const circles = [
+    { id: 0, size: 180, left: 15, top: 20 },
+    { id: 1, size: 220, left: 75, top: 15 },
+    { id: 2, size: 150, left: 10, top: 65 },
+    { id: 3, size: 200, left: 80, top: 70 },
+    { id: 4, size: 160, left: 50, top: 80 },
+    { id: 5, size: 190, left: 85, top: 40 },
+  ];
 
   return (
     <>
       {circles.map((circle) => (
-        <motion.div
+        <div
           key={circle.id}
-          className="absolute rounded-full bg-gradient-to-br from-blue-400/15 to-purple-400/15 dark:from-blue-400/20 dark:to-purple-400/20 blur-xl"
+          aria-hidden="true"
+          className="absolute rounded-full bg-gradient-to-br from-blue-400/15 to-purple-400/15 dark:from-blue-400/20 dark:to-purple-400/20 blur-xl pointer-events-none"
           style={{
             width: circle.size,
             height: circle.size,
             left: `${circle.left}%`,
             top: `${circle.top}%`,
-          }}
-          animate={{
-            x: [0, circle.xOffset, 0],
-            y: [0, circle.yOffset, 0],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: circle.duration,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: circle.id * 0.5,
+            pointerEvents: "none",
           }}
         />
       ))}
@@ -322,107 +291,52 @@ export default function Home() {
     <main className="min-h-screen bg-background dark:bg-[#0B0C10] transition-colors duration-300">
       <Navigation />
 
-      {/* Hero Section with Enhanced Dual-Theme Background */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 bg-[radial-gradient(circle_at_50%_30%,#EAF6FF_0%,#F8F9FC_60%)] dark:bg-none">
-        {/* Light mode - Subtle animated gradient overlay */}
-        <motion.div
-          className="absolute inset-0 dark:hidden opacity-100 pointer-events-none"
-          animate={{
-            background: [
-              "radial-gradient(ellipse 800px 600px at 30% 40%, rgba(0, 184, 217, 0.08) 0%, transparent 60%), radial-gradient(ellipse 600px 800px at 70% 60%, rgba(123, 97, 255, 0.06) 0%, transparent 60%)",
-              "radial-gradient(ellipse 600px 800px at 70% 60%, rgba(0, 184, 217, 0.10) 0%, transparent 60%), radial-gradient(ellipse 800px 600px at 30% 40%, rgba(123, 97, 255, 0.08) 0%, transparent 60%)",
-              "radial-gradient(ellipse 800px 600px at 30% 40%, rgba(0, 184, 217, 0.08) 0%, transparent 60%), radial-gradient(ellipse 600px 800px at 70% 60%, rgba(123, 97, 255, 0.06) 0%, transparent 60%)",
-            ],
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center pt-16 bg-gradient-to-b from-blue-50 to-white dark:from-[#0B0C10] dark:to-[#121417]">
+        {/* Decorative background - MUST be first child, absolutely positioned, pointer-events-none */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 pointer-events-none select-none"
+          style={{
+            pointerEvents: "none",
+            userSelect: "none",
+            WebkitUserSelect: "none",
+            WebkitTouchCallout: "none",
+            zIndex: 0,
           }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Dark mode background */}
-        <div className="absolute inset-0 hidden dark:block bg-gradient-to-br from-[#0B0C10] via-[#121417] to-[#0B0C10] pointer-events-none" />
-
-        {/* Dark mode - Animated gradient background */}
-        <motion.div
-          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
-          animate={{
-            background: [
-              "linear-gradient(135deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
-              "linear-gradient(225deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
-              "linear-gradient(315deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
-              "linear-gradient(135deg, #0B0C10 0%, #121417 50%, #1A1C20 100%)",
-            ],
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Dark mode - Cyan and Purple Glow Overlays */}
-        <motion.div
-          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
-          animate={{
-            background: [
-              "radial-gradient(ellipse 800px 600px at 20% 30%, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse 600px 800px at 80% 70%, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
-              "radial-gradient(ellipse 600px 800px at 80% 70%, rgba(0, 229, 255, 0.18) 0%, transparent 50%), radial-gradient(ellipse 800px 600px at 20% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
-              "radial-gradient(ellipse 800px 600px at 20% 30%, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse 600px 800px at 80% 70%, rgba(139, 92, 246, 0.12) 0%, transparent 50%)",
-            ],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Floating Circles - Works for both themes */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        >
           <FloatingCircles />
         </div>
 
-        <div className="container relative z-10 px-4 md:px-6 py-24 md:py-32 max-w-6xl mx-auto">
+        {/* Content container - positioned above decorative layer */}
+        <div
+          className="container relative px-4 md:px-6 py-24 md:py-32 max-w-6xl mx-auto"
+          style={{
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
           <div className="flex flex-col items-center text-center space-y-6 md:space-y-8">
-            {/* Headline with enhanced glowing backdrop effect */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="relative"
-            >
-              {/* Enhanced blurred gradient glow behind headline */}
-              <div className="absolute inset-0 blur-3xl opacity-20 dark:opacity-60">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#00B8D9] via-[#7B61FF] to-[#00B8D9] dark:from-[#00E5FF] dark:via-[#8B5CF6] dark:to-[#00E5FF] animate-gradient" />
-              </div>
-
-              <h1
-                className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white"
-                data-motion
-              >
+            {/* Headline - No animation for Safari compatibility */}
+            <div className="relative">
+              <h1 className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-white">
                 Automate Your Business{" "}
-                <motion.span
-                  className="gradient-text"
-                  animate={{
-                    opacity: [0.7, 1, 0.7],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  with AI
-                </motion.span>
+                <span className="gradient-text">with AI</span>
               </h1>
-            </motion.div>
+            </div>
 
-            {/* Sub-headline - Enhanced for both themes */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-              className="text-lg sm:text-xl md:text-2xl text-gray-700 dark:text-white/80 max-w-3xl mx-auto leading-relaxed font-normal"
-            >
+            {/* Sub-headline */}
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-700 dark:text-white/80 max-w-3xl mx-auto leading-relaxed font-normal">
               We design AI systems that make your operations self-optimizing.
-            </motion.p>
+            </p>
 
-            {/* CTAs with enhanced dual-theme styling */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+            {/* CTAs */}
+            <div
               className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center justify-center"
+              style={{
+                position: "relative",
+                zIndex: 20,
+              }}
             >
               {/* Primary CTA - Cyan solid */}
               <Button
@@ -454,25 +368,15 @@ export default function Home() {
                   Calculate ROI
                 </Link>
               </Button>
-            </motion.div>
+            </div>
 
             {/* Animated Workflow */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="w-full mt-12"
-            >
+            <div className="w-full mt-12">
               <AnimatedWorkflow />
-            </motion.div>
+            </div>
 
-            {/* Scroll Indicator - Animated pulse with dual-theme support */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 1 }}
-              className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2"
-            >
+            {/* Scroll Indicator */}
+            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none">
               <span className="text-xs text-gray-700 dark:text-white/60 font-medium">
                 Scroll to explore
               </span>
@@ -491,7 +395,7 @@ export default function Home() {
                   <path d="M12 5v14M19 12l-7 7-7-7" />
                 </svg>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -628,22 +532,12 @@ export default function Home() {
       <LatestInsights />
 
       {/* Final CTA Banner - Enhanced with dual-theme gradient divider */}
-      <section className="py-16 md:py-24 relative overflow-hidden bg-gradient-to-br from-blue-50 via-gray-50 to-violet-50 dark:from-[#0B0C10] dark:via-[#121417] dark:to-[#0B0C10] transition-colors duration-300">
-        {/* Animated gradient background - only visible in dark mode */}
-        <motion.div
-          className="absolute inset-0 opacity-0 dark:opacity-100 pointer-events-none"
-          animate={{
-            background: [
-              "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.1) 0%, transparent 50%)",
-              "radial-gradient(ellipse at bottom left, rgba(0, 229, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse at top right, rgba(139, 92, 246, 0.15) 0%, transparent 50%)",
-              "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.1) 0%, transparent 50%)",
-            ],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-
+      <section className="py-16 md:py-24 relative bg-gradient-to-br from-blue-50 via-gray-50 to-violet-50 dark:from-[#0B0C10] dark:via-[#121417] dark:to-[#0B0C10] transition-colors duration-300">
         {/* Gradient divider line at top - Dual theme support */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00B8D9] dark:via-[#00E5FF] to-transparent opacity-40 dark:opacity-50" />
+        <div
+          aria-hidden="true"
+          className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00B8D9] dark:via-[#00E5FF] to-transparent opacity-40 dark:opacity-50"
+        />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -680,6 +574,7 @@ export default function Home() {
       <footer className="relative py-12 md:py-16 bg-[#F4F5F7] dark:bg-[#0B0C10] transition-colors duration-300">
         {/* Grid pattern background for footer - Dual theme */}
         <div
+          aria-hidden="true"
           className="absolute inset-0 opacity-20 dark:opacity-100"
           style={{
             backgroundImage: `
@@ -691,7 +586,10 @@ export default function Home() {
         />
 
         {/* Gradient divider line at top - Dual theme support */}
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-[#00B8D9]/10 to-[#7B61FF]/10 dark:from-[#00E5FF]/50 dark:to-[#8B5CF6]/50" />
+        <div
+          aria-hidden="true"
+          className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-[#00B8D9]/10 to-[#7B61FF]/10 dark:from-[#00E5FF]/50 dark:to-[#8B5CF6]/50"
+        />
 
         <div className="container relative z-10 px-4 md:px-6 max-w-6xl mx-auto">
           <motion.div
